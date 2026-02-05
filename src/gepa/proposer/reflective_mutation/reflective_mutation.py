@@ -25,6 +25,11 @@ from gepa.proposer.reflective_mutation.base import (
     LanguageModel,
     ReflectionComponentSelector,
 )
+from gepa.strategies.bandit import (
+    MutationStrategy,
+    MultiPromptGenerator,
+    ThompsonSamplingBandit,
+)
 from gepa.strategies.batch_sampler import BatchSampler
 from gepa.strategies.instruction_proposal import InstructionProposalSignature
 
@@ -55,6 +60,10 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
         reflection_lm: LanguageModel | None = None,
         reflection_prompt_template: str | None = None,
         callbacks: list[GEPACallback] | None = None,
+        # Bandit-based multi-prompt mutation parameters
+        use_bandit_mutation: bool = False,
+        num_prompt_variants: int = 10,
+        bandit: ThompsonSamplingBandit | None = None,
     ):
         self.logger = logger
         self.trainset = ensure_loader(trainset)
@@ -70,6 +79,13 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
 
         InstructionProposalSignature.validate_prompt_template(reflection_prompt_template)
         self.reflection_prompt_template = reflection_prompt_template
+
+        # Bandit-based multi-prompt mutation
+        self.use_bandit_mutation = use_bandit_mutation
+        self.num_prompt_variants = num_prompt_variants
+        self.bandit = bandit if bandit is not None else ThompsonSamplingBandit()
+        self.prompt_generator = MultiPromptGenerator()
+        self._last_selected_strategy: MutationStrategy | None = None
 
     def propose_new_texts(
         self,
@@ -101,14 +117,133 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
             )["new_instruction"]
         return new_texts
 
+    def propose_new_texts_with_bandit(
+        self,
+        candidate: dict[str, str],
+        reflective_dataset: Mapping[str, Sequence[Mapping[str, Any]]],
+        components_to_update: list[str],
+    ) -> dict[str, list[str]]:
+        """
+        Generate K prompt variants for each component using bandit-selected mutation strategy.
+        
+        Returns:
+            Dictionary mapping component names to lists of K prompt variants.
+        """
+        if self.reflection_lm is None:
+            raise ValueError("reflection_lm must be provided for bandit-based mutation.")
+        
+        # Select mutation strategy using Thompson Sampling
+        strategy = self.bandit.select_strategy()
+        self._last_selected_strategy = strategy
+        self.logger.log(f"Bandit selected mutation strategy: {strategy.value}")
+        
+        # Log bandit statistics
+        stats = self.bandit.get_strategy_stats()
+        self.logger.log(f"Bandit statistics: {stats}")
+        
+        all_variants: dict[str, list[str]] = {}
+        
+        for name in components_to_update:
+            if name not in reflective_dataset or not reflective_dataset.get(name):
+                self.logger.log(f"Component '{name}' is not in reflective dataset. Skipping.")
+                continue
+            
+            base_instruction = candidate[name]
+            dataset_with_feedback = list(reflective_dataset[name])
+            
+            # Format feedback for the prompt
+            feedback_text = self.prompt_generator.format_feedback(dataset_with_feedback)
+            
+            # Generate K variants using the selected strategy
+            self.logger.log(f"\n[MUTATION CONTEXT for component '{name}']")
+            self.logger.log(f"Feedback being used for mutation:\n{feedback_text}\n{'-'*20}")
+            
+            self.logger.log(f"Generating {self.num_prompt_variants} variants for component '{name}' using strategy '{strategy.value}'...")
+            variants = self.prompt_generator.generate_variants(
+                base_instruction=base_instruction,
+                feedback_text=feedback_text,
+                strategy=strategy,
+                lm=self.reflection_lm,
+                k=self.num_prompt_variants,
+            )
+            
+            all_variants[name] = variants
+            self.logger.log(f"Generated {len(variants)} variants for component '{name}':")
+            for v_idx, variant_text in enumerate(variants):
+                self.logger.log(f"  [Variant {v_idx+1}]\n{variant_text}\n{'-'*40}")
+        
+        return all_variants
+
+    def _evaluate_variants_and_select_best(
+        self,
+        candidate: dict[str, str],
+        variants_by_component: dict[str, list[str]],
+        minibatch: list[DataInst],
+        subsample_ids: list[DataId],
+        state: GEPAState,
+        i: int,
+    ) -> tuple[dict[str, str], list[float], bool]:
+        """
+        Evaluate all K variants on the minibatch and select the best one.
+        
+        Returns:
+            Tuple of (best_new_texts, best_scores, has_variants)
+        """
+        if not variants_by_component:
+            return {}, [], False
+        
+        # Get the first component's variants count (all should be the same)
+        first_component = next(iter(variants_by_component))
+        k = len(variants_by_component[first_component])
+        
+        # Evaluate each variant combination
+        best_score_sum = float('-inf')
+        best_new_texts: dict[str, str] = {}
+        best_scores: list[float] = []
+        
+        for variant_idx in range(k):
+            # Create candidate with this variant
+            test_candidate = candidate.copy()
+            for component_name, variants in variants_by_component.items():
+                test_candidate[component_name] = variants[variant_idx]
+            
+            # Evaluate this variant
+            def evaluator(b, c):
+                r = self.adapter.evaluate(b, c, capture_traces=False)
+                return r.outputs, r.scores, list(r.objective_scores) if r.objective_scores else None
+            
+            outputs_by_id, scores_by_id, _, actual_evals = state.cached_evaluate_full(
+                test_candidate, subsample_ids, self.trainset.fetch, evaluator
+            )
+            state.increment_evals(actual_evals)
+            
+            scores = [scores_by_id[eid] for eid in subsample_ids]
+            score_sum = sum(scores)
+            
+            self.logger.log(f"Variant {variant_idx + 1}/{k}: score_sum = {score_sum:.4f}")
+            
+            if score_sum > best_score_sum:
+                best_score_sum = score_sum
+                best_scores = scores
+                best_new_texts = {
+                    name: variants[variant_idx] 
+                    for name, variants in variants_by_component.items()
+                }
+        
+        self.logger.log(f"Best variant score: {best_score_sum:.4f}")
+        
+        return best_new_texts, best_scores, True
+
     def propose(self, state: GEPAState) -> CandidateProposal | None:
         i = state.i + 1
 
         curr_prog_id = self.candidate_selector.select_candidate_idx(state)
         curr_prog = state.program_candidates[curr_prog_id]
         state.full_program_trace[-1]["selected_program_candidate"] = curr_prog_id
+        
+        self.logger.log(f"\n{'='*40}\nSTARTING BANDIT MUTATION: ITERATION {i}\n{'='*40}")
         self.logger.log(
-            f"Iteration {i}: Selected program {curr_prog_id} score: {state.program_full_scores_val_set[curr_prog_id]}"
+            f"Selected parent candidate {curr_prog_id} with score: {state.program_full_scores_val_set[curr_prog_id]}"
         )
 
         # Notify candidate selected
@@ -258,23 +393,109 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 ),
             )
 
-            new_texts = self.propose_new_texts(curr_prog, reflective_dataset, predictor_names_to_update)
+            # Choose between bandit-based multi-prompt vs. single prompt generation
+            if self.use_bandit_mutation:
+                # Bandit-based: generate K variants, evaluate all, select best
+                variants_by_component = self.propose_new_texts_with_bandit(
+                    curr_prog, reflective_dataset, predictor_names_to_update
+                )
+                
+                if not variants_by_component:
+                    self.logger.log(f"Iteration {i}: No variants generated. Skipping.")
+                    return None
+                
+                # Evaluate all K variants and select the best
+                new_texts, new_scores, has_variants = self._evaluate_variants_and_select_best(
+                    curr_prog, variants_by_component, minibatch, subsample_ids, state, i
+                )
+                
+                if not has_variants or not new_texts:
+                    self.logger.log(f"Iteration {i}: No valid variants found. Skipping.")
+                    return None
+                
+                # Log selected best candidate
+                self.logger.log(f"\n[SELECTED BEST CANDIDATE for Iteration {i}]")
+                for name, text in new_texts.items():
+                    self.logger.log(f"Component '{name}':\n{text}\n{'-'*20}")
+                self.logger.log(f"Best Variant Score: {max(new_scores)}\n")
+                
+                # Update bandit based on whether best variant improved over parent
+                old_sum = sum(eval_curr.scores)
+                new_sum = sum(new_scores)
+                improved = new_sum > old_sum
+                
+                if self._last_selected_strategy is not None:
+                    self.bandit.update(self._last_selected_strategy, improved)
+                    self.logger.log(
+                        f"Bandit updated: strategy={self._last_selected_strategy.value}, "
+                        f"improved={improved} (old={old_sum:.4f}, new={new_sum:.4f})"
+                    )
+                
+                # Notify proposal end
+                notify_callbacks(
+                    self.callbacks,
+                    "on_proposal_end",
+                    ProposalEndEvent(
+                        iteration=i,
+                        new_instructions=new_texts,
+                    ),
+                )
+                
+                for pname, text in new_texts.items():
+                    self.logger.log(f"Iteration {i}: Best variant for {pname}: {text[:200]}...")
+                self.experiment_tracker.log_metrics(
+                    {f"new_instruction_{pname}": text for pname, text in new_texts.items()}, step=i
+                )
+                self.experiment_tracker.log_metrics(
+                    {
+                        "bandit_strategy": self._last_selected_strategy.value if self._last_selected_strategy else "none",
+                        "bandit_improved": improved,
+                        "num_variants_evaluated": self.num_prompt_variants,
+                    },
+                    step=i,
+                )
+                
+                # Create new candidate from best variant
+                new_candidate = curr_prog.copy()
+                for pname, text in new_texts.items():
+                    assert pname in new_candidate, f"{pname} missing in candidate"
+                    new_candidate[pname] = text
+                
+                state.full_program_trace[-1]["new_subsample_scores"] = new_scores
+                
+                new_sum = sum(new_scores)
+                self.experiment_tracker.log_metrics(
+                    {"new_subsample_score": new_sum, "total_metric_calls": state.total_num_evals}, step=i
+                )
+                
+                return CandidateProposal(
+                    candidate=new_candidate,
+                    parent_program_ids=[curr_prog_id],
+                    subsample_indices=subsample_ids,
+                    subsample_scores_before=eval_curr.scores,
+                    subsample_scores_after=new_scores,
+                    tag="reflective_mutation_bandit",
+                )
+            
+            else:
+                # Original single-prompt approach
+                new_texts = self.propose_new_texts(curr_prog, reflective_dataset, predictor_names_to_update)
 
-            # Notify proposal end
-            notify_callbacks(
-                self.callbacks,
-                "on_proposal_end",
-                ProposalEndEvent(
-                    iteration=i,
-                    new_instructions=new_texts,
-                ),
-            )
+                # Notify proposal end
+                notify_callbacks(
+                    self.callbacks,
+                    "on_proposal_end",
+                    ProposalEndEvent(
+                        iteration=i,
+                        new_instructions=new_texts,
+                    ),
+                )
 
-            for pname, text in new_texts.items():
-                self.logger.log(f"Iteration {i}: Proposed new text for {pname}: {text}")
-            self.experiment_tracker.log_metrics(
-                {f"new_instruction_{pname}": text for pname, text in new_texts.items()}, step=i
-            )
+                for pname, text in new_texts.items():
+                    self.logger.log(f"Iteration {i}: Proposed new text for {pname}: {text}")
+                self.experiment_tracker.log_metrics(
+                    {f"new_instruction_{pname}": text for pname, text in new_texts.items()}, step=i
+                )
         except Exception as e:
             self.logger.log(f"Iteration {i}: Exception during reflection/proposal: {e}")
             import traceback
@@ -283,6 +504,7 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
             return None
 
         # 4) Create candidate, evaluate on same minibatch (no need to capture traces)
+        # (Only reached for non-bandit path; bandit path returns earlier)
         new_candidate = curr_prog.copy()
         for pname, text in new_texts.items():
             assert pname in new_candidate, f"{pname} missing in candidate"
@@ -345,3 +567,4 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
             subsample_scores_after=new_scores,
             tag="reflective_mutation",
         )
+

@@ -60,6 +60,9 @@ def optimize(
     use_merge: bool = False,
     max_merge_invocations: int = 5,
     merge_val_overlap_floor: int = 5,
+    # Bandit-based multi-prompt mutation configuration
+    use_bandit_mutation: bool = False,
+    num_prompt_variants: int = 10,
     # Budget and Stop Condition
     max_metric_calls: int | None = None,
     stop_callbacks: StopperProtocol | Sequence[StopperProtocol] | None = None,
@@ -143,6 +146,10 @@ def optimize(
     - use_merge: Whether to use the merge strategy.
     - max_merge_invocations: The maximum number of merge invocations to perform.
     - merge_val_overlap_floor: Minimum number of shared validation ids required between parents before attempting a merge subsample. Only relevant when using `val_evaluation_policy` other than `full_eval`.
+
+    # Bandit-based multi-prompt mutation configuration
+    - use_bandit_mutation: Whether to use Thompson Sampling bandit for mutation strategy selection. When enabled, GEPA generates K prompt variants per mutation and evaluates all to select the best.
+    - num_prompt_variants: Number of prompt variants to generate per mutation when bandit mutation is enabled. Defaults to 10.
 
     # Budget and Stop Condition
     - max_metric_calls: Optional maximum number of metric calls to perform. If not provided, stop_callbacks must be provided.
@@ -338,6 +345,8 @@ def optimize(
         reflection_lm=reflection_lm,
         reflection_prompt_template=reflection_prompt_template,
         callbacks=callbacks,
+        use_bandit_mutation=use_bandit_mutation,
+        num_prompt_variants=num_prompt_variants,
     )
 
     def evaluator_fn(
