@@ -31,7 +31,8 @@ import litellm
 litellm.verbose = False
 
 import logging
-logging.basicConfig(level=logging.INFO)
+import sys
+logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 logging.getLogger("litellm").setLevel(logging.WARNING)
 
@@ -249,6 +250,31 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
                 trajectories=trajectories,
             )
         
+        def _llm_judge_quality(self, user_query: str, target_response: str, pred_response: str) -> bool:
+            """LLM Judge: Is response A (pred) at least as good as response B (target)?"""
+            prompt = f"""You are comparing the quality of two responses, given a user query.
+Is response A at least as good as response B?
+
+User Query: {user_query}
+
+Response A (Prediction): {pred_response}
+
+Response B (Target): {target_response}
+
+Return ONLY 'true' or 'false'.
+"""
+            try:
+                # Use task_lm as judge for simplicity in this example
+                response = litellm.completion(
+                    model=self.task_lm,
+                    messages=[{"role": "user", "content": prompt}],
+                    api_key=self.api_key,
+                )
+                text = response.choices[0].message.content.lower().strip()
+                return "true" in text
+            except Exception:
+                return False
+
         def _evaluate_single(self, example: dict, output: dict) -> tuple[float, dict]:
             """Evaluate privacy and quality for a single example."""
             pii_units = example.get("pii_units", "")
@@ -263,15 +289,17 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
             else:
                 privacy_score = 1.0
             
-            # Quality score (basic heuristic)
-            quality_score = min(1.0, len(final_response) / 200) if final_response else 0.0
+            # Quality score (LLM Judge)
+            target_response = example.get("target_response", "")
+            is_good = self._llm_judge_quality(example["input"], target_response, final_response)
+            quality_score = 1.0 if is_good else 0.0
             
             overall = (privacy_score + quality_score) / 2.0
             
             return overall, {
                 "privacy": privacy_score,
                 "quality": quality_score,
-                "feedback": f"Privacy={privacy_score:.2f}, Quality={quality_score:.2f}",
+                "feedback": f"Privacy={privacy_score:.2f}, Quality={quality_score:.2f} ({'Good' if is_good else 'Bad'})",
             }
         
         def make_reflective_dataset(
@@ -319,10 +347,10 @@ def main():
     parser.add_argument("--task_lm", type=str, default="gemini/gemini-2.0-flash")
     parser.add_argument("--untrusted_lm", type=str, default="gemini/gemini-2.0-flash")
     parser.add_argument("--reflection_lm", type=str, default="gemini/gemini-2.0-flash")
-    parser.add_argument("--train_size", type=int, default=5)
-    parser.add_argument("--val_size", type=int, default=5)
-    parser.add_argument("--test_size", type=int, default=5)
-    parser.add_argument("--max_metric_calls", type=int, default=100)
+    parser.add_argument("--train_size", type=int, default=50)
+    parser.add_argument("--val_size", type=int, default=50)
+    parser.add_argument("--test_size", type=int, default=20)
+    parser.add_argument("--max_metric_calls", type=int, default=1000)
     parser.add_argument("--use_bandit", action="store_true", default=True, help="Use bandit-based mutation")
     parser.add_argument("--num_variants", type=int, default=10, help="Number of prompt variants (K)")
     parser.add_argument("--seed", type=int, default=42)
@@ -342,18 +370,22 @@ def main():
         seed=args.seed,
     )
     
-    # Define seed candidate with initial prompts
+    # Define seed candidate with initial prompts matching DSPy Tutorial
+    # Tutorial uses ChainOfThought for Redaction, so we add reasoning steps.
     seed_candidate = {
         "redaction_prompt": """Given a private user query, create a privacy-preserving request for a powerful external LLM.
-The LLM may assist without learning private information about the user.""",
-        
-        "response_prompt": """You are a helpful assistant. Given:
-1. The original user query
-2. A privacy-preserving request sent to an external LLM
-3. The external LLM's response
+The LLM may assist without learning private information about the user.
 
-Generate a helpful final response for the user that addresses their original query
-using the information from the external LLM, while maintaining coherence.""",
+Let's think step by step to identify PII and redact it effectively.""",
+        
+        "response_prompt": """Respond to a user query. For inspiration, we found a potentially related request to a powerful external LLM and its response.
+
+Input:
+1. related_llm_request: The privacy-preserving request sent to the external LLM.
+2. related_llm_response: Information from a powerful LLM responding to the related request.
+3. user_query: The user's original request you need to fulfill.
+
+Instruction: Generate your final response to the user's request.""",
     }
     
     # Create adapter
@@ -388,13 +420,23 @@ using the information from the external LLM, while maintaining coherence.""",
     print(f"Number of Variants (K): {args.num_variants}")
     print(f"Max Metric Calls: {args.max_metric_calls}")
     print(f"{'='*60}\n")
+
+    # Evaluate seed candidate on test set
+    print(f"\n{'='*60}")
+    print("Evaluating SEED candidate on Test Set (Score Check)")
+    print(f"{'='*60}")
+    seed_eval_batch = adapter.evaluate(testset, seed_candidate)
+    seed_score = sum(seed_eval_batch.scores) / len(seed_eval_batch.scores) if seed_eval_batch.scores else 0.0
+    print(f"Seed Average Score: {seed_score:.4f}")
+    print(f"{'='*60}\n")
     
     # Run GEPA optimization with bandit
+    print("Starting optimization...")
     result = optimize(
+        adapter=adapter,
         seed_candidate=seed_candidate,
         trainset=trainset,
         valset=valset,
-        adapter=adapter,
         reflection_lm=reflection_lm,
         # Bandit-based mutation settings
         use_bandit_mutation=args.use_bandit,
@@ -412,14 +454,21 @@ using the information from the external LLM, while maintaining coherence.""",
     print(f"\n{'='*60}")
     print("Optimization Complete!")
     print(f"{'='*60}")
-    print(f"Best score: {result.best_score:.4f}")
-    print(f"Total iterations: {result.num_iterations}")
-    print(f"\nOptimized Redaction Prompt:")
-    print("-" * 40)
-    print(result.best_candidate.get("redaction_prompt", ""))
-    print(f"\nOptimized Response Prompt:")
-    print("-" * 40)
-    print(result.best_candidate.get("response_prompt", ""))
+    
+    best_score = result.val_aggregate_scores[result.best_idx]
+    print(f"Best Validation Score: {best_score:.4f}")
+    print(f"Best Candidate (Index {result.best_idx}):")
+    for k, v in result.best_candidate.items():
+        print(f"\nComponent '{k}':\n{v}")
+        
+    # Evaluate optimized candidate on test set
+    print(f"\n{'='*60}")
+    print("Evaluating OPTIMIZED candidate on Test Set (Score Check)")
+    print(f"{'='*60}")
+    best_eval_batch = adapter.evaluate(testset, result.best_candidate)
+    best_score_avg = sum(best_eval_batch.scores) / len(best_eval_batch.scores) if best_eval_batch.scores else 0.0
+    print(f"Optimized Average Score: {best_score_avg:.4f}")
+    print(f"{'='*60}\n")
     
     return result
 
