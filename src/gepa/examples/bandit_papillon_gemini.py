@@ -349,8 +349,8 @@ def main():
     parser.add_argument("--reflection_lm", type=str, default="gemini/gemini-2.0-flash")
     parser.add_argument("--train_size", type=int, default=50)
     parser.add_argument("--val_size", type=int, default=50)
-    parser.add_argument("--test_size", type=int, default=20)
-    parser.add_argument("--max_metric_calls", type=int, default=1000)
+    parser.add_argument("--test_size", type=int, default=10)
+    parser.add_argument("--max_metric_calls", type=int, default=100)
     parser.add_argument("--use_bandit", action="store_true", default=True, help="Use bandit-based mutation")
     parser.add_argument("--num_variants", type=int, default=10, help="Number of prompt variants (K)")
     parser.add_argument("--seed", type=int, default=42)
@@ -370,13 +370,12 @@ def main():
         seed=args.seed,
     )
     
-    # Define seed candidate with initial prompts matching DSPy Tutorial
-    # Tutorial uses ChainOfThought for Redaction, so we add reasoning steps.
+    # Define seed candidate with initial prompts matching DSPy Tutorial intent but adapted for direct execution
     seed_candidate = {
         "redaction_prompt": """Given a private user query, create a privacy-preserving request for a powerful external LLM.
 The LLM may assist without learning private information about the user.
 
-Let's think step by step to identify PII and redact it effectively.""",
+IMPORTANT: Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler.""",
         
         "response_prompt": """Respond to a user query. For inspiration, we found a potentially related request to a powerful external LLM and its response.
 
@@ -385,7 +384,7 @@ Input:
 2. related_llm_response: Information from a powerful LLM responding to the related request.
 3. user_query: The user's original request you need to fulfill.
 
-Instruction: Generate your final response to the user's request.""",
+Instruction: Generate your final response to the user's request. Output ONLY the response.""",
     }
     
     # Create adapter
