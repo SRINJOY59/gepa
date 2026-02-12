@@ -448,7 +448,7 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 all_candidates.append(
                     _Candidate(
                         candidate=test_cand,
-                        minibatch_score_sum=score_sum, # This uses actual eval score
+                        minibatch_score_sum=norm_score, # storing AVG now for fair ranking
                         subsample_ids=sub_ids,
                         subsample_scores_before=eval_curr.scores,
                         subsample_scores_after=scores_list,
@@ -457,7 +457,7 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 
                 self.logger.log(
                     f"    Eval Top-{v_idx+1} on mb {mb_idx + 1}: "
-                    f"surrogate={surrogate_score:.4f}, actual={score_sum:.4f}"
+                    f"surrogate={surrogate_score:.4f}, actual_avg={norm_score:.4f}"
                 )
 
             # Train User's Surrogate Model with the new Top-K data

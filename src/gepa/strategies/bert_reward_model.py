@@ -1,46 +1,67 @@
-# Copyright (c) 2025 Lakshya A Agrawal and the GEPA contributors
-# https://github.com/gepa-ai/gepa
-
-"""
-Lightweight reward model for fast prompt candidate scoring.
-
-Uses TF-IDF features + a small 2-layer MLP instead of a full transformer
-so that both training and inference are near-instantaneous.  The model is
-trained fully online — it learns from every new (prompt, score) pair
-without any minimum-sample gate.
-"""
-
 from __future__ import annotations
-
-import numpy as np
 import torch
 import torch.nn as nn
-from sklearn.feature_extraction.text import TfidfVectorizer
+from torch.utils.data import DataLoader, Dataset
+from transformers import BertModel, BertTokenizer
 
 
 # ---------------------------------------------------------------------------
 # Defaults
 # ---------------------------------------------------------------------------
-DEFAULT_TFIDF_FEATURES = 512
-DEFAULT_HIDDEN_DIM = 64
-DEFAULT_TRAIN_EPOCHS = 5
-DEFAULT_LR = 1e-3
-DEFAULT_BATCH_SIZE = 32
+DEFAULT_MIN_SAMPLES = 5
+DEFAULT_TRAIN_EPOCHS = 3
+DEFAULT_LR = 2e-5
+DEFAULT_BATCH_SIZE = 8
+DEFAULT_MAX_LENGTH = 256
 
 
 # ---------------------------------------------------------------------------
-# Reward model  (TF-IDF → MLP → scalar score)
+# Dataset
+# ---------------------------------------------------------------------------
+class PromptRewardDataset(Dataset):
+    """Simple dataset mapping (prompt_text, score) → tokenised input + target."""
+
+    def __init__(
+        self,
+        prompts: list[str],
+        scores: list[float],
+        tokenizer: BertTokenizer,
+        max_length: int = DEFAULT_MAX_LENGTH,
+    ):
+        self.prompts = prompts
+        self.scores = scores
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+
+    def __len__(self) -> int:
+        return len(self.prompts)
+
+    def __getitem__(self, idx: int) -> dict[str, torch.Tensor]:
+        encoding = self.tokenizer(
+            self.prompts[idx],
+            max_length=self.max_length,
+            padding="max_length",
+            truncation=True,
+            return_tensors="pt",
+        )
+        return {
+            "input_ids": encoding["input_ids"].squeeze(0),
+            "attention_mask": encoding["attention_mask"].squeeze(0),
+            "score": torch.tensor(self.scores[idx], dtype=torch.float32),
+        }
+
+
+# ---------------------------------------------------------------------------
+# Reward model
 # ---------------------------------------------------------------------------
 class BERTRewardModel(nn.Module):
-    """Lightweight TF-IDF + MLP reward model.
-
-    Despite the class name (kept for backward-compat), this does **not** use
-    BERT.  It encodes prompts via scikit-learn TF-IDF and feeds the sparse
-    vectors through a tiny 2-layer MLP.
+    """
+    BERT encoder + linear regression head  →  scalar score ∈ [0, 1].
 
     Usage::
 
         rm = BERTRewardModel()
+        # ... optimiser discovers (prompt, valset_avg_score) pairs ...
         rm.add_training_data(prompts, scores)
         rm.train_on_buffer()
         predictions = rm.predict(candidate_prompts)
@@ -48,33 +69,20 @@ class BERTRewardModel(nn.Module):
 
     def __init__(
         self,
-        max_features: int = DEFAULT_TFIDF_FEATURES,
-        hidden_dim: int = DEFAULT_HIDDEN_DIM,
-        min_samples: int = 1,           # kept for API compat, default=1
+        model_name: str = "bert-base-uncased",
+        max_length: int = DEFAULT_MAX_LENGTH,
+        min_samples: int = DEFAULT_MIN_SAMPLES,
     ):
         super().__init__()
-        self.max_features = max_features
-        self.hidden_dim = hidden_dim
+        self.max_length = max_length
         self.min_samples = min_samples
 
-        # TF-IDF vectoriser (rebuilt on each train pass with full vocab)
-        self._vectorizer = TfidfVectorizer(
-            max_features=max_features,
-            stop_words="english",
-            sublinear_tf=True,
-        )
-
-        # Small MLP: input_dim → hidden → 1
-        self._mlp = nn.Sequential(
-            nn.Linear(max_features, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(0.1),
-            nn.Linear(hidden_dim, 1),
-            nn.Sigmoid(),
-        )
+        self.tokenizer: BertTokenizer = BertTokenizer.from_pretrained(model_name)
+        self.bert: BertModel = BertModel.from_pretrained(model_name)
+        self.regression_head = nn.Linear(self.bert.config.hidden_size, 1)
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self._mlp.to(self.device)
+        self.to(self.device)
 
         # Online training buffer
         self._training_prompts: list[str] = []
@@ -82,11 +90,16 @@ class BERTRewardModel(nn.Module):
         self._is_trained: bool = False
 
     # ------------------------------------------------------------------
-    # Forward (operates on dense TF-IDF feature tensors)
+    # Forward
     # ------------------------------------------------------------------
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        """x: (batch, max_features) dense float tensor → (batch,) scores."""
-        return self._mlp(x).squeeze(-1)
+    def forward(
+        self, input_ids: torch.Tensor, attention_mask: torch.Tensor
+    ) -> torch.Tensor:
+        """Return a batch of scalar scores ∈ [0, 1]."""
+        outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask)
+        cls_embedding = outputs.last_hidden_state[:, 0, :]  # [CLS] pooling
+        logit = self.regression_head(cls_embedding).squeeze(-1)
+        return torch.sigmoid(logit)
 
     # ------------------------------------------------------------------
     # Public API
@@ -107,36 +120,39 @@ class BERTRewardModel(nn.Module):
         lr: float = DEFAULT_LR,
         batch_size: int = DEFAULT_BATCH_SIZE,
     ) -> float | None:
-        """Train on all accumulated data.  Returns final epoch loss, or None
-        if there isn't enough data yet (< min_samples)."""
+        """
+        Fine-tune on all accumulated data.
+
+        Returns the final epoch's average loss, or ``None`` if there was
+        not enough data to train.
+        """
         if len(self._training_prompts) < self.min_samples:
             return None
 
-        # Re-fit TF-IDF on entire buffer
-        tfidf_matrix = self._vectorizer.fit_transform(self._training_prompts)
-        # Convert sparse → dense numpy → torch tensor
-        X = torch.tensor(tfidf_matrix.toarray(), dtype=torch.float32).to(self.device)
-        y = torch.tensor(self._training_scores, dtype=torch.float32).to(self.device)
+        dataset = PromptRewardDataset(
+            self._training_prompts,
+            self._training_scores,
+            self.tokenizer,
+            self.max_length,
+        )
+        loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-        n = X.shape[0]
-        optimizer = torch.optim.Adam(self._mlp.parameters(), lr=lr)
+        optimizer = torch.optim.AdamW(self.parameters(), lr=lr)
         loss_fn = nn.MSELoss()
 
-        self._mlp.train()
+        self.train()
         avg_loss = 0.0
         for _epoch in range(epochs):
-            # Shuffle
-            perm = torch.randperm(n)
             total_loss = 0.0
             n_batches = 0
-            for start in range(0, n, batch_size):
-                idx = perm[start : start + batch_size]
-                xb = X[idx]
-                yb = y[idx]
+            for batch in loader:
+                ids = batch["input_ids"].to(self.device)
+                mask = batch["attention_mask"].to(self.device)
+                targets = batch["score"].to(self.device)
 
                 optimizer.zero_grad()
-                preds = self(xb)
-                loss = loss_fn(preds, yb)
+                preds = self(ids, mask)
+                loss = loss_fn(preds, targets)
                 loss.backward()
                 optimizer.step()
 
@@ -145,14 +161,21 @@ class BERTRewardModel(nn.Module):
             avg_loss = total_loss / max(n_batches, 1)
 
         self._is_trained = True
-        self._mlp.eval()
+        self.eval()
         return avg_loss
 
     @torch.no_grad()
     def predict(self, prompts: list[str]) -> list[float]:
         """Predict reward scores for a list of prompt texts."""
-        self._mlp.eval()
-        tfidf_matrix = self._vectorizer.transform(prompts)
-        X = torch.tensor(tfidf_matrix.toarray(), dtype=torch.float32).to(self.device)
-        scores = self(X)
+        self.eval()
+        encodings = self.tokenizer(
+            prompts,
+            max_length=self.max_length,
+            padding=True,
+            truncation=True,
+            return_tensors="pt",
+        )
+        ids = encodings["input_ids"].to(self.device)
+        mask = encodings["attention_mask"].to(self.device)
+        scores = self(ids, mask)
         return scores.cpu().tolist()

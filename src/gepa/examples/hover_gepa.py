@@ -1,19 +1,50 @@
+
 #!/usr/bin/env python3
 # Copyright (c) 2025 Lakshya A Agrawal and the GEPA contributors
 # https://github.com/gepa-ai/gepa
 
+"""
+Multi-Minibatch GEPA + BERT Reward Model on the HoVer dataset.
+
+HoVer (HOppy VERification) is a multi-hop fact verification dataset.
+Each example contains a claim and a label (SUPPORTED / NOT_SUPPORTED).
+GEPA optimises a ``verification_prompt`` that instructs an LLM to
+classify claims correctly.
+"""
 
 from __future__ import annotations
 
 # ── stdlib imports (BEFORE any sys.path manipulation) ──
-# Must import logging here to avoid local gepa/logging/ shadowing.
+import datetime
 import logging
 import os
 import sys
 
+
+# ──────────────────────────────────────────────────────────────────────
+# Tee: duplicate stdout to a file
+# ──────────────────────────────────────────────────────────────────────
+class _TeeStream:
+    """Write to both the original stream and a log file."""
+
+    def __init__(self, original, log_file):
+        self._original = original
+        self._log_file = log_file
+
+    def write(self, text):
+        self._original.write(text)
+        self._log_file.write(text)
+        self._log_file.flush()
+
+    def flush(self):
+        self._original.flush()
+        self._log_file.flush()
+
+    # Forward any other attribute lookups to the original stream
+    def __getattr__(self, name):
+        return getattr(self._original, name)
+
 # Ensure the gepa package is importable regardless of CWD.
-# __file__ → examples/run_pupa_multi_minibatch.py
-# We need src/ on sys.path (parent of the gepa package dir).
 _src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 if _src_dir not in sys.path:
     sys.path.insert(0, _src_dir)
@@ -41,34 +72,57 @@ load_dotenv()
 # ──────────────────────────────────────────────────────────────────────
 # Dataset
 # ──────────────────────────────────────────────────────────────────────
-def load_pupa_dataset(
-    train_size: int = 225,
-    val_size: int = 225,
-    test_size: int = 214,
+def load_hover_dataset(
+    train_size: int = 200,
+    val_size: int = 100,
+    test_size: int = 100,
     seed: int = 42,
 ) -> tuple[list[dict], list[dict], list[dict]]:
-    """Load the Columbia-NLP/PUPA dataset (``pupa_new`` split).
+    """Load the HoVer dataset (``hover-nlp/hover``).
 
     Each example is a dict with keys:
-      - ``input``          (str): the user query
-      - ``target_response`` (str): gold reference response
-      - ``pii_units``       (str): pipe-separated PII items
+      - ``claim``  (str): the claim to verify
+      - ``label``  (str): ``SUPPORTED`` or ``NOT_SUPPORTED``
 
-    Follows the split used in the DSPy GEPA PAPILLON tutorial.
+    We combine the train and validation splits from HuggingFace (the
+    test split has no labels) and then re-split to the requested sizes.
     """
     from datasets import load_dataset
 
-    pupa_new = load_dataset("Columbia-NLP/PUPA", "pupa_new")
-    examples = [
-        {
-            "input": x["user_query"],
-            "target_response": x["target_response"],
-            "pii_units": x["pii_units"],
-        }
-        for x in pupa_new["train"]
-    ]
+    ds = load_dataset("hover-nlp/hover", trust_remote_code=True)
+
+    # Combine train + validation (test has label = -1)
+    examples = []
+    for split_name in ("train", "validation"):
+        if split_name not in ds:
+            continue
+        for x in ds[split_name]:
+            label = x.get("label")
+            # Skip unlabelled entries
+            if label is None or label == -1 or label == "-1":
+                continue
+            # Normalise label to string
+            if isinstance(label, int):
+                label_str = "SUPPORTED" if label == 0 else "NOT_SUPPORTED"
+            else:
+                label_str = str(label).strip().upper()
+            examples.append({
+                "claim": x["claim"],
+                "label": label_str,
+            })
 
     random.Random(seed).shuffle(examples)
+
+    total_needed = train_size + val_size + test_size
+    if len(examples) < total_needed:
+        print(
+            f"Warning: Only {len(examples)} labelled examples available, "
+            f"requested {total_needed}. Adjusting sizes proportionally."
+        )
+        ratio = len(examples) / total_needed
+        train_size = int(train_size * ratio)
+        val_size = int(val_size * ratio)
+        test_size = len(examples) - train_size - val_size
 
     trainset = examples[:train_size]
     valset = examples[train_size : train_size + val_size]
@@ -76,33 +130,31 @@ def load_pupa_dataset(
 
     print(
         f"Loaded {len(trainset)} train, {len(valset)} val, "
-        f"{len(testset)} test examples"
+        f"{len(testset)} test examples from HoVer"
     )
     return trainset, valset, testset
 
 
 # ──────────────────────────────────────────────────────────────────────
-# PAPILLON Adapter (GEPA framework native)
+# HoVer Adapter (GEPA framework native)
 # ──────────────────────────────────────────────────────────────────────
-def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
-    """Build a GEPAAdapter for the PAPILLON privacy-preserving pipeline.
+def create_hover_adapter(task_lm: str, api_key: str):
+    """Build a GEPAAdapter for the HoVer claim verification task.
 
-    Two optimisable prompt components:
-      ``redaction_prompt``  – instructs the local LM to strip PII
-      ``response_prompt``   – instructs the local LM to answer the user
+    One optimisable prompt component:
+      ``verification_prompt``  – instructs the LLM how to verify claims
     """
     from gepa.core.adapter import EvaluationBatch, GEPAAdapter
 
     @dataclass
-    class PapillonTrajectory:
+    class HoVerTrajectory:
         input_data: dict
         output_data: dict
         trace_info: dict
 
-    class PAPILLONAdapter(GEPAAdapter):
-        def __init__(self, task_lm: str, untrusted_lm: str, api_key: str):
+    class HoVerAdapter(GEPAAdapter):
+        def __init__(self, task_lm: str, api_key: str):
             self.task_lm = task_lm
-            self.untrusted_lm = untrusted_lm
             self.api_key = api_key
 
         # ── evaluate ────────────────────────────────────────────────
@@ -116,69 +168,50 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
             scores: list[float] = []
             trajectories: list | None = [] if capture_traces else None
 
-            redaction_prompt = candidate.get("redaction_prompt", "")
-            response_prompt = candidate.get("response_prompt", "")
+            verification_prompt = candidate.get("verification_prompt", "")
 
             for example in inputs:
                 try:
-                    user_query = example["input"]
+                    claim = example["claim"]
+                    gold_label = example["label"]
 
-                    # Step 1: Craft privacy-preserving request (local LM)
-                    redact_resp = litellm.completion(
+                    # Single LLM call: verify the claim
+                    resp = litellm.completion(
                         model=self.task_lm,
                         messages=[
-                            {"role": "system", "content": redaction_prompt},
-                            {"role": "user", "content": f"User query: {user_query}"},
+                            {"role": "system", "content": verification_prompt},
+                            {"role": "user", "content": f"Claim: {claim}"},
                         ],
                         api_key=self.api_key,
                     )
-                    redacted_request = redact_resp.choices[0].message.content
+                    raw_response = resp.choices[0].message.content.strip()
 
-                    # Step 2: Send to untrusted LM
-                    untrusted_resp = litellm.completion(
-                        model=self.untrusted_lm,
-                        messages=[{"role": "user", "content": redacted_request}],
-                        api_key=self.api_key,
-                    )
-                    external_response = untrusted_resp.choices[0].message.content
+                    # Parse prediction
+                    pred_label = self._parse_label(raw_response)
 
-                    # Step 3: Generate final response (local LM)
-                    final_resp = litellm.completion(
-                        model=self.task_lm,
-                        messages=[
-                            {"role": "system", "content": response_prompt},
-                            {
-                                "role": "user",
-                                "content": (
-                                    f"Original user query: {user_query}\n\n"
-                                    f"External LM request: {redacted_request}\n\n"
-                                    f"External LM response: {external_response}\n\n"
-                                    "Generate the final response for the user."
-                                ),
-                            },
-                        ],
-                        api_key=self.api_key,
-                    )
-                    final_text = final_resp.choices[0].message.content
+                    # Binary scoring
+                    score = 1.0 if pred_label == gold_label else 0.0
 
                     output = {
-                        "redacted_request": redacted_request,
-                        "external_response": external_response,
-                        "final_response": final_text,
+                        "claim": claim,
+                        "gold_label": gold_label,
+                        "predicted_label": pred_label,
+                        "raw_response": raw_response,
                     }
-
-                    score, feedback = self._evaluate_single(example, output)
                     outputs.append(output)
                     scores.append(score)
 
                     if capture_traces:
+                        feedback = (
+                            f"Predicted: {pred_label}, Gold: {gold_label}, "
+                            f"{'✓ Correct' if score == 1.0 else '✗ Incorrect'}"
+                        )
                         trajectories.append(
-                            PapillonTrajectory(
+                            HoVerTrajectory(
                                 input_data=example,
                                 output_data=output,
                                 trace_info={
-                                    "redaction_prompt": redaction_prompt,
-                                    "response_prompt": response_prompt,
+                                    "verification_prompt": verification_prompt,
                                     "feedback": feedback,
                                 },
                             )
@@ -196,108 +229,29 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
                 trajectories=trajectories,
             )
 
-        # ── LLM judge (quality) ─────────────────────────────────────
-        def _llm_judge_quality(
-            self,
-            user_query: str,
-            target_response: str,
-            pred_response: str,
-        ) -> bool:
-            """Return True if pred is at least as good as target."""
-            prompt = (
-                "You are comparing the quality of two responses.\n"
-                "Is response A at least as good as response B?\n\n"
-                f"User Query: {user_query}\n\n"
-                f"Response A (Prediction): {pred_response}\n\n"
-                f"Response B (Target): {target_response}\n\n"
-                "Return ONLY 'true' or 'false'."
-            )
-            try:
-                resp = litellm.completion(
-                    model=self.task_lm,
-                    messages=[{"role": "user", "content": prompt}],
-                    api_key=self.api_key,
-                )
-                return "true" in resp.choices[0].message.content.lower()
-            except Exception:
-                return False
+        # ── label parsing ───────────────────────────────────────────
+        @staticmethod
+        def _parse_label(raw: str) -> str:
+            """Extract SUPPORTED / NOT_SUPPORTED from LLM response.
 
-        # ── PII leakage counting (LLM judge) ───────────────────────
-        def _llm_judge_leakage(
-            self,
-            pii_units: str,
-            redacted_request: str,
-        ) -> float:
-            """Return fraction of PII units leaked into the redacted request.
-
-            Uses an LLM judge following the DSPy tutorial's JudgeLeakage
-            pattern: count PII items that are *actual PII* **and** appear
-            in the prompt.  Returns 0.0 (no leak) to 1.0 (all leaked).
+            The seed prompt asks for SUPPORTED/REFUTED/NOT ENOUGH INFO.
+            We map REFUTED and NOT ENOUGH INFO → NOT_SUPPORTED for
+            scoring against HoVer's binary gold labels.
             """
-            pii_list = [p.strip() for p in pii_units.split("||") if p.strip()]
-            if not pii_list:
-                return 0.0
-
-            prompt = (
-                "Count the number of information pieces in `pii` that "
-                "(i) are forms of PII *and* (ii) are leaked into the prompt "
-                "given. Don't count celebrity names. Don't count things that "
-                "do not appear in the prompt.\n\n"
-                f"pii: {pii_list}\n"
-                f"prompt: {redacted_request}\n\n"
-                "Return ONLY a number."
-            )
-            try:
-                resp = litellm.completion(
-                    model=self.task_lm,
-                    messages=[{"role": "user", "content": prompt}],
-                    api_key=self.api_key,
-                )
-                leaked = int(resp.choices[0].message.content.strip())
-            except Exception:
-                # Fallback: simple substring matching
-                leaked = sum(
-                    1
-                    for p in pii_list
-                    if p.lower() in redacted_request.lower()
-                )
-
-            return leaked / len(pii_list)
-
-        # ── single-example scoring ──────────────────────────────────
-        def _evaluate_single(
-            self, example: dict, output: dict
-        ) -> tuple[float, dict]:
-            pii_units = example.get("pii_units", "")
-            redacted_request = output.get("redacted_request", "")
-            final_response = output.get("final_response", "")
-            target_response = example.get("target_response", "")
-
-            # Privacy score (LLM judge leakage)
-            leakage = self._llm_judge_leakage(pii_units, redacted_request)
-            privacy_score = 1.0 - leakage
-
-            # Quality score (LLM judge)
-            is_good = self._llm_judge_quality(
-                example["input"], target_response, final_response
-            )
-            quality_score = 1.0 if is_good else 0.0
-
-            overall = (privacy_score + quality_score) / 2.0
-
-            feedback_text = (
-                f"Overall={overall:.2f} "
-                f"(quality={quality_score:.2f}, privacy={privacy_score:.2f}). "
-                f"{'Reduce PII leakage!' if privacy_score < 0.8 else 'Good privacy!'} "
-                f"{'Improve response quality!' if quality_score < 0.5 else 'Good quality!'}"
-            )
-
-            return overall, {
-                "privacy": privacy_score,
-                "quality": quality_score,
-                "overall": overall,
-                "feedback": feedback_text,
-            }
+            upper = raw.upper()
+            # Check for NOT_SUPPORTED / NOT ENOUGH INFO / REFUTED first
+            if "NOT_SUPPORTED" in upper or "NOT SUPPORTED" in upper:
+                return "NOT_SUPPORTED"
+            if "NOT ENOUGH INFO" in upper or "NOT_ENOUGH_INFO" in upper:
+                return "NOT_SUPPORTED"
+            if "REFUTE" in upper:
+                return "NOT_SUPPORTED"
+            if "SUPPORTED" in upper:
+                return "SUPPORTED"
+            # Fallback heuristics
+            if "FALSE" in upper or "NOT" in upper:
+                return "NOT_SUPPORTED"
+            return "SUPPORTED"
 
         # ── reflective dataset ──────────────────────────────────────
         def make_reflective_dataset(
@@ -319,18 +273,18 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
                         continue
                     entries.append(
                         {
-                            "input": traj.input_data.get("input", ""),
+                            "input": traj.input_data.get("claim", ""),
                             "current_instruction": candidate.get(component, ""),
                             "output": out,
                             "score": score,
-                            "feedback": traj.trace_info.get("feedback", {}),
+                            "feedback": traj.trace_info.get("feedback", ""),
                         }
                     )
                 reflective_data[component] = entries
 
             return reflective_data
 
-    return PAPILLONAdapter(task_lm, untrusted_lm, api_key)
+    return HoVerAdapter(task_lm, api_key)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -338,7 +292,7 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_key: str):
 # ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
-        description="Multi-Minibatch GEPA + BERT Reward Model on PUPA"
+        description="Multi-Minibatch GEPA + BERT Reward Model on HoVer"
     )
     # LLM
     parser.add_argument(
@@ -347,73 +301,72 @@ def main():
         default=os.environ.get("GOOGLE_API_KEY", ""),
     )
     parser.add_argument("--task_lm", type=str, default="gemini/gemini-2.0-flash")
-    parser.add_argument("--untrusted_lm", type=str, default="gemini/gemini-2.0-flash")
     parser.add_argument("--reflection_lm", type=str, default="gemini/gemini-2.0-flash")
 
     # Dataset
-    parser.add_argument("--train_size", type=int, default=225)
-    parser.add_argument("--val_size", type=int, default=225)
-    parser.add_argument("--test_size", type=int, default=50)
+    parser.add_argument("--train_size", type=int, default=200)
+    parser.add_argument("--val_size", type=int, default=100)
+    parser.add_argument("--test_size", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
 
     # Multi-minibatch config
-    parser.add_argument("--num_minibatches", type=int, default=15,
+    parser.add_argument("--num_minibatches", type=int, default=5,
                         help="Number of minibatches per iteration (M)")
-    parser.add_argument("--candidates_per_minibatch", type=int, default=20,
+    parser.add_argument("--candidates_per_minibatch", type=int, default=4,
                         help="Candidates generated per minibatch (N) for surrogate scoring")
-    parser.add_argument("--top_k", type=int, default=5,
+    parser.add_argument("--top_k", type=int, default=4,
                         help="Top-K candidates selected by surrogate for actual evaluation")
-
+    
     # Budget
     parser.add_argument("--max_metric_calls", type=int, default=500)
 
-    # Lightweight Reward Model (TF-IDF + MLP)
+    # BERT Reward Model
     parser.add_argument("--bert_min_samples", type=int, default=1,
                         help="Minimum training samples before reward model starts predicting (default=1 for online)")
 
+    # Output
+    parser.add_argument("--output_file", type=str,
+                        default="results_hover_multi_minibatch.txt",
+                        help="Path to the output .txt file for all results")
+
     args = parser.parse_args()
+
+    # ── Set up output file (tee stdout + stderr) ──
+    log_file = open(args.output_file, "w")
+    log_file.write(f"Run started: {datetime.datetime.now().isoformat()}\n")
+    log_file.write(f"{'='*60}\n\n")
+    sys.stdout = _TeeStream(sys.__stdout__, log_file)
+    sys.stderr = _TeeStream(sys.__stderr__, log_file)
+    print(f"Logging all output to: {args.output_file}")
 
     if not args.google_api_key:
         raise ValueError(
             "Provide --google_api_key or set GOOGLE_API_KEY env variable"
         )
 
-
     # ── Load dataset ──
-    trainset, valset, testset = load_pupa_dataset(
+    trainset, valset, testset = load_hover_dataset(
         train_size=args.train_size,
         val_size=args.val_size,
         test_size=args.test_size,
         seed=args.seed,
     )
 
-    # ── Seed candidate (from DSPy tutorial) ──
+    # ── Seed candidate (from GEPA paper, arXiv 2507.19457) ──
     seed_candidate = {
-        "redaction_prompt": (
-            "Given a private user query, create a privacy-preserving request "
-            "for a powerful external LLM. The LLM may assist without learning "
-            "private information about the user.\n\n"
-            "IMPORTANT: Output ONLY the privacy-preserving request. "
-            "Do not include any reasoning, explanations, or conversational filler."
-        ),
-        "response_prompt": (
-            "Respond to a user query. For inspiration, we found a potentially "
-            "related request to a powerful external LLM and its response.\n\n"
-            "Input:\n"
-            "1. related_llm_request: The privacy-preserving request sent to "
-            "the external LLM.\n"
-            "2. related_llm_response: Information from a powerful LLM "
-            "responding to the related request.\n"
-            "3. user_query: The user's original request you need to fulfill.\n\n"
-            "Instruction: Generate your final response to the user's request. "
-            "Output ONLY the response."
+        "verification_prompt": (
+            "You are a fact-checking assistant.\n"
+            "Given a claim and a set of evidence passages, determine whether "
+            "the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only "
+            "on the evidence.\n"
+            "Carefully reason over the evidence before answering.\n"
+            "Output the final label only."
         ),
     }
 
     # ── Create adapter ──
-    adapter = create_papillon_adapter(
+    adapter = create_hover_adapter(
         task_lm=args.task_lm,
-        untrusted_lm=args.untrusted_lm,
         api_key=args.google_api_key,
     )
 
@@ -426,8 +379,7 @@ def main():
         )
         return resp.choices[0].message.content
 
-    # ── Reward Model ──
-    # Note: Uses lightweight TF-IDF + MLP despite the class name
+    # ── Reward Model (BERT embeddings + MLP head) ──
     reward_model = BERTRewardModel(min_samples=args.bert_min_samples)
 
     # ── Logger ──
@@ -437,10 +389,9 @@ def main():
 
     # ── Print config ──
     print(f"\n{'='*60}")
-    print("Multi-Minibatch GEPA + TF-IDF Reward Model on PUPA")
+    print("Multi-Minibatch GEPA + BERT Reward Model on HoVer")
     print(f"{'='*60}")
     print(f"Task LM:             {args.task_lm}")
-    print(f"Untrusted LM:        {args.untrusted_lm}")
     print(f"Reflection LM:       {args.reflection_lm}")
     print(f"Minibatches (M):     {args.num_minibatches}")
     print(f"Candidates/MB (N):   {args.candidates_per_minibatch}")
@@ -515,6 +466,13 @@ def main():
         print(f"BERT Reward Model: trained on {len(reward_model._training_prompts)} samples")
     else:
         print("BERT Reward Model: never reached training threshold")
+
+    # ── Close log file ──
+    print(f"\nRun completed: {datetime.datetime.now().isoformat()}")
+    print(f"Full output saved to: {args.output_file}")
+    log_file.close()
+    sys.stdout = sys.__stdout__
+    sys.stderr = sys.__stderr__
 
     return result
 
