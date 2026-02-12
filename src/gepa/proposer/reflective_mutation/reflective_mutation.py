@@ -372,28 +372,61 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 self.logger.log(f"  Reflective dataset error on minibatch {mb_idx + 1}: {e}")
                 continue
 
-            # Generate N variants via bandit
-            try:
-                variants_by_comp = self.propose_new_texts_with_bandit(
-                    curr_prog, ref_dataset, predictor_names
-                )
-            except Exception as e:
-                self.logger.log(f"  Variant generation error on minibatch {mb_idx + 1}: {e}")
+            # Generate N candidates via GEPA reflective mutation (without evaluation)
+            generated_variants: list[dict[str, str]] = []
+            
+            for c_idx in range(self.candidates_per_minibatch):
+                try:
+                    new_texts = self.propose_new_texts(
+                        curr_prog, ref_dataset, predictor_names
+                    )
+                except Exception as e:
+                    self.logger.log(
+                        f"  Candidate {c_idx + 1}/{self.candidates_per_minibatch} "
+                        f"generation error on mb {mb_idx + 1}: {e}"
+                    )
+                    continue
+
+                if not new_texts:
+                    continue
+
+                new_cand = curr_prog.copy()
+                for comp_name, text in new_texts.items():
+                    new_cand[comp_name] = text
+                generated_variants.append(new_cand)
+
+            if not generated_variants:
+                self.logger.log(f"  No variants generated for minibatch {mb_idx + 1}.")
                 continue
 
-            if not variants_by_comp:
-                continue
+            # Surrogate Model Scoring (Cheap)
+            variant_scores = []
+            if self.reward_model is not None and self.reward_model.is_trained:
+                prompts = [" [SEP] ".join(v.values()) for v in generated_variants]
+                variant_scores = self.reward_model.predict(prompts)
+            else:
+                # If untrained, assign random scores to explore (or use 0.0)
+                # Using random exploration is better than sticking to one
+                import random
+                variant_scores = [random.random() for _ in generated_variants]
+            
+            # Select Top-K candidates based on surrogate score
+            # Pair (variant, score) and sort
+            scored_variants = list(zip(generated_variants, variant_scores))
+            scored_variants.sort(key=lambda x: x[1], reverse=True)
+            top_k_variants = scored_variants[:self.top_k]
+            
+            self.logger.log(
+                f"  Generated {len(generated_variants)} variants. "
+                f"Selected Top-{len(top_k_variants)} using surrogate "
+                f"(trained={self.reward_model.is_trained if self.reward_model else False})."
+            )
 
-            # Evaluate each variant on this minibatch
-            first_comp = next(iter(variants_by_comp))
-            k = min(len(variants_by_comp[first_comp]), self.candidates_per_minibatch)
+            # Evaluate ONLY the Top-K candidates (Expensive)
+            training_prompts = []
+            training_scores = []
 
-            for v_idx in range(k):
-                test_cand = curr_prog.copy()
-                for comp_name, variants in variants_by_comp.items():
-                    if v_idx < len(variants):
-                        test_cand[comp_name] = variants[v_idx]
-
+            for v_idx, (test_cand, surrogate_score) in enumerate(top_k_variants):
                 def evaluator(b, c):
                     r = self.adapter.evaluate(b, c, capture_traces=False)
                     return r.outputs, r.scores, list(r.objective_scores) if r.objective_scores else None
@@ -405,43 +438,48 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
 
                 scores_list = [scores_by_id[eid] for eid in sub_ids]
                 score_sum = sum(scores_list)
+                
+                # Normalise for reward model training (0.0 to 1.0)
+                norm_score = score_sum / max(len(scores_list), 1)
+                
+                training_prompts.append(" [SEP] ".join(test_cand.values()))
+                training_scores.append(norm_score)
 
                 all_candidates.append(
                     _Candidate(
                         candidate=test_cand,
-                        minibatch_score_sum=score_sum,
+                        minibatch_score_sum=score_sum, # This uses actual eval score
                         subsample_ids=sub_ids,
                         subsample_scores_before=eval_curr.scores,
                         subsample_scores_after=scores_list,
                     )
                 )
+                
                 self.logger.log(
-                    f"  Variant {v_idx + 1}/{k} on mb {mb_idx + 1}: "
-                    f"score_sum={score_sum:.4f}"
+                    f"    Eval Top-{v_idx+1} on mb {mb_idx + 1}: "
+                    f"surrogate={surrogate_score:.4f}, actual={score_sum:.4f}"
                 )
 
-        if not all_candidates:
-            self.logger.log(f"Iteration {i}: No candidates generated from any minibatch.")
-            return None
+            # Train User's Surrogate Model with the new Top-K data
+            if self.reward_model is not None:
+                self.reward_model.add_training_data(training_prompts, training_scores)
+                train_loss = self.reward_model.train_on_buffer()
+                if train_loss is not None:
+                    self.logger.log(f"  Surrogate updated (loss={train_loss:.6f})")
 
         self.logger.log(
             f"\nTotal candidates generated: {len(all_candidates)}. "
             f"Selecting top-{self.top_k}."
         )
 
-        # ---- 4. Rank candidates ----
-        if self.reward_model is not None and self.reward_model.is_trained:
-            # Use BERT reward model for cheap ranking
-            # Concatenate all component texts as the 'prompt' for the reward model
-            prompt_texts = [
-                " [SEP] ".join(c.candidate.values()) for c in all_candidates
-            ]
-            bert_scores = self.reward_model.predict(prompt_texts)
-            for c, bs in zip(all_candidates, bert_scores):
-                c.minibatch_score_sum = bs  # override with BERT score for ranking
-            self.logger.log("Ranked candidates using BERT reward model.")
-        else:
-            self.logger.log("BERT reward model not trained yet; using minibatch scores.")
+        # ---- 4. Select Best from Top-K ----
+        # all_candidates now contains only the Top-K candidates that were actually evaluated.
+        # Rank them by their ACTUAL evaluation scores (minibatch_score_sum).
+        all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
+        top_k_candidates = all_candidates  # They are already the Top-K (across all minibatches if M>1)
+
+        # If M > 1, we might have M * K candidates. We only want to return the absolute best.
+        # But for now, let's just log top performers.
 
         # ---- 5. Select top-K ----
         all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)

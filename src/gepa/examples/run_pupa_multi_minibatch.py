@@ -357,21 +357,19 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
 
     # Multi-minibatch config
-    parser.add_argument("--num_minibatches", type=int, default=3,
+    parser.add_argument("--num_minibatches", type=int, default=15,
                         help="Number of minibatches per iteration (M)")
-    parser.add_argument("--candidates_per_minibatch", type=int, default=3,
-                        help="Candidates generated per minibatch (N)")
-    parser.add_argument("--top_k", type=int, default=5,
-                        help="Top-K candidates to keep after BERT ranking")
-    parser.add_argument("--num_variants", type=int, default=5,
-                        help="Bandit prompt variants per component per minibatch")
+    parser.add_argument("--candidates_per_minibatch", type=int, default=20,
+                        help="Candidates generated per minibatch (N) for surrogate scoring")
+    parser.add_argument("--top_k", type=int, default=20,
+                        help="Top-K candidates selected by surrogate for actual evaluation")
 
     # Budget
-    parser.add_argument("--max_metric_calls", type=int, default=300)
+    parser.add_argument("--max_metric_calls", type=int, default=500)
 
-    # BERT reward model
-    parser.add_argument("--bert_min_samples", type=int, default=5,
-                        help="Minimum training samples before BERT starts predicting")
+    # Lightweight Reward Model (TF-IDF + MLP)
+    parser.add_argument("--bert_min_samples", type=int, default=1,
+                        help="Minimum training samples before reward model starts predicting (default=1 for online)")
 
     args = parser.parse_args()
 
@@ -380,7 +378,6 @@ def main():
             "Provide --google_api_key or set GOOGLE_API_KEY env variable"
         )
 
-    os.environ["GEMINI_API_KEY"] = args.google_api_key
 
     # ── Load dataset ──
     trainset, valset, testset = load_pupa_dataset(
@@ -429,7 +426,8 @@ def main():
         )
         return resp.choices[0].message.content
 
-    # ── BERT Reward Model ──
+    # ── Reward Model ──
+    # Note: Uses lightweight TF-IDF + MLP despite the class name
     reward_model = BERTRewardModel(min_samples=args.bert_min_samples)
 
     # ── Logger ──
@@ -439,7 +437,7 @@ def main():
 
     # ── Print config ──
     print(f"\n{'='*60}")
-    print("Multi-Minibatch GEPA + BERT Reward Model on PUPA")
+    print("Multi-Minibatch GEPA + TF-IDF Reward Model on PUPA")
     print(f"{'='*60}")
     print(f"Task LM:             {args.task_lm}")
     print(f"Untrusted LM:        {args.untrusted_lm}")
@@ -447,9 +445,8 @@ def main():
     print(f"Minibatches (M):     {args.num_minibatches}")
     print(f"Candidates/MB (N):   {args.candidates_per_minibatch}")
     print(f"Top-K:               {args.top_k}")
-    print(f"Bandit variants:     {args.num_variants}")
     print(f"Max metric calls:    {args.max_metric_calls}")
-    print(f"BERT min samples:    {args.bert_min_samples}")
+    print(f"RM min samples:      {args.bert_min_samples}")
     print(f"{'='*60}\n")
 
     # ── Evaluate seed on test set ──
@@ -478,7 +475,6 @@ def main():
         num_minibatches=args.num_minibatches,
         candidates_per_minibatch=args.candidates_per_minibatch,
         top_k=args.top_k,
-        num_prompt_variants=args.num_variants,
         reward_model=reward_model,
         # General settings
         candidate_selection_strategy="pareto",
