@@ -1,7 +1,11 @@
 # Copyright (c) 2025 Lakshya A Agrawal and the GEPA contributors
 # https://github.com/gepa-ai/gepa
 
+from __future__ import annotations
+
+import random
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from typing import Any
 
 from gepa.core.adapter import DataInst, GEPAAdapter, RolloutOutput, Trajectory
@@ -31,6 +35,7 @@ from gepa.strategies.bandit import (
     ThompsonSamplingBandit,
 )
 from gepa.strategies.batch_sampler import BatchSampler
+from gepa.strategies.bert_reward_model import BERTRewardModel
 from gepa.strategies.instruction_proposal import InstructionProposalSignature
 
 
@@ -64,6 +69,12 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
         use_bandit_mutation: bool = False,
         num_prompt_variants: int = 10,
         bandit: ThompsonSamplingBandit | None = None,
+        # Multi-minibatch + BERT reward model parameters
+        use_multi_minibatch: bool = False,
+        num_minibatches: int = 5,
+        candidates_per_minibatch: int = 3,
+        top_k: int = 5,
+        reward_model: BERTRewardModel | None = None,
     ):
         self.logger = logger
         self.trainset = ensure_loader(trainset)
@@ -86,6 +97,13 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
         self.bandit = bandit if bandit is not None else ThompsonSamplingBandit()
         self.prompt_generator = MultiPromptGenerator()
         self._last_selected_strategy: MutationStrategy | None = None
+
+        # Multi-minibatch + BERT reward model
+        self.use_multi_minibatch = use_multi_minibatch
+        self.num_minibatches = num_minibatches
+        self.candidates_per_minibatch = candidates_per_minibatch
+        self.top_k = top_k
+        self.reward_model = reward_model
 
     def propose_new_texts(
         self,
@@ -234,7 +252,236 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
         
         return best_new_texts, best_scores, True
 
+    # ------------------------------------------------------------------
+    # Multi-minibatch path
+    # ------------------------------------------------------------------
+    def _sample_multiple_minibatches(
+        self,
+        state: GEPAState,
+        n: int,
+    ) -> list[tuple[list[DataId], list[DataInst]]]:
+        """Sample *n* independent minibatches from the trainset.
+
+        Each call to ``batch_sampler.next_minibatch_ids`` advances the
+        sampler's internal pointer, yielding non-overlapping batches when
+        possible.  When the trainset is smaller than n × minibatch_size
+        we still get valid (possibly overlapping) batches.
+        """
+        batches: list[tuple[list[DataId], list[DataInst]]] = []
+        for _ in range(n):
+            ids = self.batch_sampler.next_minibatch_ids(self.trainset, state)
+            data = self.trainset.fetch(ids)
+            batches.append((ids, data))
+        return batches
+
+    def propose_multi_minibatch(self, state: GEPAState) -> CandidateProposal | None:
+        """Multi-minibatch candidate generation with optional BERT reward ranking.
+
+        Flow
+        ----
+        1. Select parent candidate.
+        2. Sample M minibatches.
+        3. For each minibatch: capture traces → build reflective dataset →
+           generate N candidates (via bandit).
+        4. Pool all M×N candidates.
+        5. Use BERT reward model (if trained) to rank cheaply, else use
+           minibatch score sums.
+        6. Select top-K candidates.
+        7. Return best as ``CandidateProposal``.
+        """
+        i = state.i + 1
+
+        # ---- 1. Select parent candidate ----
+        curr_prog_id = self.candidate_selector.select_candidate_idx(state)
+        curr_prog = state.program_candidates[curr_prog_id]
+        state.full_program_trace[-1]["selected_program_candidate"] = curr_prog_id
+
+        self.logger.log(
+            f"\n{'='*50}\n"
+            f"MULTI-MINIBATCH MUTATION: ITERATION {i}\n"
+            f"{'='*50}\n"
+            f"Parent candidate {curr_prog_id} | score: "
+            f"{state.program_full_scores_val_set[curr_prog_id]}"
+        )
+
+        notify_callbacks(
+            self.callbacks,
+            "on_candidate_selected",
+            CandidateSelectedEvent(
+                iteration=i,
+                candidate_idx=curr_prog_id,
+                candidate=curr_prog,
+                score=state.program_full_scores_val_set[curr_prog_id],
+            ),
+        )
+
+        # ---- 2. Sample M minibatches ----
+        minibatches = self._sample_multiple_minibatches(state, self.num_minibatches)
+        self.logger.log(
+            f"Sampled {len(minibatches)} minibatches, "
+            f"generating {self.candidates_per_minibatch} candidates each"
+        )
+
+        # ---- 3. Generate candidates from each minibatch ----
+        @dataclass
+        class _Candidate:
+            candidate: dict[str, str]
+            minibatch_score_sum: float
+            subsample_ids: list
+            subsample_scores_before: list[float]
+            subsample_scores_after: list[float]
+
+        all_candidates: list[_Candidate] = []
+
+        for mb_idx, (sub_ids, minibatch) in enumerate(minibatches):
+            self.logger.log(f"\n--- Minibatch {mb_idx + 1}/{len(minibatches)} ---")
+
+            notify_callbacks(
+                self.callbacks,
+                "on_minibatch_sampled",
+                MinibatchSampledEvent(
+                    iteration=i,
+                    minibatch_ids=sub_ids,
+                    trainset_size=len(self.trainset),
+                ),
+            )
+
+            # Evaluate current programme on this minibatch (with traces)
+            eval_curr = self.adapter.evaluate(minibatch, curr_prog, capture_traces=True)
+            state.increment_evals(len(sub_ids))
+
+            if not eval_curr.trajectories:
+                self.logger.log(f"  No trajectories for minibatch {mb_idx + 1}. Skipping.")
+                continue
+
+            if self.skip_perfect_score and all(s >= self.perfect_score for s in eval_curr.scores):
+                self.logger.log(f"  All perfect scores on minibatch {mb_idx + 1}. Skipping.")
+                continue
+
+            # Determine components to update
+            predictor_names = self.module_selector(
+                state, eval_curr.trajectories, eval_curr.scores, curr_prog_id, curr_prog
+            )
+
+            # Build reflective dataset
+            try:
+                ref_dataset = self.adapter.make_reflective_dataset(
+                    curr_prog, eval_curr, predictor_names
+                )
+            except Exception as e:
+                self.logger.log(f"  Reflective dataset error on minibatch {mb_idx + 1}: {e}")
+                continue
+
+            # Generate N variants via bandit
+            try:
+                variants_by_comp = self.propose_new_texts_with_bandit(
+                    curr_prog, ref_dataset, predictor_names
+                )
+            except Exception as e:
+                self.logger.log(f"  Variant generation error on minibatch {mb_idx + 1}: {e}")
+                continue
+
+            if not variants_by_comp:
+                continue
+
+            # Evaluate each variant on this minibatch
+            first_comp = next(iter(variants_by_comp))
+            k = min(len(variants_by_comp[first_comp]), self.candidates_per_minibatch)
+
+            for v_idx in range(k):
+                test_cand = curr_prog.copy()
+                for comp_name, variants in variants_by_comp.items():
+                    if v_idx < len(variants):
+                        test_cand[comp_name] = variants[v_idx]
+
+                def evaluator(b, c):
+                    r = self.adapter.evaluate(b, c, capture_traces=False)
+                    return r.outputs, r.scores, list(r.objective_scores) if r.objective_scores else None
+
+                _, scores_by_id, _, actual_evals = state.cached_evaluate_full(
+                    test_cand, sub_ids, self.trainset.fetch, evaluator
+                )
+                state.increment_evals(actual_evals)
+
+                scores_list = [scores_by_id[eid] for eid in sub_ids]
+                score_sum = sum(scores_list)
+
+                all_candidates.append(
+                    _Candidate(
+                        candidate=test_cand,
+                        minibatch_score_sum=score_sum,
+                        subsample_ids=sub_ids,
+                        subsample_scores_before=eval_curr.scores,
+                        subsample_scores_after=scores_list,
+                    )
+                )
+                self.logger.log(
+                    f"  Variant {v_idx + 1}/{k} on mb {mb_idx + 1}: "
+                    f"score_sum={score_sum:.4f}"
+                )
+
+        if not all_candidates:
+            self.logger.log(f"Iteration {i}: No candidates generated from any minibatch.")
+            return None
+
+        self.logger.log(
+            f"\nTotal candidates generated: {len(all_candidates)}. "
+            f"Selecting top-{self.top_k}."
+        )
+
+        # ---- 4. Rank candidates ----
+        if self.reward_model is not None and self.reward_model.is_trained:
+            # Use BERT reward model for cheap ranking
+            # Concatenate all component texts as the 'prompt' for the reward model
+            prompt_texts = [
+                " [SEP] ".join(c.candidate.values()) for c in all_candidates
+            ]
+            bert_scores = self.reward_model.predict(prompt_texts)
+            for c, bs in zip(all_candidates, bert_scores):
+                c.minibatch_score_sum = bs  # override with BERT score for ranking
+            self.logger.log("Ranked candidates using BERT reward model.")
+        else:
+            self.logger.log("BERT reward model not trained yet; using minibatch scores.")
+
+        # ---- 5. Select top-K ----
+        all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
+        top_k_candidates = all_candidates[: self.top_k]
+
+        for rank, c in enumerate(top_k_candidates, 1):
+            self.logger.log(
+                f"  Top-{rank}: score={c.minibatch_score_sum:.4f}"
+            )
+
+        # ---- 6. Return best proposal ----
+        best = top_k_candidates[0]
+
+        state.full_program_trace[-1]["multi_minibatch_total_candidates"] = len(all_candidates)
+        state.full_program_trace[-1]["multi_minibatch_top_k"] = self.top_k
+        state.full_program_trace[-1]["new_subsample_scores"] = best.subsample_scores_after
+
+        self.experiment_tracker.log_metrics(
+            {
+                "multi_minibatch_total_candidates": len(all_candidates),
+                "multi_minibatch_top_k": self.top_k,
+                "new_subsample_score": sum(best.subsample_scores_after),
+                "total_metric_calls": state.total_num_evals,
+            },
+            step=i,
+        )
+
+        return CandidateProposal(
+            candidate=best.candidate,
+            parent_program_ids=[curr_prog_id],
+            subsample_indices=best.subsample_ids,
+            subsample_scores_before=best.subsample_scores_before,
+            subsample_scores_after=best.subsample_scores_after,
+            tag="reflective_mutation_multi_minibatch",
+        )
+
     def propose(self, state: GEPAState) -> CandidateProposal | None:
+        # ── Multi-minibatch path (dedicated flow, returns early) ──
+        if self.use_multi_minibatch:
+            return self.propose_multi_minibatch(state)
         i = state.i + 1
 
         curr_prog_id = self.candidate_selector.select_candidate_idx(state)

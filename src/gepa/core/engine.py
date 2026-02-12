@@ -230,6 +230,20 @@ class GEPAEngine(Generic[DataId, DataInst, Trajectory, RolloutOutput]):
             valset_size=len(valset),
             val_evaluation_policy=self.val_evaluation_policy,
         )
+
+        # --- Online BERT reward model training ---
+        # If the proposer has a reward model, feed it the validated prompt + score
+        reward_model = getattr(self.reflective_proposer, "reward_model", None)
+        if reward_model is not None:
+            prompt_text = " [SEP] ".join(new_program.values())
+            reward_model.add_training_data([prompt_text], [valset_score])
+            train_loss = reward_model.train_on_buffer()
+            if train_loss is not None:
+                self.logger.log(
+                    f"Iteration {state.i + 1}: BERT reward model retrained "
+                    f"(buffer={len(reward_model._training_prompts)}, loss={train_loss:.6f})"
+                )
+
         return new_program_idx, linear_pareto_front_program_idx
 
     def run(self) -> GEPAState[RolloutOutput, DataId]:

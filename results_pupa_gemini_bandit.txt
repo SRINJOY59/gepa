@@ -18,3 +18,275 @@ Seed Average Score: 0.7250
 ============================================================
 
 Starting optimization...
+Iteration 0: Base program full valset score: 0.598 over 50 / 50 examples
+
+========================================
+STARTING BANDIT MUTATION: ITERATION 1
+========================================
+Selected parent candidate 0 with score: 0.598
+Bandit selected mutation strategy: domain_inject
+Bandit statistics: {'add_examples': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}, 'add_constraints': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}, 'simplify': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}, 'add_cot': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}, 'restructure': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}, 'domain_inject': {'alpha': 1.0, 'beta': 1.0, 'mean': 0.5, 'trials': 0.0}}
+
+[MUTATION CONTEXT for component 'redaction_prompt']
+Feedback being used for mutation:
+Example 1:
+  input: Ciao, quanto guadagna in media in Abruzzo una onicotecnica dipendente alle prime armi?
+  current_instruction: Given a private user query, create a privacy-preserving request for a powerful external LLM.
+The LLM may assist without learning private information about the user.
+
+IMPORTANT: Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler.
+  output: {'redacted_request': 'Estimate the average salary for an entry-level employed nail technician in the Abruzzo region of Italy.\n', 'external_response': 'Estimating the average salary for an entry-level nail technician in Abruzzo, Italy is tricky because publicly available, highly specific salary data is limited. However, we can make a reasonable estimate based on available resources and typical Italian salary ranges.\n\nHere\'s a breakdown of the factors to consider and how we arrive at an estimate:\n\n*   **Italian Minimum Wage & Entry-Level Wages:** Italy doesn\'t have a statutory minimum wage across all sectors like some countries. However, collective bargaining agreements (CCNL) often set minimum wages for specific industries. Entry-level salaries, in general, tend to hover slightly above the minimum levels set by these agreements. For general entry-level positions in Italy, you might see starting salaries in the range of €1,000 - €1,300 per month *before* taxes and social security contributions.\n\n*   **Beauty & Wellness Sector Wages:** The beauty and wellness sector in Italy can have varying wages.  Smaller, independently owned salons might pay less than larger, more established salons or those within spas/hotels.\n\n*   **Abruzzo Region Considerations:** Abruzzo is a region in central Italy. The cost of living is generally lower compared to major cities like Rome or Milan. This lower cost of living is often reflected in slightly lower average wages compared to those metropolitan areas.\n\n*   **Experience Level:**  We\'re considering entry-level. This implies someone with little to no prior professional experience after completing their nail technician training/certification.\n\n*   **Tips:**  Tips can supplement a nail technician\'s income in Italy, but they are generally not as large or consistent as in some other countries (e.g., the USA).\n\n**Estimate:**\n\nConsidering the factors above, a reasonable estimate for the *average* gross monthly salary for an entry-level employed nail technician in Abruzzo is in the range of:\n\n**€900 - €1,200 per month (before taxes and social security).**\n\n**Important Considerations & Caveats:**\n\n*   **This is an estimate.** Actual salaries can vary significantly.\n*   **"Gross" vs. "Net":** This is a *gross* salary. The take-home pay (net salary) will be significantly lower after taxes and social security contributions.\n*   **Benefits:** Some employers might offer benefits such as health insurance, paid time off, or contributions to a pension fund. These benefits would affect the overall compensation package.\n*   **Negotiation:** Salaries can be negotiable, especially if the candidate has valuable skills or experience.\n*   **Commission-Based Pay:** Some salons might offer a base salary plus a commission based on the services performed or products sold. This can lead to higher earnings if the technician is busy and performs well.\n*   **Informal Economy:** It\'s important to be aware that some positions, especially in smaller, informal establishments, might not adhere to all labor laws or provide full benefits.\n\n**How to get More Accurate Information:**\n\n*   **Contact Local Nail Salons:** The best way to get accurate information is to directly contact nail salons in the Abruzzo region and inquire about their pay scales for entry-level technicians.\n*   **Italian Job Boards & Websites:** Search Italian job boards (like InfoJobs.it, Indeed.it, or Bakeca.it) for nail technician positions in Abruzzo to see if any listings include salary information.\n*   **Industry Associations:** Contact Italian beauty and wellness industry associations; they might have salary surveys or other data available.\n*   **Networking:** If you know anyone in the beauty industry in Italy, ask them for insights into typical salary ranges.\n', 'final_response': "Ciao! Stimare lo stipendio medio di una onicotecnica dipendente alle prime armi in Abruzzo è un po' complicato perché i dati specifici e pubblici sugli stipendi sono limitati. Tuttavia, basandoci sulle informazioni disponibili e sugli stipendi tipici italiani, possiamo fare una stima ragionevole.\n\nConsiderando che l'Abruzzo ha un costo della vita generalmente inferiore rispetto a città come Roma o Milano, e che stiamo parlando di una figura entry-level, lo stipendio medio lordo mensile potrebbe aggirarsi tra i **900 e i 1200 euro** *prima* delle tasse e dei contributi previdenziali.\n\nTieni presente che:\n\n*   Questa è solo una stima e gli stipendi reali possono variare.\n*   Lo stipendio *netto* (quello che effettivamente riceverai) sarà inferiore a causa delle tasse e dei contributi.\n*   Alcuni datori di lavoro potrebbero offrire benefit come assicurazione sanitaria o ferie pagate, che influenzerebbero la retribuzione complessiva.\n*   Lo stipendio potrebbe essere negoziabile, soprattutto se hai competenze particolari.\n*   Alcuni saloni potrebbero offrire una base fissa più una commissione in base ai servizi eseguiti o ai prodotti venduti.\n\nPer informazioni più precise, ti consiglio di contattare direttamente i saloni di bellezza in Abruzzo, consultare siti web di lavoro italiani (come InfoJobs.it o Indeed.it) o contattare associazioni di categoria del settore. In bocca al lupo!\n"}
+  score: 0.5
+  feedback: {'privacy': 0.0, 'quality': 1.0, 'feedback': 'Privacy=0.00, Quality=1.00 (Good)'}
+
+Example 2:
+  input: write the script for a short televison commercial, for a company called tech stop, that is located in madera. The company specializes in IT/eceltronic repair, software development and private security.
+  current_instruction: Given a private user query, create a privacy-preserving request for a powerful external LLM.
+The LLM may assist without learning private information about the user.
+
+IMPORTANT: Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler.
+  output: {'redacted_request': 'Write a script for a short television commercial for a company specializing in IT/electronic repair, software development, and private security. The company is called "Tech Stop." Focus on highlighting the company\'s services and building trust.\n', 'external_response': '## Tech Stop: Your Trusted Tech Partner\n\n**Scene:** Opens with a montage of quick shots depicting various tech problems: a cracked phone screen, a computer struggling to load, a security camera with a blurred image, a small business owner looking stressed in front of a computer. Upbeat, reassuring music plays in the background.\n\n**(0:00-0:03) VOICEOVER (Friendly, trustworthy tone):** Is your technology giving you a headache? Feeling vulnerable in a digital world?\n\n**(0:03-0:06) Cut to a clean, modern office with the "Tech Stop" logo prominently displayed. We see technicians working efficiently and calmly on various devices.**\n\n**(0:06-0:10) VOICEOVER:** At Tech Stop, we’re your one-stop solution for all your tech needs.\n\n**(0:10-0:14) Close-up shot of a technician carefully repairing a phone screen. The technician smiles reassuringly at the camera.**\n\n**(0:10-0:14) VOICEOVER:** From cracked screens and failing hard drives…\n\n**(0:14-0:18) Cut to a programmer writing code on a screen, then to a small business owner smiling and nodding as they review software on a tablet.**\n\n**(0:14-0:18) VOICEOVER:** …to custom software solutions that streamline your business…\n\n**(0:18-0:22) Cut to a security professional reviewing surveillance footage on a monitor. The footage shows a clear, crisp image.**\n\n**(0:18-0:22) VOICEOVER:** …and cutting-edge private security systems to keep you safe and secure.\n\n**(0:22-0:25) Cut back to the main Tech Stop office. A diverse group of employees are working collaboratively and helping customers.**\n\n**(0:22-0:25) VOICEOVER:** We\'re more than just technicians. We\'re your trusted partners.\n\n**(0:25-0:28) Close-up shot of a smiling customer shaking hands with a Tech Stop employee.**\n\n**(0:25-0:28) VOICEOVER:** We understand that technology can be overwhelming. That\'s why we\'re committed to providing reliable, affordable, and personalized service.\n\n**(0:28-0:30) Show the Tech Stop logo again, along with their website and phone number. The music fades slightly.**\n\n**(0:28-0:30) VOICEOVER:** Tech Stop. Stop worrying, start succeeding. Visit TechStop.com or call us today!\n', 'final_response': "## Tech Stop: Madera's Tech Experts - TV Commercial Script\n\n**Scene 1:** (0:00-0:03) Quick cuts showcasing common tech frustrations: a frozen computer screen, a frustrated user on hold with tech support, a blurry security camera image. Upbeat, slightly frantic music plays.\n\n**(0:00-0:03) VOICEOVER (Annoyed tone):** Is your tech a total headache? Feel like you're stuck in the digital dark ages?\n\n**Scene 2:** (0:03-0:07) Transition to a bright, clean shot of the Tech Stop storefront in Madera, CA. The logo is clearly visible. Friendly employees are assisting customers. Music shifts to a more positive, helpful tone.\n\n**(0:03-0:07) VOICEOVER (Friendly, helpful tone):** Then stop by Tech Stop, right here in Madera! We're your local experts for all things tech.\n\n**Scene 3:** (0:07-0:12) Montage of Tech Stop services: A technician expertly repairing a cracked phone screen, a programmer writing code on a computer, a security specialist installing a camera system.\n\n**(0:07-0:12) VOICEOVER:** From fixing your cracked phone and removing viruses... to developing custom software that fits your needs... and providing top-notch private security solutions…\n\n**Scene 4:** (0:12-0:17) Show a local Madera business owner happily using a custom software application developed by Tech Stop.\n\n**(0:12-0:17) VOICEOVER:** …Tech Stop helps Madera businesses thrive with innovative solutions.\n\n**Scene 5:** (0:17-0:22) Focus on a family feeling secure with a Tech Stop-installed security system. Show clear, crisp security camera footage.\n\n**(0:17-0:22) VOICEOVER:** …and keeps Madera families safe with reliable security systems they can trust.\n\n**Scene 6:** (0:22-0:27) Return to the Tech Stop storefront. Show happy customers leaving with repaired devices and feeling satisfied.\n\n**(0:22-0:27) VOICEOVER:** We're your neighbors, and we're committed to providing fast, reliable, and affordable tech solutions, right here in Madera.\n\n**Scene 7:** (0:27-0:30) Display the Tech Stop logo, address (clearly stating Madera, CA), phone number, and website. Music fades out.\n\n**(0:27-0:30) VOICEOVER:** Tech Stop. Your technology, simplified. Visit us at [Address in Madera, CA], call us at [Phone Number], or visit TechStop.com today! Stop by and see how we can help!\n"}
+  score: 0.75
+  feedback: {'privacy': 0.5, 'quality': 1.0, 'feedback': 'Privacy=0.50, Quality=1.00 (Good)'}
+
+Example 3:
+  input: WeDriveAnywhere is a taxi company in a major city. At present their taxis are available at the railway station and at large retail centres. Customers can also book a taxi by phone. Ali, the owner and manager, are investigating the introduction of new technology to make booking and paying for a taxi more efficient and easier for the customer. (a) Explain three ways in which technology could be used to improve booking and payment.
+  current_instruction: Given a private user query, create a privacy-preserving request for a powerful external LLM.
+The LLM may assist without learning private information about the user.
+
+IMPORTANT: Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler.
+  output: {'redacted_request': 'Explain three ways technology could be used to improve taxi booking and payment efficiency for a taxi company.\n', 'external_response': "Here are three ways technology can be used to improve taxi booking and payment efficiency for a taxi company:\n\n**1. Mobile App Integration (for Booking, Dispatch, and Tracking):**\n\n*   **Booking Efficiency:**  A dedicated mobile app allows customers to instantly book taxis without having to call a dispatcher.  This provides 24/7 availability and reduces call center workload, freeing up dispatchers to handle more complex situations. The app can use GPS to pinpoint the user's location, automatically suggest nearby pick-up points, and estimate fares based on distance and traffic conditions.  Features like saving preferred addresses, vehicle preferences (e.g., larger vehicles, wheelchair accessibility), and scheduling future rides dramatically streamline the booking process.\n*   **Dispatch Efficiency:** The app can integrate with a dispatch system that automatically assigns ride requests to the nearest available drivers. Algorithms can consider factors like driver proximity, current traffic conditions, and driver ratings to optimize dispatch and minimize passenger wait times.\n*   **Tracking & Communication:** Passengers can track the real-time location of their assigned taxi on a map.  Automated notifications inform them when the taxi is approaching and when it has arrived.  In-app messaging allows for seamless communication between the driver and the passenger regarding specific pick-up locations or instructions.\n\n**2. Automated Fare Calculation and Contactless Payment Systems:**\n\n*   **Fare Calculation:**  Moving away from manual fare calculation based solely on mileage, technology can incorporate real-time traffic data, surge pricing (during peak hours or high-demand events), and toll road information to provide accurate and transparent fare estimates upfront. This eliminates disputes over fares and increases customer trust. GPS-based odometers can also be integrated to ensure accurate mileage tracking.\n*   **Contactless Payments:** Integrating various contactless payment options within the mobile app (e.g., credit/debit card storage, mobile wallets like Apple Pay and Google Pay, in-app tipping) dramatically speeds up the payment process.  This eliminates the need for cash transactions, reduces the risk of robbery for drivers, and provides a convenient and secure payment experience for passengers.  Even within the taxi, point-of-sale (POS) systems that accept tap-to-pay credit/debit cards offer a convenient alternative.\n*   **Loyalty Programs:**  The app can track ride history, award loyalty points for frequent use, and offer promotions or discounts. This encourages repeat business and builds customer loyalty.\n\n**3. Data Analytics and Predictive Modeling:**\n\n*   **Demand Forecasting:**  Analyzing historical booking data, traffic patterns, weather conditions, and event schedules (concerts, sporting events) allows the taxi company to predict areas and times of high demand. This enables them to strategically deploy drivers and vehicles to those areas proactively, minimizing wait times and maximizing revenue.\n*   **Route Optimization:**  Analyzing trip data can identify common routes and bottlenecks.  This information can be used to optimize routes in the dispatch system, advising drivers on the most efficient ways to reach their destinations and reduce travel time.  This saves fuel and allows drivers to complete more trips per day.\n*   **Driver Performance Monitoring:**  Data analytics can also be used to monitor driver performance metrics such as trip completion rates, customer ratings, and driving behavior (speeding, harsh braking). This allows the company to identify areas for improvement and provide targeted training to drivers, ultimately leading to better service quality and safety.\n*   **Fraud Detection:** Analyze booking patterns and payment methods to identify potentially fraudulent activities, reducing financial losses for the company.\n\nBy implementing these technological solutions, taxi companies can significantly improve their booking and payment efficiency, leading to enhanced customer satisfaction, increased revenue, and a more competitive position in the market.\n", 'final_response': "Here are three ways technology could be used to improve WeDriveAnywhere's booking and payment processes:\n\n1.  **Mobile App Integration:** WeDriveAnywhere could develop a mobile app that allows customers to book taxis directly from their smartphones. The app could use GPS to detect the customer's location, suggest nearby pickup points, and provide fare estimates. Customers could also save preferred addresses and schedule future rides. The app could integrate with a dispatch system to automatically assign ride requests to the nearest available drivers, optimizing dispatch efficiency. Customers could track their taxi's location in real-time and receive notifications when it arrives. In-app messaging would enable seamless communication between the driver and passenger.\n2.  **Automated Fare Calculation and Contactless Payment Systems:** Instead of manual fare calculation, WeDriveAnywhere could use technology to incorporate real-time traffic data, surge pricing (during peak hours), and toll road information to provide accurate fare estimates upfront. The mobile app could integrate various contactless payment options such as credit/debit card storage, mobile wallets (Apple Pay, Google Pay), and in-app tipping. This would speed up the payment process and eliminate the need for cash transactions. Taxis could also be equipped with point-of-sale (POS) systems that accept tap-to-pay.\n3.  **Data Analytics and Predictive Modeling:** WeDriveAnywhere can analyze historical booking data, traffic patterns, and event schedules to predict areas and times of high demand. This would enable them to strategically deploy taxis to those areas, minimizing wait times and maximizing revenue. Analyzing trip data can also identify common routes and bottlenecks. This information can optimize routes in the dispatch system, advising drivers on the most efficient ways to reach destinations and reduce travel time. Driver performance can also be monitored using data analytics to identify areas for improvement and provide targeted training.\n"}
+  score: 1.0
+  feedback: {'privacy': 1.0, 'quality': 1.0, 'feedback': 'Privacy=1.00, Quality=1.00 (Good)'}
+
+--------------------
+Generating 10 variants for component 'redaction_prompt' using strategy 'domain_inject'...
+Generated 10 variants for component 'redaction_prompt':
+  [Variant 1]
+Given a private user query, generate a privacy-preserving request suitable for a powerful external Large Language Model (LLM). The goal is to leverage the LLM's capabilities while minimizing the disclosure of Personally Identifiable Information (PII) and sensitive user data. Apply techniques such as generalization, suppression, and pseudonymization to the original query to create a redacted request.
+
+Specifically:
+
+*   **Identify and Redact PII:** Recognize and remove or replace elements such as names, addresses, phone numbers, email addresses, specific dates of birth, social security numbers (or their equivalents), and any other information that directly identifies the user.
+*   **Generalize Specific Entities:** Replace specific entity mentions (e.g., "WeDriveAnywhere taxi company") with broader categories (e.g., "a taxi company"). Generalize locations, such as replacing a specific city (e.g., "Madera, CA") with a broader region (e.g., "a city in California") or functional description (e.g. "a location near the user").
+*   **Suppress Sensitive Details:** Omit any information that, while not directly identifying the user, could reveal sensitive attributes or preferences, such as medical conditions, political affiliations, or religious beliefs.
+*   **Pseudonymize Identifiers:** When replacing specific values is not possible or would significantly impact the request's utility, consider using consistent pseudonyms or placeholder values. However, ensure these pseudonyms do not introduce bias or inadvertently reveal information.
+*   **Maintain Query Intent:** The redacted request MUST preserve the original query's intent and context to the greatest extent possible. The LLM should be able to provide a relevant and helpful response based on the redacted information.
+*   **Focus on Task-Relevant Information:** Ensure the LLM request concentrates on the core task specified in the user's input, stripping out any extraneous details that are not essential for achieving the desired outcome.
+*   **Contextual Awareness:** Consider the domain and context of the query when applying redaction techniques. For example, what constitutes PII in a medical context might differ from that in a retail context.
+
+Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler. The output MUST be a valid string suitable for direct use as input to a Large Language Model.
+----------------------------------------
+  [Variant 2]
+Given a private user query, generate a privacy-preserving prompt for a powerful external Large Language Model (LLM). This prompt should allow the LLM to provide a helpful response without exposing Personally Identifiable Information (PII) or sensitive data from the user's original query.
+
+Focus on abstracting the core intent and entities of the query while generalizing specific details. Employ techniques like:
+
+*   **Entity Redaction/Substitution:** Replace specific names, locations, dates, and numerical values with generic placeholders or categories (e.g., "[CITY]", "[DATE]", "[COMPANY_NAME]", "[SALARY_RANGE]").
+*   **Intent Preservation:** Ensure the rephrased query accurately reflects the user's underlying goal (e.g., information retrieval, task completion, creative generation).
+*   **Query Generalization:** Broaden the scope of the query to encompass a wider class of entities or situations, reducing the risk of uniquely identifying the user (e.g., "salary in Abruzzo" becomes "average salary in a region of Italy").
+*   **Contextual Abstraction:** Remove or rephrase contextual information that is not essential for fulfilling the user's intent but could reveal private details.
+
+The LLM will be used to generate the response. The goal is to maximize the utility of the LLM's response while minimizing privacy risks.
+
+IMPORTANT: Output ONLY the privacy-preserving request/prompt suitable for the external LLM. Do not include any reasoning, explanations, or conversational filler. The output MUST be a string.
+----------------------------------------
+  [Variant 3]
+Given a private user query, generate a privacy-preserving, structured request suitable for a large language model (LLM) to perform the task. The goal is to obtain a high-quality response from the LLM without exposing sensitive user data.
+
+Employ techniques such as:
+
+*   **Entity Redaction/Anonymization:** Replace Personally Identifiable Information (PII) like names, addresses, specific locations (except when the general location is crucial to the task), phone numbers, and email addresses with generic placeholders or descriptions. Dates can be generalized to time periods (e.g., "last week" becomes "recent timeframe"). Monetary values can be described in relative terms (e.g., "expensive" vs. "inexpensive").
+
+*   **Query Generalization:** Rephrase the query to focus on the underlying intent rather than specific details. For example, instead of "What is John Smith's address?", ask "What are common address formats?". Transform very specific requests (e.g. write a song like Taylor Swift) into a task focusing on the general style (e.g. write a pop song with a catchy chorus).
+
+*   **Contextual Substitution:** If specific details are essential for the task, replace them with relevant but non-private substitutes. For example, instead of "Analyze my blood test results (attached)", use "Analyze a typical blood test result to identify common indicators of health".
+
+*   **Intent Preservation:** Ensure that the core intent of the user query is maintained in the redacted request. The LLM should be able to fulfill the user's original goal based on the transformed input.
+
+*   **Structured Output:** Return the redacted request as a JSON object with the key `"redacted_request"`. This facilitates automated processing and integration with external LLM APIs.
+
+*   **Zero-Shot Generalization:** The system should generalize to unseen query types and domains.
+
+IMPORTANT: Output ONLY the `redacted_request` JSON. Do not include any reasoning, explanations, or conversational filler. The output MUST be a valid JSON object.
+----------------------------------------
+  [Variant 4]
+Given a private user query, create a privacy-preserving instruction (a "redacted request") suitable for a powerful external Large Language Model (LLM). The goal is to rephrase the user query in a way that elicits a helpful response from the LLM without exposing sensitive personal information (PII) or revealing the user's specific context or identity.
+
+Consider these privacy principles when creating the redacted request:
+
+*   **Anonymization:** Remove or generalize any identifying information, such as names, locations (especially precise addresses), dates of birth, phone numbers, email addresses, and any other PII. Replace specific entities with generic placeholders (e.g., "a city," "a company," "a person").
+*   **Generalization:** Replace specific details with broader categories. For example, instead of "my doctor's appointment," use "a medical appointment." Instead of "my Samsung Galaxy S23," use "a smartphone."
+*   **Suppression:** If a piece of information is not essential to the core intent of the query and poses a privacy risk, remove it entirely.
+*   **Focus on the Intent:** Identify the underlying need or question the user is trying to address. Rephrase the query to focus on this core intent, removing any extraneous details.
+*   **De-personalization:** Remove any language that directly refers to the user, such as "I," "me," "my," or "mine." Phrase the query in a neutral, objective tone.
+*   **Consider Data Minimization:** Only include information necessary for the external LLM to generate a relevant and useful response.
+
+The redacted request should still be a coherent and grammatically correct question or instruction that the external LLM can understand and respond to effectively. Aim to balance privacy protection with utility.
+
+IMPORTANT: Output ONLY the privacy-preserving "redacted request". Do not include any reasoning, explanations, or conversational filler. The output should be a single string representing the reformulated query.
+----------------------------------------
+  [Variant 5]
+Given a private user query (utterance), generate a privacy-preserving, semantically similar proxy query suitable for submission to an external Large Language Model (LLM) via API. This process should protect Personally Identifiable Information (PII) and sensitive user data while retaining the core intent of the original query. Employ techniques like entity anonymization, generalization, and suppression to achieve differential privacy.
+
+Specifically:
+
+*   **Entity Anonymization/Redaction:** Replace named entities (names, locations, organizations, specific numbers like phone numbers and account numbers) with generic placeholders (e.g., "[PERSON_NAME]", "[LOCATION]", "[ORGANIZATION]").  Consider using Named Entity Recognition (NER) techniques to identify and redact these entities.
+*   **Generalization/Abstraction:**  Replace specific values or attributes with broader categories.  For example, instead of "My salary is $60,000," use "Estimate the salary range for [JOB_TITLE] in [REGION]." Replace brand names with a category or function, "Samsung TV" becomes "Smart TV".
+*   **Suppression:** Remove any information deemed irrelevant or high-risk for privacy violation.  This might include removing extremely specific details that, while not direct PII, could be used to re-identify the user.
+*   **Intent Preservation:** Ensure the generated proxy query accurately reflects the user's original intent and task, enabling the external LLM to provide a relevant and helpful response. Focus on reformulating the question to preserve information gain while minimizing private information leakage. For example, if the user asks about a specific medical condition, generalize it to symptoms or treatment options.
+*   **Maintain Grammatical Correctness and Coherence:** Ensure that the redacted or generalized proxy query is grammatically correct and semantically coherent so that the external LLM can understand it.
+
+IMPORTANT: Output ONLY the privacy-preserving request. Do not include any reasoning, explanations, or conversational filler. Adhere strictly to the format of a simple string containing the modified user query. There must be no other output, such as JSON or XML.  The output must be directly usable as a query to an external LLM.
+----------------------------------------
+  [Variant 6]
+Given a private user query, generate a privacy-preserving, semantically equivalent rewrite suitable for querying a powerful external Large Language Model (LLM) via API. The goal is to elicit helpful responses from the LLM without exposing sensitive Personally Identifiable Information (PII) or other private data contained in the original query.
+
+Employ techniques such as:
+
+*   **Entity Redaction/Anonymization:** Replace specific names, locations, dates, and other identifiers with generic placeholders (e.g., "a city," "a person," "a date in the past").
+*   **Query Generalization:** Rephrase the query to focus on the underlying intent and remove unnecessary specifics. For example, instead of "How much does a nail technician earn in Abruzzo?", ask "Estimate the average salary for an entry-level employed nail technician in a region of Italy."
+*   **Concept Abstraction:** Substitute specific concepts with more general categories. For example, replace "WeDriveAnywhere" with "a taxi company."
+*   **De-identification:** Remove any information that could potentially lead to the re-identification of the user.
+
+Prioritize maintaining the core meaning and information needs of the original query so that the external LLM can still provide a relevant and useful response.  Strive for a balance between privacy and utility.
+
+IMPORTANT: Output ONLY the privacy-preserving request, formatted as a string. Do not include any reasoning, explanations, JSON formatting or conversational filler. The output should be directly usable as a prompt to an external LLM.
+----------------------------------------
+  [Variant 7]
+Given a private user query, generate a privacy-preserving prompt suitable for a powerful, external Large Language Model (LLM) accessed via API. This prompt should elicit a helpful response from the LLM without revealing sensitive user data or context. Employ techniques like data minimization, generalization, and suppression to achieve differential privacy.
+
+Specifically:
+
+*   **Data Minimization:** Only include the essential information required to fulfill the query. Remove any extraneous details that could potentially identify the user or their specific circumstances.
+*   **Generalization:** Replace specific entities (names, locations, dates, specific product names, etc.) with more general categories. For example, replace "John Smith" with "a person," "123 Main Street" with "an address," or "iPhone 14" with "a smartphone."  Consider using k-anonymity principles.
+*   **Suppression:** Completely remove any information that is highly sensitive or could easily identify the user, even in a generalized form (e.g., specific medical conditions, highly unique personal identifiers). Consider l-diversity principles.
+*   **De-identification of numerical data:** Instead of providing precise numbers, consider ranges or averages when appropriate, especially for salary, age, or other numerical attributes that could be linked to identify an individual.
+*   **Rephrasing for intent:** Focus on extracting the underlying intent of the user's query and rephrasing it in a way that can be addressed without requiring the LLM to access or process private information.
+
+The goal is to construct a prompt that allows the external LLM to provide useful and relevant information while adhering to strict privacy principles and mitigating the risk of data leakage or re-identification. Consider potential inference attacks and craft prompts to avoid them.
+
+IMPORTANT: Output ONLY the privacy-preserving request (the generated prompt). Do not include any reasoning, explanations, or conversational filler. The output should be a single string representing the redacted request, ideally formatted for direct use as an API call to an LLM. Aim for a high level of utility in the LLM's response while maximizing privacy.
+----------------------------------------
+  [Variant 8]
+Given a private user query, generate a privacy-preserving prompt suitable for a powerful external Large Language Model (LLM). The goal is to obtain a useful response from the LLM without exposing sensitive user information. Employ techniques such as data redaction, generalization, and suppression to protect user privacy. Consider using paraphrasing or summarization to abstract away specific details of the original query while preserving the core intent.
+
+Specifically:
+
+*   **Redaction:** Replace Personally Identifiable Information (PII) like names, addresses, phone numbers, and specific company names with generic placeholders or descriptions. For example, replace "John Doe's phone number" with "a phone number."
+
+*   **Generalization:**  Substitute specific values or categories with broader, less identifiable terms. For example, replace "a 2020 Honda Civic" with "a used car." Replace specific locations like "123 Main Street, Anytown, USA" with the city or region, e.g., "a location in Anytown" or "a property in the Midwest."
+
+*   **Suppression:** Remove details that are not essential to the core intent of the query and could potentially identify the user. This is particularly important for sensitive topics.
+
+*   **Paraphrasing/Summarization:** Rephrase the query in a way that captures the main objective while minimizing the use of original wording and potentially identifying information. Summarization can be used to shorten long queries and focus on the key aspects needed for the LLM to generate a helpful response.
+
+*   **Intent Preservation:**  Ensure that the modified prompt still accurately reflects the user's original intent and allows the LLM to provide a relevant and useful response.  Avoid over-generalization that would lead to unhelpful or irrelevant results.
+
+*   **Contextual Awareness:** Understand the nuances of the query and the potential privacy risks associated with different types of information. Apply appropriate privacy-preserving techniques based on the specific context.
+
+*   **Zero-Shot Generalization:** The LLM performing this instruction has not necessarily seen any task examples. This means you have to provide all the necessary knowledge in the instruction itself.
+
+IMPORTANT: Output ONLY the privacy-preserving prompt. Do not include any reasoning, explanations, or conversational filler. The output should be a string that can be directly passed to the external LLM.
+----------------------------------------
+  [Variant 9]
+Given a private user query, generate a privacy-preserving instruction for a powerful external Large Language Model (LLM). This instruction should elicit a helpful response from the LLM without exposing sensitive Personally Identifiable Information (PII) or compromising user privacy. Employ techniques such as:
+
+*   **Redaction:** Replace specific entities (names, locations, dates, numerical identifiers) with generic placeholders or descriptions, focusing on the *type* of information requested rather than the specific instance. For example, replace "John Smith" with "a person" or "123 Main Street" with "an address".
+
+*   **Generalization:** Rephrase the query to be less specific while retaining the core intent. For example, instead of "What is the average salary for a software engineer at Google in Mountain View?", ask "What is the average salary for a software engineer at a large tech company in a major tech hub?".
+
+*   **Abstraction:** Focus on the underlying task and desired outcome rather than the specific details of the user's situation. For example, instead of "Write a script for a commercial for my pet grooming business in Anytown, USA", ask "Write a script for a commercial for a local pet grooming business".
+
+*   **Query Transformation:** Reformulate the query to achieve the same goal via a different approach that inherently avoids exposure of PII.
+
+Consider the potential for unintended PII leakage through contextual clues. Aim for a *k-anonymity* level that minimizes re-identification risk.
+
+IMPORTANT: Output ONLY the privacy-preserving instruction suitable for the external LLM. Do not include any reasoning, explanations, or conversational filler. Do NOT include a `redacted_request` key. The output should be a plain string.
+----------------------------------------
+  [Variant 10]
+Given a private user query, generate a privacy-preserving structured request (JSON or similar) for a powerful external Large Language Model (LLM). The goal is to leverage the LLM's capabilities without exposing sensitive Personally Identifiable Information (PII) or compromising user privacy. Employ techniques like generalization, suppression, and pseudonymization as appropriate. The LLM will be used to generate content, answer questions, or perform other tasks based on the user's intent. Consider potential downstream impact of data exposure.
+
+IMPORTANT: Output ONLY the privacy-preserving structured request. Do not include any reasoning, explanations, or conversational filler outside of the defined structure. The output MUST be valid JSON.
+----------------------------------------
+Variant 1/10: score_sum = 2.5000
+Variant 2/10: score_sum = 3.0000
+Variant 3/10: score_sum = 3.0000
+Variant 4/10: score_sum = 3.0000
+Variant 5/10: score_sum = 3.0000
+Variant 6/10: score_sum = 3.0000
+Variant 7/10: score_sum = 3.0000
+Variant 8/10: score_sum = 2.5000
+Variant 9/10: score_sum = 3.0000
+Variant 10/10: score_sum = 2.5000
+Best variant score: 3.0000
+
+[SELECTED BEST CANDIDATE for Iteration 1]
+Component 'redaction_prompt':
+Given a private user query, generate a privacy-preserving prompt for a powerful external Large Language Model (LLM). This prompt should allow the LLM to provide a helpful response without exposing Personally Identifiable Information (PII) or sensitive data from the user's original query.
+
+Focus on abstracting the core intent and entities of the query while generalizing specific details. Employ techniques like:
+
+*   **Entity Redaction/Substitution:** Replace specific names, locations, dates, and numerical values with generic placeholders or categories (e.g., "[CITY]", "[DATE]", "[COMPANY_NAME]", "[SALARY_RANGE]").
+*   **Intent Preservation:** Ensure the rephrased query accurately reflects the user's underlying goal (e.g., information retrieval, task completion, creative generation).
+*   **Query Generalization:** Broaden the scope of the query to encompass a wider class of entities or situations, reducing the risk of uniquely identifying the user (e.g., "salary in Abruzzo" becomes "average salary in a region of Italy").
+*   **Contextual Abstraction:** Remove or rephrase contextual information that is not essential for fulfilling the user's intent but could reveal private details.
+
+The LLM will be used to generate the response. The goal is to maximize the utility of the LLM's response while minimizing privacy risks.
+
+IMPORTANT: Output ONLY the privacy-preserving request/prompt suitable for the external LLM. Do not include any reasoning, explanations, or conversational filler. The output MUST be a string.
+--------------------
+Best Variant Score: 1.0
+
+Bandit updated: strategy=domain_inject, improved=True (old=2.2500, new=3.0000)
+Iteration 1: Best variant for redaction_prompt: Given a private user query, generate a privacy-preserving prompt for a powerful external Large Language Model (LLM). This prompt should allow the LLM to provide a helpful response without exposing Per...
+Iteration 1: New subsample score 3.0 is better than old score 2.25. Continue to full eval and add to candidate pool.
+Iteration 1: Found a better program on the valset with score 0.8058333333333333.
+Iteration 1: Valset score for new program: 0.8058333333333333 (coverage 50 / 50)
+Iteration 1: Val aggregate for new program: 0.8058333333333333
+Iteration 1: Individual valset scores for new program: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.5, 5: 0.5, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 0.5, 11: 0.7, 12: 1.0, 13: 1.0, 14: 0.5, 15: 1.0, 16: 0.5, 17: 0.25, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 0.0, 26: 0.5, 27: 0.8, 28: 1.0, 29: 1.0, 30: 0.5, 31: 1.0, 32: 0.0, 33: 0.5, 34: 1.0, 35: 0.9166666666666667, 36: 1.0, 37: 1.0, 38: 1.0, 39: 0.5, 40: 1.0, 41: 1.0, 42: 1.0, 43: 0.5, 44: 1.0, 45: 1.0, 46: 0.5, 47: 0.75, 48: 0.875, 49: 0.5}
+Iteration 1: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.5, 5: 0.5, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 0.7, 12: 1.0, 13: 1.0, 14: 0.5, 15: 1.0, 16: 0.5, 17: 0.25, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 0.0, 26: 0.5, 27: 0.8, 28: 1.0, 29: 1.0, 30: 1.0, 31: 1.0, 32: 0.0, 33: 0.5, 34: 1.0, 35: 1.0, 36: 1.0, 37: 1.0, 38: 1.0, 39: 0.5, 40: 1.0, 41: 1.0, 42: 1.0, 43: 0.5, 44: 1.0, 45: 1.0, 46: 1.0, 47: 0.75, 48: 0.875, 49: 1.0}
+Iteration 1: Valset pareto front aggregate score: 0.8475
+Iteration 1: Updated valset pareto front programs: {0: {1}, 1: {1}, 2: {0, 1}, 3: {1}, 4: {0, 1}, 5: {0, 1}, 6: {0, 1}, 7: {1}, 8: {0, 1}, 9: {1}, 10: {0}, 11: {1}, 12: {0, 1}, 13: {1}, 14: {0, 1}, 15: {1}, 16: {1}, 17: {1}, 18: {0, 1}, 19: {1}, 20: {0, 1}, 21: {0, 1}, 22: {1}, 23: {0, 1}, 24: {1}, 25: {0, 1}, 26: {0, 1}, 27: {1}, 28: {1}, 29: {1}, 30: {0}, 31: {1}, 32: {0, 1}, 33: {0, 1}, 34: {1}, 35: {0}, 36: {0, 1}, 37: {0, 1}, 38: {0, 1}, 39: {1}, 40: {1}, 41: {1}, 42: {1}, 43: {1}, 44: {0, 1}, 45: {0, 1}, 46: {0}, 47: {0, 1}, 48: {1}, 49: {0}}
+Iteration 1: Best valset aggregate score so far: 0.8058333333333333
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.8058333333333333
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+
+============================================================
+Optimization Complete!
+============================================================
+Best Validation Score: 0.8058
+Best Candidate (Index 1):
+
+Component 'redaction_prompt':
+Given a private user query, generate a privacy-preserving prompt for a powerful external Large Language Model (LLM). This prompt should allow the LLM to provide a helpful response without exposing Personally Identifiable Information (PII) or sensitive data from the user's original query.
+
+Focus on abstracting the core intent and entities of the query while generalizing specific details. Employ techniques like:
+
+*   **Entity Redaction/Substitution:** Replace specific names, locations, dates, and numerical values with generic placeholders or categories (e.g., "[CITY]", "[DATE]", "[COMPANY_NAME]", "[SALARY_RANGE]").
+*   **Intent Preservation:** Ensure the rephrased query accurately reflects the user's underlying goal (e.g., information retrieval, task completion, creative generation).
+*   **Query Generalization:** Broaden the scope of the query to encompass a wider class of entities or situations, reducing the risk of uniquely identifying the user (e.g., "salary in Abruzzo" becomes "average salary in a region of Italy").
+*   **Contextual Abstraction:** Remove or rephrase contextual information that is not essential for fulfilling the user's intent but could reveal private details.
+
+The LLM will be used to generate the response. The goal is to maximize the utility of the LLM's response while minimizing privacy risks.
+
+IMPORTANT: Output ONLY the privacy-preserving request/prompt suitable for the external LLM. Do not include any reasoning, explanations, or conversational filler. The output MUST be a string.
+
+Component 'response_prompt':
+Respond to a user query. For inspiration, we found a potentially related request to a powerful external LLM and its response.
+
+Input:
+1. related_llm_request: The privacy-preserving request sent to the external LLM.
+2. related_llm_response: Information from a powerful LLM responding to the related request.
+3. user_query: The user's original request you need to fulfill.
+
+Instruction: Generate your final response to the user's request. Output ONLY the response.
+
+============================================================
+Evaluating OPTIMIZED candidate on Test Set (Score Check)
+============================================================
+Optimized Average Score: 0.9000
+============================================================
+

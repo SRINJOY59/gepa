@@ -35,6 +35,7 @@ from gepa.strategies.component_selector import (
     RoundRobinReflectionComponentSelector,
 )
 from gepa.strategies.eval_policy import EvaluationPolicy, FullEvaluationPolicy
+from gepa.strategies.bert_reward_model import BERTRewardModel
 from gepa.utils import FileStopper, StopperProtocol
 
 
@@ -63,6 +64,12 @@ def optimize(
     # Bandit-based multi-prompt mutation configuration
     use_bandit_mutation: bool = False,
     num_prompt_variants: int = 10,
+    # Multi-minibatch + BERT reward model configuration
+    use_multi_minibatch: bool = False,
+    num_minibatches: int = 5,
+    candidates_per_minibatch: int = 3,
+    top_k: int = 5,
+    reward_model: BERTRewardModel | None = None,
     # Budget and Stop Condition
     max_metric_calls: int | None = None,
     stop_callbacks: StopperProtocol | Sequence[StopperProtocol] | None = None,
@@ -347,6 +354,11 @@ def optimize(
         callbacks=callbacks,
         use_bandit_mutation=use_bandit_mutation,
         num_prompt_variants=num_prompt_variants,
+        use_multi_minibatch=use_multi_minibatch,
+        num_minibatches=num_minibatches,
+        candidates_per_minibatch=candidates_per_minibatch,
+        top_k=top_k,
+        reward_model=reward_model,
     )
 
     def evaluator_fn(
