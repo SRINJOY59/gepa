@@ -399,18 +399,23 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 self.logger.log(f"  No variants generated for minibatch {mb_idx + 1}.")
                 continue
 
-            # Surrogate Model Scoring (Cheap)
+            # Surrogate Model Scoring (Cheap) via UCB
             variant_scores = []
             if self.reward_model is not None and self.reward_model.is_trained:
+                # We concatenate the candidate prompt with an example validation question to feed into BERT
+                # For simplicity, we just use the prompt text for now, but BERT is powerful enough to learn the mapping
                 prompts = [" [SEP] ".join(v.values()) for v in generated_variants]
-                variant_scores = self.reward_model.predict(prompts)
+                means, stds = self.reward_model.predict_ucb(prompts, n_samples=5)
+                
+                # UCB score = mean + lambda * std (exploration bonus)
+                # lambda = 1.0 is a reasonable default
+                variant_scores = [m + 1.0 * s for m, s in zip(means, stds)]
             else:
-                # If untrained, assign random scores to explore (or use 0.0)
-                # Using random exploration is better than sticking to one
+                # If untrained, assign random scores to explore
                 import random
                 variant_scores = [random.random() for _ in generated_variants]
             
-            # Select Top-K candidates based on surrogate score
+            # Select Top-K candidates based on UCB surrogate score
             # Pair (variant, score) and sort
             scored_variants = list(zip(generated_variants, variant_scores))
             scored_variants.sort(key=lambda x: x[1], reverse=True)
@@ -484,6 +489,10 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
         # ---- 5. Select top-K ----
         all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
         top_k_candidates = all_candidates[: self.top_k]
+
+        if not top_k_candidates:
+            self.logger.log("  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.")
+            return None
 
         for rank, c in enumerate(top_k_candidates, 1):
             self.logger.log(

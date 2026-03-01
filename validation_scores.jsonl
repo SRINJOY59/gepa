@@ -1,0 +1,6 @@
+{"iteration": 0, "candidate_idx": 0, "subset_average_score": 0.2, "subset_num_examples": 10, "subset_scores_by_id": {"0": 0.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 0.0, "5": 0.0, "6": 0.0, "7": 1.0, "8": 0.0, "9": 1.0}}
+{"iteration": 1, "candidate_idx": 1, "subset_average_score": 0.6, "subset_num_examples": 10, "subset_scores_by_id": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 1.0, "5": 1.0, "6": 1.0, "7": 1.0, "8": 0.0, "9": 1.0}}
+{"iteration": 2, "candidate_idx": 2, "subset_average_score": 0.6, "subset_num_examples": 10, "subset_scores_by_id": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 1.0, "5": 1.0, "6": 1.0, "7": 1.0, "8": 0.0, "9": 1.0}}
+{"iteration": 3, "candidate_idx": 3, "subset_average_score": 0.6, "subset_num_examples": 10, "subset_scores_by_id": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 1.0, "5": 1.0, "6": 1.0, "7": 1.0, "8": 0.0, "9": 1.0}}
+{"iteration": 10, "candidate_idx": 4, "subset_average_score": 0.6, "subset_num_examples": 10, "subset_scores_by_id": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 1.0, "5": 1.0, "6": 1.0, "7": 1.0, "8": 0.0, "9": 1.0}}
+{"iteration": 12, "candidate_idx": 5, "subset_average_score": 0.6, "subset_num_examples": 10, "subset_scores_by_id": {"0": 1.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 1.0, "5": 1.0, "6": 1.0, "7": 1.0, "8": 0.0, "9": 1.0}}

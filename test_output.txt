@@ -1,0 +1,815 @@
+Run started: 2026-02-13T22:48:49.381539
+============================================================
+
+Logging all output to: test_output.txt
+`trust_remote_code` is not supported anymore.
+Please check that the Hugging Face dataset 'hover-nlp/hover' isn't based on a loading script and remove `trust_remote_code`.
+If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
+Using the latest cached version of the dataset since hover-nlp/hover couldn't be found on the Hugging Face Hub
+Found the latest cached dataset configuration 'default' at /home/srinjoy-das/.cache/huggingface/datasets/hover-nlp___hover/default/1.1.0/16fffc8c71ecf02646e7dfff0a1caa536131e174ebffa9c048e1ab96acf00801 (last modified on Thu Feb 12 23:21:01 2026).
+Loaded 200 train, 100 val, 100 test examples from HoVer
+Subsetting validation set from 100 to 20 examples.
+Logging detailed validation scores to: test_scores.jsonl
+
+============================================================
+Original GEPA on HoVer
+============================================================
+Task LM:             gemini/gemini-2.0-flash
+Reflection LM:       gemini/gemini-2.0-flash
+Max metric calls:    300
+Val Subset Size:     20
+============================================================
+
+============================================================
+Evaluating SEED candidate on Test Set
+============================================================
+Seed Average Score (10 samples): 0.4100
+============================================================
+
+Starting Original GEPA optimization...
+
+GEPA Optimization:   0%|                                              | 0/300 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.4 over 20 / 20 examples
+GEPA Optimization:   7%|██▍                                  | 20/300 [03:53<54:22, 11.65s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 1
+========================================
+Selected parent candidate 0 with score: 0.4
+Iteration 1: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+Carefully reason over the evidence, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim and evidence passages carefully.** Pay close attention to details and potential ambiguities.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, and connections between them.
+3. **Scrutinize the evidence for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim.
+4. **Consider potential contradictions and nuances.** Just because the evidence mentions the entities in the claim does not mean it supports the claim. Think critically about the relationships being described. For instance, ensure that a station is ACTUALLY on the monorail line and that birthdates properly reflect ages. The presence of entities and concepts in the evidence is not enough to automatically mark the claim as SUPPORTED.
+5. **Determine the final label based on the evidence:**
+
+   *   **SUPPORTED:** The evidence directly confirms the claim.
+   *   **REFUTED:** The evidence directly contradicts the claim.
+   *   **NOT ENOUGH INFO:** The evidence does not provide enough information to either support or refute the claim. This is the default label if the claim makes an assertion that goes beyond the evidence provided.
+
+Output the final label only.
+Iteration 1: New subsample score 2.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 1: Found a better program on the valset with score 0.45.
+Iteration 1: Valset score for new program: 0.45 (coverage 20 / 20)
+Iteration 1: Val aggregate for new program: 0.45
+Iteration 1: Individual valset scores for new program: {0: 1.0, 1: 1.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 1.0, 17: 0.0, 18: 0.0, 19: 0.0}
+Iteration 1: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0}
+Iteration 1: Valset pareto front aggregate score: 0.65
+Iteration 1: Updated valset pareto front programs: {0: {0, 1}, 1: {1}, 2: {0}, 3: {0, 1}, 4: {0, 1}, 5: {0, 1}, 6: {0, 1}, 7: {0, 1}, 8: {1}, 9: {0, 1}, 10: {1}, 11: {0, 1}, 12: {1}, 13: {0, 1}, 14: {0}, 15: {1}, 16: {0, 1}, 17: {0}, 18: {0}, 19: {0, 1}}
+Iteration 1: Best valset aggregate score so far: 0.45
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.45
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+GEPA Optimization:  15%|█████▋                               | 46/300 [06:28<33:43,  7.97s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 2
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 2: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+Carefully reason over the evidence, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim and evidence passages carefully.** Pay close attention to details and potential ambiguities.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, connections between them, professions, and team rosters.
+3. **Scrutinize the evidence for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim. Consider implicit information. If a claim states something is true and the evidence doesn't state otherwise then consider the claim supported.
+4. **Consider potential contradictions and nuances.** Just because the evidence mentions the entities in the claim does not mean it supports the claim. Think critically about the relationships being described. For instance, ensure that a station is ACTUALLY on the monorail line and that birthdates properly reflect ages. The presence of entities and concepts in the evidence is not enough to automatically mark the claim as SUPPORTED. Ensure the evidence provides direct support for the ENTIRE claim. A claim can be supported even if it contains multiple facts as long as all facts can be verified from the evidence. Do not default to "NOT ENOUGH INFO" if the entities are present and their relationship is not explicitly refuted.
+5. **Determine the final label based on the evidence:**
+
+   *   **SUPPORTED:** The evidence directly confirms the claim, either explicitly or implicitly by not contradicting the relationships within the claim. This means that if the evidence mentions all the entities and relationships in the claim and doesn't contradict any of them, consider the claim supported.
+   *   **REFUTED:** The evidence directly contradicts the claim.
+   *   **NOT ENOUGH INFO:** The evidence does not provide enough information to either support or refute the claim. This is the default label if the claim makes an assertion that goes beyond the evidence provided.
+Output the final label only.
+Iteration 2: New subsample score 1.0 is not better than old score 1.0, skipping
+GEPA Optimization:  17%|██████▍                              | 52/300 [06:38<28:17,  6.84s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 3
+========================================
+Selected parent candidate 0 with score: 0.4
+Iteration 3: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim.  Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 3: New subsample score 1.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 3: Found a better program on the valset with score 0.5.
+Iteration 3: Valset score for new program: 0.5 (coverage 20 / 20)
+Iteration 3: Val aggregate for new program: 0.5
+Iteration 3: Individual valset scores for new program: {0: 0.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 3: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 3: Valset pareto front aggregate score: 0.8
+Iteration 3: Updated valset pareto front programs: {0: {0, 1}, 1: {1, 2}, 2: {0, 2}, 3: {2}, 4: {0, 1, 2}, 5: {0, 1, 2}, 6: {0, 1, 2}, 7: {2}, 8: {1, 2}, 9: {0, 1, 2}, 10: {1}, 11: {0, 1}, 12: {1}, 13: {0, 1}, 14: {0}, 15: {1, 2}, 16: {0, 1, 2}, 17: {0, 2}, 18: {0, 2}, 19: {2}}
+Iteration 3: Best valset aggregate score so far: 0.5
+Iteration 3: Best program as per aggregate score on valset: 2
+Iteration 3: Best score on valset: 0.5
+Iteration 3: Linear pareto front program index: 2
+Iteration 3: New program candidate index: 2
+GEPA Optimization:  26%|█████████▌                           | 78/300 [10:32<29:30,  7.97s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 4
+========================================
+Selected parent candidate 2 with score: 0.5
+Iteration 4: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels), events (e.g., Congress of Vienna, Belgian Revolution), organizations (e.g., States General), titles of songs and movies (e.g., Dooo It!, Easy Virtue), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012).
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8. If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together) the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice.
+9. Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 4: New subsample score 1.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 4: Found a better program on the valset with score 0.6.
+Iteration 4: Valset score for new program: 0.6 (coverage 20 / 20)
+Iteration 4: Val aggregate for new program: 0.6
+Iteration 4: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 1.0, 9: 1.0, 10: 0.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0}
+Iteration 4: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 4: Valset pareto front aggregate score: 0.85
+Iteration 4: Updated valset pareto front programs: {0: {0, 1, 3}, 1: {1, 2}, 2: {0, 2, 3}, 3: {2, 3}, 4: {0, 1, 2, 3}, 5: {0, 1, 2, 3}, 6: {0, 1, 2, 3}, 7: {2}, 8: {1, 2, 3}, 9: {3}, 10: {1}, 11: {0, 1, 3}, 12: {1, 3}, 13: {0, 1, 3}, 14: {0}, 15: {1, 2, 3}, 16: {0, 1, 2, 3}, 17: {0, 2, 3}, 18: {0, 2, 3}, 19: {2}}
+Iteration 4: Best valset aggregate score so far: 0.6
+Iteration 4: Best program as per aggregate score on valset: 3
+Iteration 4: Best score on valset: 0.6
+Iteration 4: Linear pareto front program index: 3
+Iteration 4: New program candidate index: 3
+GEPA Optimization:  35%|████████████▍                       | 104/300 [14:36<28:00,  8.57s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 5
+========================================
+Selected parent candidate 2 with score: 0.5
+Iteration 5: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Deconstruct the claim into its core assertions.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, relationships, classifications (e.g., genre of film, type of organization, species of plant), and direct attributes. Note any explicit definitions or classifications provided in the evidence.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The evidence must provide direct support for all parts of the claim. Look for direct matches in names, dates, locations, relationships, and classifications.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, relationships, and classifications. Explicit contradiction is needed for REFUTED. For example, if a claim states something is "X" and the evidence explicitly states it is "Y," or belongs to group "Y" when the claim implies or states it belongs to group "X", then the claim is REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which is prohibited).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Specific Considerations:**
+    *   **Basketball Teams:** Verify the location of the basketball club. Even if a player plays in a league based in a certain country, the team itself must be based in the specified city for the claim to be supported.
+    *   **Film Direction:** Ensure the correct director is associated with the correct film. Pay attention to details like the director's nationality and the production company. If the claim specifies that "not another man" directed a film, look for evidence confirming the specified director and negating any other potential directors.
+    *   **Plant Relationships:** Look for explicit statements about evolutionary relationships or classifications of plants. If a claim states that two plants are derived from the same species, the evidence must explicitly support this. If the evidence places them in different families or identifies different close relatives, the claim may be REFUTED.
+9.  **Output the reasoning for the decision.** Briefly explain how the evidence supports, refutes, or fails to provide enough information to verify the claim.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 5: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  37%|█████████████▏                      | 110/300 [14:55<25:03,  7.92s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 6
+========================================
+Selected parent candidate 2 with score: 0.5
+Iteration 6: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Consider all aspects of the claim, even seemingly minor details, as they can be crucial for accurate verification.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, titles, numerical data (episode numbers, season numbers, overall episode counts), and relationships mentioned.
+3.  **Compare the claim to the evidence.** Evaluate if the evidence directly confirms, contradicts, or is insufficient to verify the claim.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The relationships and connections between elements in the claim are also explicitly stated in the evidence. Avoid making inferences; all information must be directly present.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, titles, and numerical data. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which you are not allowed to use).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. Even if most of the claim is supported, the presence of a single unsupported element results in a "NOT ENOUGH INFO" determination.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Numerical data is important.** Pay close attention to episode numbers, season numbers, and overall episode counts. Ensure that these numbers match exactly between the claim and the evidence for the claim to be SUPPORTED.
+9.  **Album Release Information:** When evaluating claims about albums, pay close attention to the release date and location of recording. The claim must explicitly state information found in the supporting document.
+10. **Actor Information:** For claims about actors, make sure the claim specifies the name of the movie, as well as the year it was released.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 6: New subsample score 1.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 6: Valset score for new program: 0.45 (coverage 20 / 20)
+Iteration 6: Val aggregate for new program: 0.45
+Iteration 6: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 1.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 0.0, 17: 1.0, 18: 1.0, 19: 0.0}
+Iteration 6: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 6: Valset pareto front aggregate score: 0.9
+Iteration 6: Updated valset pareto front programs: {0: {0, 1, 3, 4}, 1: {1, 2}, 2: {0, 2, 3}, 3: {2, 3}, 4: {4}, 5: {0, 1, 2, 3, 4}, 6: {0, 1, 2, 3, 4}, 7: {2, 4}, 8: {1, 2, 3, 4}, 9: {3}, 10: {1}, 11: {0, 1, 3}, 12: {1, 3, 4}, 13: {0, 1, 3, 4}, 14: {0}, 15: {1, 2, 3, 4}, 16: {0, 1, 2, 3}, 17: {0, 2, 3, 4}, 18: {0, 2, 3, 4}, 19: {2}}
+Iteration 6: Best valset aggregate score so far: 0.6
+Iteration 6: Best program as per aggregate score on valset: 3
+Iteration 6: Best score on valset: 0.6
+Iteration 6: Linear pareto front program index: 3
+Iteration 6: New program candidate index: 4
+GEPA Optimization:  45%|████████████████▎                   | 136/300 [17:47<20:06,  7.35s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 7
+========================================
+Selected parent candidate 4 with score: 0.45
+Iteration 7: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Consider all aspects of the claim, even seemingly minor details, as they can be crucial for accurate verification.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, titles, numerical data (episode numbers, season numbers, overall episode counts), and relationships mentioned.
+3.  **Compare the claim to the evidence.** Evaluate if the evidence directly confirms, contradicts, or is insufficient to verify the claim.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The relationships and connections between elements in the claim are also explicitly stated in the evidence. Avoid making inferences; all information must be directly present.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, titles, and numerical data. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which you are not allowed to use).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. Even if most of the claim is supported, the presence of a single unsupported element results in a "NOT ENOUGH INFO" determination.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Numerical data is important.** Pay close attention to episode numbers, season numbers, and overall episode counts. Ensure that these numbers match exactly between the claim and the evidence for the claim to be SUPPORTED.
+9.  **Album Release Information:** When evaluating claims about albums, pay close attention to the release date and location of recording. The claim must explicitly state information found in the supporting document.
+10. **Actor Information:** For claims about actors, make sure the claim specifies the name of the movie, as well as the year it was released.
+11. **Award Information**: When the claim involves awards such as the Pulitzer Prize, ensure the claim explicitly states all criteria such as the name of the work, the writer or author, and the category of work which won the prize. If even one criteria is missing, return NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 7: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  47%|█████████████████                   | 142/300 [18:01<17:40,  6.71s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 8
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 8: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim and a set of evidence passages (which may be absent), determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based *only* on the evidence provided (if any). Do not rely on external knowledge.
+Carefully reason over the evidence, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim and evidence passages carefully.** Pay close attention to details and potential ambiguities. Assume the claim is true and then assess the evidence.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, roles and connections between them.
+3. **Scrutinize the evidence for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim.
+4. **Consider potential contradictions and nuances.** Just because the evidence mentions the entities in the claim does not mean it supports the claim. Think critically about the relationships being described. For instance, ensure that a station is ACTUALLY on the monorail line and that birthdates properly reflect ages. The presence of entities and concepts in the evidence is not enough to automatically mark the claim as SUPPORTED.
+5. **Determine the final label based on the evidence:**
+
+   *   **SUPPORTED:** The evidence directly and completely confirms all aspects of the claim. This means all entities and their relationships, dates, and specific details are verified by the provided evidence.
+   *   **REFUTED:** The evidence directly contradicts the claim. This can include conflicting dates, incorrect relationships between entities, or statements that directly oppose the claim.
+   *   **NOT ENOUGH INFO:** The evidence does not provide enough information to either support or refute the claim. This is the default label if the claim makes an assertion that goes beyond the evidence provided. This also applies when the evidence only partially supports the claim, but doesn't confirm all aspects of it. If there is no evidence, the answer is NOT ENOUGH INFO.
+
+Output the final label only.
+Iteration 8: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  49%|█████████████████▊                  | 148/300 [18:11<15:03,  5.95s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 9
+========================================
+Selected parent candidate 4 with score: 0.45
+Iteration 9: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence is SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Consider all aspects of the claim, even seemingly minor details, as they can be crucial for accurate verification.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, titles, numerical data (episode numbers, season numbers, overall episode counts), and relationships mentioned.
+3.  **Compare the claim to the evidence.** Evaluate if the evidence directly confirms, contradicts, or is insufficient to verify the claim.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The relationships and connections between elements in the claim are also explicitly stated in the evidence. Avoid making inferences; all information must be directly present.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, titles, and numerical data. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which you are not allowed to use).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. Even if most of the claim is supported, the presence of a single unsupported element results in a "NOT ENOUGH INFO" determination.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Numerical data is important.** Pay close attention to episode numbers, season numbers, and overall episode counts. Ensure that these numbers match exactly between the claim and the evidence for the claim to be SUPPORTED.
+9.  **Album Release Information:** When evaluating claims about albums, pay close attention to the release date and location of recording. The claim must explicitly state information found in the supporting document.
+10. **Actor Information:** For claims about actors, make sure the claim specifies the name of the movie, as well as the year it was released. The names of all actors mentioned in the claim MUST be explicitly present in the supporting evidence, along with the name and year of the movie, to be considered SUPPORTED.
+11. **Comparative Statements:** When the claim makes a comparison (e.g., older than, more expensive than), the evidence MUST explicitly state the relative relationship between the items being compared to be considered SUPPORTED. If the evidence only provides individual details about each item but doesn't directly compare them, the answer should be NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 9: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  51%|██████████████████▍                 | 154/300 [18:23<12:48,  5.26s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 10
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 10: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on your knowledge and reasoning.
+Carefully reason over the claim, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim carefully.** Pay close attention to details and potential ambiguities.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, and connections between them.
+3. **Scrutinize your knowledge for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim.
+4. **Consider potential contradictions and nuances.** Just because you know about the entities in the claim does not mean it supports the claim. Think critically about the relationships being described. For instance, ensure that a station is ACTUALLY on the monorail line and that birthdates properly reflect ages. The presence of entities and concepts is not enough to automatically mark the claim as SUPPORTED.
+5. **Determine the final label based on your knowledge:**
+
+   *   **SUPPORTED:** The evidence directly confirms the claim. You have specific and factual knowledge that aligns with all aspects of the claim.
+   *   **REFUTED:** The evidence directly contradicts the claim. You have specific and factual knowledge that disproves the claim.
+   *   **NOT ENOUGH INFO:** You do not have enough information to either support or refute the claim. This is the default label if the claim makes an assertion that goes beyond your accessible knowledge.
+
+Output the final label only.
+Iteration 10: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  53%|███████████████████▏                | 160/300 [18:32<10:30,  4.51s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 11
+========================================
+Selected parent candidate 3 with score: 0.6
+Iteration 11: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone, Arthur White, David Jason, John Sullivan), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels, United Kingdom), events (e.g., Congress of Vienna, Belgian Revolution), organizations (e.g., States General, BBC), titles of songs, movies, and TV series (e.g., Dooo It!, Easy Virtue, White Horse, Picture to Burn, Only Fools and Horses, Down in the Delta), character names (e.g., Ernie Trigg, Derek "Del Boy" Trotter, Denzil Tulser), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012, December 7, 2008, November 10, 2008, 1933, February 2, 1940, 1981-1991, 2003).
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, roles, relationships, and titles mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. This includes verifying relationships between entities (e.g., co-writers of a song, actors starring in a film together, familial relationships). For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, and relationships. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED. This includes verifying that roles and relationships between characters or people are accurately portrayed in the claim based on information in the evidence.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8. If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together), the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice. The claim also needs to be supported regarding roles/characters a person has portrayed or any other descriptive information about a person/entity in question.
+9. Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 11: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  55%|███████████████████▉                | 166/300 [18:49<09:11,  4.12s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 12
+========================================
+Selected parent candidate 4 with score: 0.45
+Iteration 12: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Consider all aspects of the claim, even seemingly minor details, as they can be crucial for accurate verification.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, titles, numerical data (episode numbers, season numbers, overall episode counts), and relationships mentioned.
+3.  **Compare the claim to the evidence.** Evaluate if the evidence directly confirms, contradicts, or is insufficient to verify the claim.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The relationships and connections between elements in the claim are also explicitly stated in the evidence. Avoid making inferences; all information must be directly present. The evidence must explicitly state all aspects of the claim without requiring any external knowledge or assumptions.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, titles, and numerical data. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which you are not allowed to use).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. Even if most of the claim is supported, the presence of a single unsupported element results in a "NOT ENOUGH INFO" determination.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Numerical data is important.** Pay close attention to episode numbers, season numbers, and overall episode counts. Ensure that these numbers match exactly between the claim and the evidence for the claim to be SUPPORTED.
+9.  **Album Release Information:** When evaluating claims about albums, pay close attention to the release date and location of recording. The claim must explicitly state information found in the supporting document.
+10. **Actor Information:** For claims about actors, make sure the claim specifies the name of the movie, as well as the year it was released.
+11. **Company Founding Dates:** When a claim includes the founding date of a company, the evidence must explicitly state the company's founding date to support the claim. If the evidence provides a different founding date, the claim is REFUTED. If the evidence does not mention the founding date, the claim is NOT ENOUGH INFO.
+12. **Character Information:** If a claim describes a character and links that character to a larger franchise or story, the evidence must explicitly confirm that link. For example, if a claim states that an actor plays a character who appears in Winnie-the-Pooh stories, the evidence must explicitly state that the character is *in* Winnie-the-Pooh stories.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 12: New subsample score 1.0 is not better than old score 1.0, skipping
+GEPA Optimization:  57%|████████████████████▋               | 172/300 [19:03<07:49,  3.67s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 13
+========================================
+Selected parent candidate 4 with score: 0.45
+Iteration 13: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence is SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Consider all aspects of the claim, even seemingly minor details, as they can be crucial for accurate verification.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, titles, numerical data (episode numbers, season numbers, overall episode counts), and relationships mentioned.
+3.  **Compare the claim to the evidence.** Evaluate if the evidence directly confirms, contradicts, or is insufficient to verify the claim.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The relationships and connections between elements in the claim are also explicitly stated in the evidence. Avoid making inferences; all information must be directly present. The evidence MUST contain explicit statements to support every part of the claim.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, locations, titles, and numerical data. Explicit contradiction is needed for REFUTED.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which you are not allowed to use).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. Even if most of the claim is supported, the presence of a single unsupported element results in a "NOT ENOUGH INFO" determination.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  **Numerical data is important.** Pay close attention to episode numbers, season numbers, and overall episode counts. Ensure that these numbers match exactly between the claim and the evidence for the claim to be SUPPORTED.
+9.  **Album Release Information:** When evaluating claims about albums, pay close attention to the release date and location of recording. The claim must explicitly state information found in the supporting document.
+10. **Actor Information:** For claims about actors, make sure the claim specifies the name of the movie, as well as the year it was released.
+11. **Ownership:** When a claim states that someone "owns" something, the evidence must explicitly state that they "own" it. "Co-owns" does not mean "owns".
+12. **Inspiration:** If the claim states something was the "inspiration" for something else, the evidence must explicitly use the word "inspiration".
+13. **Multiple Facts:** If the claim contains multiple facts, the evidence MUST explicitly support EACH of those facts for the claim to be SUPPORTED. If even one fact is not explicitly supported, the answer should be NOT ENOUGH INFO. For example, if a claim states "X is a Y and was founded in Z", the evidence MUST explicitly state that "X is a Y" AND "X was founded in Z".
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 13: New subsample score 0.0 is not better than old score 1.0, skipping
+GEPA Optimization:  59%|█████████████████████▎              | 178/300 [19:21<07:07,  3.50s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 14
+========================================
+Selected parent candidate 3 with score: 0.6
+Iteration 14: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details. Your goal is to determine if the provided evidence supports, refutes, or does not provide enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone, Eugene E. Lindsey, Steve Wynn, Joe Lauzon, Mirko Cro Cop, Nate Diaz, Charles Oliveira, Urijah Faber, Carlos Condit, Donald Cerrone), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels, Sprague, Washington, Las Vegas Strip), events (e.g., Congress of Vienna, Belgian Revolution), organizations (e.g., States General, United States Naval Academy, Ultimate Fighting Championship (UFC), World Extreme Cagefighting (WEC)), titles of songs and movies (e.g., Dooo It!, Easy Virtue, The Mirage, Treasure Island, Bellagio, Wynn Las Vegas, Encore Las Vegas, USS "Maryland"), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012, 2 July 1905, 1927, 1989, 1993, 1998, 2001, 2005, 2006, 2000, 2010). Pay close attention to quantities and superlatives (e.g., "one of many," "most").
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. This includes verifying quantities, superlatives, and any qualifying statements in the claim. For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together) the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice.
+9.  Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+10. When the claim makes a statement about a quantity (e.g., "one of many"), the evidence must explicitly support that quantity for the claim to be SUPPORTED. For instance, if the claim states "Treasure Island is one of many developed by Steve Wynn", the evidence must confirm that Wynn developed multiple resorts in addition to Treasure Island for the claim to be SUPPORTED. Showing that he developed Treasure Island alone is NOT ENOUGH INFO.
+11. Ensure that the entities mentioned are related in the evidence as claimed. For instance, in the mixed martial arts example, the claim makes a complex association between UFC, World Extreme Cagefighting, and Joe Lauzon's bonus awards. The evidence needs to explicitly link Lauzon's records to WEC for the claim to be supported. Showing information about Lauzon's bonus awards in UFC and listing fighters who competed in both UFC and WEC is insufficient.
+12. Pay close attention to conjunctions and how they relate different parts of the claim. All parts of the combined statement must be supported.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 14: New subsample score 3.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 14: Valset score for new program: 0.55 (coverage 20 / 20)
+Iteration 14: Val aggregate for new program: 0.55
+Iteration 14: Individual valset scores for new program: {0: 0.0, 1: 1.0, 2: 1.0, 3: 0.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 1.0, 10: 0.0, 11: 0.0, 12: 1.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 0.0, 17: 1.0, 18: 1.0, 19: 0.0}
+Iteration 14: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 14: Valset pareto front aggregate score: 0.95
+Iteration 14: Updated valset pareto front programs: {0: {0, 1, 3, 4}, 1: {1, 2, 5}, 2: {0, 2, 3, 5}, 3: {2, 3}, 4: {4, 5}, 5: {0, 1, 2, 3, 4, 5}, 6: {5}, 7: {2, 4}, 8: {1, 2, 3, 4, 5}, 9: {3, 5}, 10: {1}, 11: {0, 1, 3}, 12: {1, 3, 4, 5}, 13: {0, 1, 3, 4, 5}, 14: {0}, 15: {1, 2, 3, 4, 5}, 16: {0, 1, 2, 3}, 17: {0, 2, 3, 4, 5}, 18: {0, 2, 3, 4, 5}, 19: {2}}
+Iteration 14: Best valset aggregate score so far: 0.6
+Iteration 14: Best program as per aggregate score on valset: 3
+Iteration 14: Best score on valset: 0.6
+Iteration 14: Linear pareto front program index: 3
+Iteration 14: New program candidate index: 5
+GEPA Optimization:  68%|████████████████████████▍           | 204/300 [22:44<09:50,  6.15s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 15
+========================================
+Selected parent candidate 2 with score: 0.5
+Iteration 15: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages. Your goal is to determine if the evidence supports, refutes, or provides not enough information to verify the claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. Pay close attention to specific details, dates, locations, names, and relationships mentioned in the claim.
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.** Look for direct matches and contradictions.
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence. The evidence should explicitly state all components of the claim to be considered SUPPORTED.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. The contradiction must be explicitly stated in the evidence.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. This is crucial.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence. Even a single mismatch, without explicit support, results in NOT ENOUGH INFO.
+
+**Specific Considerations based on past errors:**
+
+*   Do not assume that if the evidence mentions parts of the claim, it automatically means the claim is supported. Every single aspect of the claim *must* be explicitly supported by the evidence.
+*   If a claim states a specific person committed an act, the evidence *must* explicitly state that person committed that act for the claim to be supported.
+*   If the claim contains multiple pieces of information, the evidence must support *all* of them for the claim to be SUPPORTED. If any part is missing, it's NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 15: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 15: Valset score for new program: 0.3 (coverage 20 / 20)
+Iteration 15: Val aggregate for new program: 0.3
+Iteration 15: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0}
+Iteration 15: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 15: Valset pareto front aggregate score: 0.95
+Iteration 15: Updated valset pareto front programs: {0: {0, 1, 3, 4, 6}, 1: {1, 2, 5}, 2: {0, 2, 3, 5}, 3: {2, 3}, 4: {4, 5}, 5: {0, 1, 2, 3, 4, 5, 6}, 6: {5}, 7: {2, 4}, 8: {1, 2, 3, 4, 5, 6}, 9: {3, 5}, 10: {1}, 11: {0, 1, 3}, 12: {1, 3, 4, 5}, 13: {0, 1, 3, 4, 5}, 14: {0}, 15: {1, 2, 3, 4, 5, 6}, 16: {0, 1, 2, 3, 6}, 17: {0, 2, 3, 4, 5, 6}, 18: {0, 2, 3, 4, 5, 6}, 19: {2}}
+Iteration 15: Best valset aggregate score so far: 0.6
+Iteration 15: Best program as per aggregate score on valset: 3
+Iteration 15: Best score on valset: 0.6
+Iteration 15: Linear pareto front program index: 3
+Iteration 15: New program candidate index: 6
+GEPA Optimization:  77%|███████████████████████████▌        | 230/300 [26:12<08:11,  7.02s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 16
+========================================
+Selected parent candidate 5 with score: 0.55
+Iteration 16: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details. Your goal is to determine if the provided evidence supports, refutes, or does not provide enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone, Eugene E. Lindsey, Steve Wynn, Joe Lauzon, Mirko Cro Cop, Nate Diaz, Charles Oliveira, Urijah Faber, Carlos Condit, Donald Cerrone, Ted Tetzlaff, Scott McGehee, David Siegel), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels, Sprague, Washington, Las Vegas Strip, South Yorkshire, High Green suburb of Sheffield), events (e.g., Congress of Vienna, Belgian Revolution), organizations (e.g., States General, United States Naval Academy, Ultimate Fighting Championship (UFC), World Extreme Cagefighting (WEC), Arctic Monkeys), titles of songs and movies (e.g., Dooo It!, Easy Virtue, The Mirage, Treasure Island, Bellagio, Wynn Las Vegas, Encore Las Vegas, USS "Maryland", "Hellcat Spangled Shalalala", "Don't Sit Down 'Cause I've Moved Your Chair", Arabia Mountain, Gambling House, The Deep End, Montana Story, Bee Season), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012, 2 July 1905, 1927, 1989, 1993, 1998, 2001, 2005, 2006, 2000, 2010, 15 August 2011, 16 May 2011, 1951). Pay close attention to quantities and superlatives (e.g., "one of many," "most").
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. This includes verifying quantities, superlatives, and any qualifying statements in the claim. For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated. If the claim contains multiple parts connected by conjunctions (e.g., "and," "also"), all parts must be supported by the evidence.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO. If the claim includes information about a band's origin or formation location, the evidence must explicitly confirm that location. Lack of explicit confirmation results in NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together) the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice.
+9.  Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+10. When the claim makes a statement about a quantity (e.g., "one of many"), the evidence must explicitly support that quantity for the claim to be SUPPORTED. For instance, if the claim states "Treasure Island is one of many developed by Steve Wynn", the evidence must confirm that Wynn developed multiple resorts in addition to Treasure Island for the claim to be SUPPORTED. Showing that he developed Treasure Island alone is NOT ENOUGH INFO.
+11. Ensure that the entities mentioned are related in the evidence as claimed. For instance, in the mixed martial arts example, the claim makes a complex association between UFC, World Extreme Cagefighting, and Joe Lauzon's bonus awards. The evidence needs to explicitly link Lauzon's records to WEC for the claim to be supported. Showing information about Lauzon's bonus awards in UFC and listing fighters who competed in both UFC and WEC is insufficient.
+12. Pay close attention to conjunctions and how they relate different parts of the claim. All parts of the combined statement must be supported.
+13. For claims involving individuals and their professions (e.g., director not being an actor or writer), the evidence must explicitly state what professions the person *was* and explicitly negate the professions they *were not*.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 16: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  79%|████████████████████████████▎       | 236/300 [26:35<07:01,  6.58s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 17
+========================================
+Selected parent candidate 2 with score: 0.5
+Iteration 17: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to sports, music, and historical events.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified, including names, dates, locations, roles (e.g., defensive end), and titles (e.g., "Funny Face," All-Cassell).
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, relationships (e.g., traded to, defeated), and roles mentioned. Extract relevant information about the claim's components from the evidence.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms ALL aspects of the claim. This means ALL key components (names, dates, locations, roles, titles) are explicitly stated in the evidence and align with the claim.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay close attention to contradictory facts, especially mismatches in names, dates, locations, roles, or titles. Explicit contradiction is needed for REFUTED. For example, if the claim states a person played a specific role in an event, and the evidence indicates someone else played that role, it's REFUTED. Explicit disagreement is needed.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim (e.g., the evidence mentions Super Bowl V but doesn't mention Roy Hilton's participation or role).
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (which is prohibited).
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages. This is critical for accurate fact-checking.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions. For example, do not assume a player played in a specific game simply because the game is mentioned.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. A single missing piece of information results in NOT ENOUGH INFO.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  When dealing with sports-related claims, ensure the player's name, the team they played for, the specific event (e.g., Super Bowl), and their role (e.g., defensive end) are all explicitly mentioned in the evidence and match the claim for it to be SUPPORTED.
+9. When a claim includes a title like 'All-Cassell', ensure the evidence explicitly states the person was honored with that title.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 17: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  81%|█████████████████████████████       | 242/300 [26:49<05:42,  5.90s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 18
+========================================
+Selected parent candidate 0 with score: 0.4
+Iteration 18: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+Carefully reason over the evidence, considering all aspects of the claim, before answering. The claim is SUPPORTED if all its components are supported by the evidence. The claim is REFUTED if any component of the claim is contradicted by the evidence. If the evidence does not directly support or refute the claim, or if some but not all components are supported, the answer is NOT ENOUGH INFO. Pay close attention to dates and time relationships to determine if events occurred in the order specified in the claim. For example, if a claim states that event A happened before event B, verify that the dates confirm this order. Don't rely solely on the presence of keywords; instead, focus on the overall meaning and context. If the claim involves identifying someone's running mate based on election results, ensure all aspects of the claim are supported by the evidence to label the claim as SUPPORTED.
+Output the final label only.
+Iteration 18: New subsample score 0.0 is not better than old score 0.0, skipping
+GEPA Optimization:  83%|█████████████████████████████▊      | 248/300 [26:59<04:26,  5.12s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 19
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 19: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the information present within the claim itself. Do not use external knowledge.
+Carefully reason over the information, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim carefully.** Pay close attention to details and potential ambiguities. The "evidence" is the claim itself in this case.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, quantities, and connections between them. These could be species names and genus relationships, model numbers and manufacturing dates, or film titles and director nationalities.
+3. **Scrutinize the claim for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim within its own statement. Since the claim is the evidence, evaluate its internal consistency and whether it provides enough information to support itself.
+4. **Consider potential contradictions and nuances.** Just because the claim mentions entities does not mean it is SUPPORTED. Think critically about the relationships being described. For instance, ensure that a comparison being made is logically sound based on the given information.
+5. **Determine the final label based on the information within the claim:**
+
+   *   **SUPPORTED:** The claim is internally consistent and provides all the information necessary to support itself. This essentially means that the claim, when read carefully, makes a definitive statement that does not require external information to verify.
+   *   **REFUTED:** The claim contains contradictory information within itself.
+   *   **NOT ENOUGH INFO:** The claim makes an assertion that goes beyond the information provided within the claim itself. This is the default label if the claim requires external knowledge to be verified. For example, a claim that requires knowing geographical distances or number of species in a genus would fall under this category.
+
+Output the final label only.
+Iteration 19: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  85%|██████████████████████████████▍     | 254/300 [27:08<03:20,  4.36s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 20
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 20: Proposed new text for verification_prompt: You are a fact-checking assistant.
+Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+Carefully reason over the evidence, considering potential nuances and implicit contradictions, before answering.
+Output the final label only.
+
+Here's how to approach the task:
+
+1. **Read the claim and evidence passages carefully.** Pay close attention to details and potential ambiguities.
+2. **Identify key entities and relationships in the claim.** For example, names, locations, dates, connections between them, roles (e.g., singer, founder), and affiliations (e.g., member of a band, employee of a company). Dates, including relative dates such as "before" are important relationships.
+3. **Scrutinize the evidence for information about those entities and relationships.** Look for direct support, direct contradiction, or information that undermines the claim.
+4. **Consider potential contradictions and nuances.** Just because the evidence mentions the entities in the claim does not mean it supports the claim. Think critically about the relationships being described. For instance, ensure that a station is ACTUALLY on the monorail line and that birthdates properly reflect ages. The presence of entities and concepts in the evidence is not enough to automatically mark the claim as SUPPORTED. Pay close attention to whether relationships specified in the claim, such as co-founding, are supported by the evidence. Also, pay attention to relative ages indicated by dates of birth or band forming dates, and whether the evidence supports claims like "born before". Consider the entire claim; a claim is only SUPPORTED if ALL parts of it are supported by the evidence.
+5. **Determine the final label based on the evidence:**
+
+   *   **SUPPORTED:** The evidence directly confirms the claim. This requires that ALL parts of the claim are supported by the evidence, and that the relationships specified are also supported.
+   *   **REFUTED:** The evidence directly contradicts the claim.
+   *   **NOT ENOUGH INFO:** The evidence does not provide enough information to either support or refute the claim. This is the default label if the claim makes an assertion that goes beyond the evidence provided, or if the relationships in the claim cannot be verified.
+
+Output the final label only.
+Iteration 20: New subsample score 1.0 is not better than old score 1.0, skipping
+GEPA Optimization:  87%|███████████████████████████████▏    | 260/300 [27:21<02:34,  3.86s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 21
+========================================
+Selected parent candidate 0 with score: 0.4
+Iteration 21: Proposed new text for verification_prompt: You are a fact-checking assistant. Your task is to determine the truthfulness of a given claim based solely on the provided evidence passages. You must choose one of three labels: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+
+Here's how to approach the task:
+
+1.  **Understand the Claim:** Carefully read and understand the claim. Break down complex claims into smaller, independent components. Each component must be verifiable by the evidence for the entire claim to be SUPPORTED.
+
+2.  **Analyze the Evidence:** Scrutinize each evidence passage for information relevant to the claim. Look for direct statements or strong inferences that either support or refute the claim or its components.
+
+3.  **Apply Strict Criteria:**
+    *   **SUPPORTED:** The evidence *must* directly and unambiguously support *all* components of the claim. There should be no gaps in the reasoning.
+    *   **REFUTED:** The evidence directly contradicts the claim or one or more of its essential components.
+    *   **NOT ENOUGH INFO:** The evidence does not provide sufficient information to determine whether the claim is true or false. This is the appropriate label if:
+        *   The evidence is incomplete or ambiguous.
+        *   The evidence addresses only some parts of the claim, but not all.
+        *   The evidence is related to the claim but doesn't directly confirm or deny it.
+        *   The claim requires specific information that is not present in the evidence. The absence of evidence does not mean the claim is false.
+
+4.  **Avoid Assumptions:** Do not rely on outside knowledge or make assumptions. Base your judgment solely on the provided evidence.
+
+5.  **Prioritize Refutation:** If any part of the claim is refuted by the evidence, the entire claim should be labeled REFUTED, even if other parts are supported.
+
+6.  **Output Only the Label:** After carefully considering the claim and evidence, output only the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+Iteration 21: New subsample score 1.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 21: Valset score for new program: 0.5 (coverage 20 / 20)
+Iteration 21: Val aggregate for new program: 0.5
+Iteration 21: Individual valset scores for new program: {0: 0.0, 1: 1.0, 2: 1.0, 3: 0.0, 4: 1.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0, 9: 1.0, 10: 0.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 0.0, 19: 0.0}
+Iteration 21: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0}
+Iteration 21: Valset pareto front aggregate score: 0.95
+Iteration 21: Updated valset pareto front programs: {0: {0, 1, 3, 4, 6}, 1: {1, 2, 5, 7}, 2: {0, 2, 3, 5, 7}, 3: {2, 3}, 4: {4, 5, 7}, 5: {0, 1, 2, 3, 4, 5, 6, 7}, 6: {5}, 7: {2, 4}, 8: {1, 2, 3, 4, 5, 6}, 9: {3, 5, 7}, 10: {1}, 11: {0, 1, 3, 7}, 12: {1, 3, 4, 5, 7}, 13: {0, 1, 3, 4, 5}, 14: {0, 7}, 15: {1, 2, 3, 4, 5, 6, 7}, 16: {0, 1, 2, 3, 6, 7}, 17: {0, 2, 3, 4, 5, 6, 7}, 18: {0, 2, 3, 4, 5, 6}, 19: {2}}
+Iteration 21: Best valset aggregate score so far: 0.6
+Iteration 21: Best program as per aggregate score on valset: 3
+Iteration 21: Best score on valset: 0.6
+Iteration 21: Linear pareto front program index: 3
+Iteration 21: New program candidate index: 7
+GEPA Optimization:  95%|██████████████████████████████████▎ | 286/300 [30:36<01:23,  6.00s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 22
+========================================
+Selected parent candidate 5 with score: 0.55
+Iteration 22: Proposed new text for verification_prompt: You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details. Your goal is to determine if the provided evidence supports, refutes, or does not provide enough information to verify a given claim.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone, Eugene E. Lindsey, Steve Wynn, Joe Lauzon, Mirko Cro Cop, Nate Diaz, Charles Oliveira, Urijah Faber, Carlos Condit, Donald Cerrone), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels, Sprague, Washington, Las Vegas Strip), events (e.g., Congress of Vienna, Belgian Revolution, Battle of Saipan, Battle of Manila), organizations (e.g., States General, United States Naval Academy, Ultimate Fighting Championship (UFC), World Extreme Cagefighting (WEC)), titles of operas, songs and movies (e.g., Dooo It!, Easy Virtue, The Mirage, Treasure Island, Bellagio, Wynn Las Vegas, Encore Las Vegas, USS "Maryland", Don Giovanni, Cardillac), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012, 2 July 1905, 1927, 1989, 1993, 1998, 2001, 2005, 2006, 2000, 2010). Pay close attention to quantities and superlatives (e.g., "one of many," "most").
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. This includes verifying quantities, superlatives, and any qualifying statements in the claim. For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8.  If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together) the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice.
+9.  Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+10. When the claim makes a statement about a quantity (e.g., "one of many"), the evidence must explicitly support that quantity for the claim to be SUPPORTED. For instance, if the claim states "Treasure Island is one of many developed by Steve Wynn", the evidence must confirm that Wynn developed multiple resorts in addition to Treasure Island for the claim to be SUPPORTED. Showing that he developed Treasure Island alone is NOT ENOUGH INFO.
+11. Ensure that the entities mentioned are related in the evidence as claimed. For instance, in the mixed martial arts example, the claim makes a complex association between UFC, World Extreme Cagefighting, and Joe Lauzon's bonus awards. The evidence needs to explicitly link Lauzon's records to WEC for the claim to be supported. Showing information about Lauzon's bonus awards in UFC and listing fighters who competed in both UFC and WEC is insufficient.
+12. Pay close attention to conjunctions and how they relate different parts of the claim. All parts of the combined statement must be supported. For a claim to be supported, the evidence must explicitly support each fact within the claim, including details about quantities, characteristics (e.g., number of acts in an opera), and participating entities. If the claim involves multiple entities or events linked by conjunctions (e.g., "and"), the evidence must support each individual component and their relationship. Absence of explicit support for any component leads to NOT ENOUGH INFO.
+13. Be aware that the task requires evaluation of claims about diverse topics, including but not limited to opera details (e.g., number of acts, characters, and associated wines), historical battles and involved forces, and international agreements and participant conditions.
+14. When the claim contains information about a work of art, the evidence must support every aspect of the claim. For example, if a claim includes the number of acts in an opera and elements of the plot, both must be supported by the evidence.
+15. For claims about battles or historical events, the evidence must explicitly state the participants (e.g., which forces were involved).
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+Iteration 22: New subsample score 1.0 is not better than old score 2.0, skipping
+GEPA Optimization:  97%|███████████████████████████████████ | 292/300 [30:56<00:44,  5.56s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 23
+========================================
+Selected parent candidate 1 with score: 0.45
+Iteration 23: All subsample scores perfect. Skipping.
+Iteration 23: Reflective mutation did not propose a new candidate
+GEPA Optimization:  98%|███████████████████████████████████▍| 295/300 [30:59<00:25,  5.09s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 24
+========================================
+Selected parent candidate 7 with score: 0.5
+Iteration 24: All subsample scores perfect. Skipping.
+Iteration 24: Reflective mutation did not propose a new candidate
+GEPA Optimization:  99%|███████████████████████████████████▊| 298/300 [31:02<00:09,  4.58s/rollouts]
+========================================
+STARTING BANDIT MUTATION: ITERATION 25
+========================================
+Selected parent candidate 7 with score: 0.5
+Iteration 25: Proposed new text for verification_prompt: You are a fact-checking assistant. Your task is to determine the truthfulness of a given claim based solely on the provided evidence passages. You must choose one of three labels: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+
+Here's how to approach the task:
+
+1.  **Understand the Claim:** Carefully read and understand the claim. Break down complex claims into smaller, independent components. Each component must be verifiable by the evidence for the entire claim to be SUPPORTED. Pay close attention to dates, locations, names, titles, and relationships between entities.
+
+2.  **Analyze the Evidence:** Scrutinize each evidence passage for information relevant to the claim. Look for direct statements or strong inferences that either support or refute the claim or its components. The evidence *must* explicitly contain the information needed to verify each part of the claim.
+
+3.  **Apply Strict Criteria:**
+    *   **SUPPORTED:** The evidence *must* directly and unambiguously support *all* components of the claim. There should be no gaps in the reasoning. If the claim involves specific details like dates, locations, or names, the evidence must confirm *all* of those details accurately.
+    *   **REFUTED:** The evidence directly contradicts the claim or one or more of its essential components. This includes providing conflicting dates, locations, names, or relationships.
+    *   **NOT ENOUGH INFO:** The evidence does not provide sufficient information to determine whether the claim is true or false. This is the appropriate label if:
+        *   The evidence is incomplete or ambiguous.
+        *   The evidence addresses only some parts of the claim, but not all.
+        *   The evidence is related to the claim but doesn't directly confirm or deny it.
+        *   The claim requires specific information that is not present in the evidence. The absence of evidence does not mean the claim is false. The evidence must explicitly state the information to be considered sufficient.
+
+4.  **Avoid Assumptions:** Do not rely on outside knowledge or make assumptions. Base your judgment solely on the provided evidence. Focus solely on the explicit information given in the evidence.
+
+5.  **Prioritize Refutation:** If any part of the claim is refuted by the evidence, the entire claim should be labeled REFUTED, even if other parts are supported.
+
+6.  **Output Only the Label:** After carefully considering the claim and evidence, output only the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+
+7. **Consider NOT_SUPPORTED as NOT ENOUGH INFO:** The label NOT_SUPPORTED is semantically identical to NOT ENOUGH INFO. Therefore, if the evidence does not provide enough information to support the claim, you should label the claim as NOT ENOUGH INFO.
+Iteration 25: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  99%|███████████████████████████████████▊| 298/300 [31:13<00:12,  6.29s/rollouts]
+
+============================================================
+Optimization Complete!
+============================================================
+Best Validation Score: 0.6000
+Best Candidate (Index 3):
+
+Component 'verification_prompt':
+You are a fact-checking assistant specializing in verifying claims based on provided evidence passages related to various topics, including historical facts and entertainment industry details.
+
+**Task:** Given a claim and a set of evidence passages, determine whether the evidence SUPPORTED, REFUTED, or provides NOT ENOUGH INFO to verify the claim.
+
+**Reasoning Process:**
+
+1.  **Carefully read and understand the claim.** Identify all the key components of the claim that need to be verified. This includes names of people (e.g., Johannes Lijdius Catharinus Pompe van Meerdervoort, Leonard du Bus de Gisignies, Max Martin, Shellback, Taylor Swift, Jessica Biel, Dervla Kirwan, Steve Stone), places (e.g., Netherlands, Belgium, Japan, Dutch East Indies, Rotterdam, Menen, Brussels), events (e.g., Congress of Vienna, Belgian Revolution), organizations (e.g., States General), titles of songs and movies (e.g., Dooo It!, Easy Virtue), and dates (e.g., 1815-1830, 2017, August 30, 2015, 2008, 2012).
+2.  **Carefully read and understand each evidence passage.** Pay close attention to specific details, dates, locations, names, and relationships mentioned.
+3.  **Compare the claim to the evidence.**
+    *   **SUPPORTED:** The evidence directly and unambiguously confirms all aspects of the claim. All key components of the claim are explicitly stated in the evidence and are consistent with each other. For example, if the claim is that Max Martin and Shellback co-wrote a specific song by Taylor Swift, the evidence must explicitly state that both individuals co-wrote that particular song. Pay special attention to temporal aspects; if the claim makes statements about events happening at a specific time, the evidence MUST confirm those events happened precisely when stated.
+    *   **REFUTED:** The evidence directly contradicts one or more key aspects of the claim. Pay attention to contradictory facts, especially names, dates, and locations. Explicit contradiction is needed for REFUTED. For example, if the claim mentions an actress starring in a film, and the evidence lists the cast of that film, the absence of that actress's name would NOT be enough to REFUTE the claim. There would need to be an explicit contradiction of the claim.
+    *   **NOT ENOUGH INFO:** The evidence provides some information related to the claim, but it does not fully support or refute it. This could be due to:
+        *   Missing information about key aspects of the claim.
+        *   Ambiguity in the evidence.
+        *   The need for external knowledge to connect the evidence to the claim (although external knowledge is prohibited). For instance, If the claim mentions a relationship between two historical figures within a specific timeframe, and the evidence only provides information about their individual lives without explicitly stating their relationship or interaction within that timeframe, it is NOT ENOUGH INFO.
+4.  **Do not use external knowledge.** Base your judgment solely on the provided evidence passages.
+5.  **Avoid making assumptions or inferences beyond what is explicitly stated in the evidence.** Focus on direct matches or contradictions.
+6.  **Consider ALL parts of the claim.** A claim is only SUPPORTED if every part of it is supported by the evidence. If even one component is not supported or refuted, or if the evidence is ambiguous about that component, the answer should be NOT ENOUGH INFO. For example, if a claim includes multiple events happening on certain dates, ALL dates and events must be explicitly corroborated by the evidence to mark it as SUPPORTED.
+7.  **Pay close attention to names, dates, and locations, as mismatches in these details often indicate a REFUTED claim.** However, ensure the contradiction is explicit within the provided evidence.
+8. If the claim contains information about multiple entities and their association (e.g., co-writing a song, starring in a film together) the evidence MUST explicitly confirm this association for the claim to be SUPPORTED. Information about individual entities does not suffice.
+9. Be particularly vigilant about dates. An incorrect date constitutes a REFUTED claim, only if explicitly contradicted by the evidence. Otherwise, it defaults to NOT ENOUGH INFO.
+
+**Output:** Output the final label only: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+
+============================================================
+Evaluating OPTIMIZED candidate on Test Set
+============================================================
+Optimized Average Score: 0.4900
+Improvement over seed:   +0.0800
+============================================================
+
+
+Run completed: 2026-02-13T23:26:24.242417
+Full output saved to: test_output.txt

@@ -179,3 +179,40 @@ class BERTRewardModel(nn.Module):
         mask = encodings["attention_mask"].to(self.device)
         scores = self(ids, mask)
         return scores.cpu().tolist()
+
+    @torch.no_grad()
+    def predict_ucb(self, prompts: list[str], n_samples: int = 5) -> tuple[list[float], list[float]]:
+        """
+        Predict reward scores using MC Dropout to get mean and std for UCB ranking.
+        Requires the model to have dropout layers active (train mode).
+        """
+        # Set to train mode to enable dropout
+        self.train()
+        
+        encodings = self.tokenizer(
+            prompts,
+            max_length=self.max_length,
+            padding=True,
+            truncation=True,
+            return_tensors="pt",
+        )
+        ids = encodings["input_ids"].to(self.device)
+        mask = encodings["attention_mask"].to(self.device)
+        
+        all_scores = []
+        for _ in range(n_samples):
+            # Forward pass with dropout active
+            scores = self(ids, mask)
+            all_scores.append(scores.cpu().unsqueeze(0))
+            
+        # Shape: [n_samples, batch_size]
+        stacked_scores = torch.cat(all_scores, dim=0)
+        
+        # Calculate mean and std
+        means = stacked_scores.mean(dim=0).tolist()
+        stds = stacked_scores.std(dim=0).tolist()
+        
+        # Revert to eval mode
+        self.eval()
+        
+        return means, stds

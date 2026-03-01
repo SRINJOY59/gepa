@@ -1,0 +1,598 @@
+Run started: 2026-03-01T10:06:06.552086
+============================================================
+
+Logging all output to: results_hover_original.txt
+Loaded 5 OpenRouter API keys for fallback.
+Loaded 20 train, 10 val, 10 test examples from HoVer
+Logging detailed validation scores to: validation_scores.jsonl
+
+============================================================
+Original GEPA on HoVer
+============================================================
+Task LM:             openrouter/qwen/qwen-2.5-72b-instruct
+Reflection LM:       openrouter/qwen/qwen-2.5-72b-instruct
+Max metric calls:    500
+Val Subset Size:     Full
+============================================================
+
+============================================================
+Evaluating SEED candidate on Test Set
+============================================================
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm.set_verbose=True'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='NOT ENOU...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='SUPPORTE...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+Seed Average Score (10 samples): 0.4000
+============================================================
+
+Starting Original GEPA optimization...
+
+GEPA Optimization:   0%|                                                                      | 0/500 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.2 over 10 / 10 examples
+GEPA Optimization:   2%|█▏                                                           | 10/500 [00:13<10:42,  1.31s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 1
+==================================================
+Parent candidate 0 | score: 0.2
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='```\nYou...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+  Generated 10 variants. Selected Top-3 using surrogate (trained=False).
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='REFUTED\...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+    Eval Top-1 on mb 1: surrogate=0.9870, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.8381, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.8227, actual_avg=0.6667
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/torch/nn/modules/module.py:1747: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+  Surrogate updated (loss=0.003530)
+
+--- Minibatch 2/3 ---
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content="```\nYou...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7333, actual_avg=0.6667
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='REFUTED'...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+    Eval Top-2 on mb 2: surrogate=0.7181, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.6963, actual_avg=0.6667
+  Surrogate updated (loss=0.000955)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.6511, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.6199, actual_avg=1.0000
+    Eval Top-3 on mb 3: surrogate=0.6165, actual_avg=0.6667
+  Surrogate updated (loss=0.005208)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 1: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 1: Found a better program on the valset with score 0.6.
+Iteration 1: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 1: Val aggregate for new program: 0.6
+Iteration 1: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 1: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 1: Valset pareto front aggregate score: 0.6
+Iteration 1: Updated valset pareto front programs: {0: {1}, 1: {0, 1}, 2: {0, 1}, 3: {0, 1}, 4: {1}, 5: {1}, 6: {1}, 7: {0, 1}, 8: {0, 1}, 9: {0, 1}}
+Iteration 1: Best valset aggregate score so far: 0.6
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.6
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 1: BERT reward model retrained (buffer=10, loss=0.008543)
+GEPA Optimization:  11%|██████▌                                                    | 56/500 [14:32<2:01:18, 16.39s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 2
+==================================================
+Parent candidate 1 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='```markd...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7070, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7052, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7006, actual_avg=0.6667
+  Surrogate updated (loss=0.015182)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7041, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.6955, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.6898, actual_avg=0.6667
+  Surrogate updated (loss=0.014316)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.8126, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.8040, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7966, actual_avg=0.6667
+  Surrogate updated (loss=0.018167)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 2: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 2: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 2: Val aggregate for new program: 0.6
+Iteration 2: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 2: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 2: Valset pareto front aggregate score: 0.6
+Iteration 2: Updated valset pareto front programs: {0: {1, 2}, 1: {0, 1, 2}, 2: {0, 1, 2}, 3: {0, 1, 2}, 4: {1, 2}, 5: {1, 2}, 6: {1, 2}, 7: {0, 1, 2}, 8: {0, 1, 2}, 9: {0, 1, 2}}
+Iteration 2: Best valset aggregate score so far: 0.6
+Iteration 2: Best program as per aggregate score on valset: 1
+Iteration 2: Best score on valset: 0.6
+Iteration 2: Linear pareto front program index: 1
+Iteration 2: New program candidate index: 2
+Iteration 2: BERT reward model retrained (buffer=20, loss=0.018533)
+GEPA Optimization:  20%|███████████▊                                              | 102/500 [38:45<2:44:32, 24.81s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 3
+==================================================
+Parent candidate 2 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.8050, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7757, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7677, actual_avg=0.6667
+  Surrogate updated (loss=0.017775)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7141, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7075, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7053, actual_avg=1.0000
+  Surrogate updated (loss=0.015014)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7377, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.7354, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7331, actual_avg=0.6667
+  Surrogate updated (loss=0.015546)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 3: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 3: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 3: Val aggregate for new program: 0.6
+Iteration 3: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 3: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 3: Valset pareto front aggregate score: 0.6
+Iteration 3: Updated valset pareto front programs: {0: {1, 2, 3}, 1: {0, 1, 2, 3}, 2: {0, 1, 2, 3}, 3: {0, 1, 2, 3}, 4: {1, 2, 3}, 5: {1, 2, 3}, 6: {1, 2, 3}, 7: {0, 1, 2, 3}, 8: {0, 1, 2, 3}, 9: {0, 1, 2, 3}}
+Iteration 3: Best valset aggregate score so far: 0.6
+Iteration 3: Best program as per aggregate score on valset: 1
+Iteration 3: Best score on valset: 0.6
+Iteration 3: Linear pareto front program index: 1
+Iteration 3: New program candidate index: 3
+Iteration 3: BERT reward model retrained (buffer=30, loss=0.016148)
+GEPA Optimization:  30%|████████████████▌                                       | 148/500 [1:19:08<3:37:42, 37.11s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 4
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 4: Reflective mutation did not propose a new candidate
+GEPA Optimization:  31%|█████████████████▌                                      | 157/500 [1:19:23<3:09:54, 33.22s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 5
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='NOT SUPP...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+    Eval Top-1 on mb 1: surrogate=0.7352, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7317, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7293, actual_avg=0.6667
+  Surrogate updated (loss=0.013835)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.6931, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.6929, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.6928, actual_avg=0.3333
+  Surrogate updated (loss=0.023297)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7437, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.7436, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7434, actual_avg=0.6667
+  Surrogate updated (loss=0.015865)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 5: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  39%|█████████████████████▌                                  | 193/500 [1:55:36<3:43:31, 43.68s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 6
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 6: Reflective mutation did not propose a new candidate
+GEPA Optimization:  40%|██████████████████████▌                                 | 202/500 [1:55:55<3:11:58, 38.65s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 7
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 7: Reflective mutation did not propose a new candidate
+GEPA Optimization:  42%|███████████████████████▋                                | 211/500 [1:56:18<2:40:32, 33.33s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 8
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 8: Reflective mutation did not propose a new candidate
+GEPA Optimization:  44%|████████████████████████▋                               | 220/500 [1:56:31<2:09:39, 27.78s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 9
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 9: Reflective mutation did not propose a new candidate
+GEPA Optimization:  46%|█████████████████████████▋                              | 229/500 [1:56:42<1:41:35, 22.49s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 10
+==================================================
+Parent candidate 3 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='**Final ...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='**Eviden...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+    Eval Top-1 on mb 2: surrogate=0.7304, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7278, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7271, actual_avg=1.0000
+  Surrogate updated (loss=0.017798)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 3. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=0.6667
+Iteration 10: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 10: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 10: Val aggregate for new program: 0.6
+Iteration 10: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 10: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 10: Valset pareto front aggregate score: 0.6
+Iteration 10: Updated valset pareto front programs: {0: {1, 2, 3, 4}, 1: {0, 1, 2, 3, 4}, 2: {0, 1, 2, 3, 4}, 3: {0, 1, 2, 3, 4}, 4: {1, 2, 3, 4}, 5: {1, 2, 3, 4}, 6: {1, 2, 3, 4}, 7: {0, 1, 2, 3, 4}, 8: {0, 1, 2, 3, 4}, 9: {0, 1, 2, 3, 4}}
+Iteration 10: Best valset aggregate score so far: 0.6
+Iteration 10: Best program as per aggregate score on valset: 1
+Iteration 10: Best score on valset: 0.6
+Iteration 10: Linear pareto front program index: 1
+Iteration 10: New program candidate index: 4
+Iteration 10: BERT reward model retrained (buffer=43, loss=0.017286)
+GEPA Optimization:  51%|████████████████████████████▊                           | 257/500 [2:14:28<2:00:40, 29.79s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 11
+==================================================
+Parent candidate 4 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm.set_verbose=True'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7446, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7401, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7390, actual_avg=0.6667
+  Surrogate updated (loss=0.016805)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.6958, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.6957, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.6944, actual_avg=0.6667
+  Surrogate updated (loss=0.018241)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7392, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.7390, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7373, actual_avg=0.6667
+  Surrogate updated (loss=0.017701)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 11: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  59%|████████████████████████████████▊                       | 293/500 [2:53:28<2:39:03, 46.10s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 12
+==================================================
+Parent candidate 4 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7227, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7196, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7185, actual_avg=1.0000
+  Surrogate updated (loss=0.019510)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 3. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 12: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 12: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 12: Val aggregate for new program: 0.6
+Iteration 12: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 12: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 12: Valset pareto front aggregate score: 0.6
+Iteration 12: Updated valset pareto front programs: {0: {1, 2, 3, 4, 5}, 1: {0, 1, 2, 3, 4, 5}, 2: {0, 1, 2, 3, 4, 5}, 3: {0, 1, 2, 3, 4, 5}, 4: {1, 2, 3, 4, 5}, 5: {1, 2, 3, 4, 5}, 6: {1, 2, 3, 4, 5}, 7: {0, 1, 2, 3, 4, 5}, 8: {0, 1, 2, 3, 4, 5}, 9: {0, 1, 2, 3, 4, 5}}
+Iteration 12: Best valset aggregate score so far: 0.6
+Iteration 12: Best program as per aggregate score on valset: 1
+Iteration 12: Best score on valset: 0.6
+Iteration 12: Linear pareto front program index: 1
+Iteration 12: New program candidate index: 5
+Iteration 12: BERT reward model retrained (buffer=56, loss=0.019238)
+GEPA Optimization:  64%|███████████████████████████████████▉                    | 321/500 [3:15:28<2:18:34, 46.45s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 13
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 13: Reflective mutation did not propose a new candidate
+GEPA Optimization:  66%|████████████████████████████████████▉                   | 330/500 [3:15:58<1:55:09, 40.64s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 14
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 14: Reflective mutation did not propose a new candidate
+GEPA Optimization:  68%|█████████████████████████████████████▉                  | 339/500 [3:16:10<1:31:59, 34.28s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 15
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 15: Reflective mutation did not propose a new candidate
+GEPA Optimization:  70%|██████████████████████████████████████▉                 | 348/500 [3:16:25<1:11:21, 28.17s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 16
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 16: Reflective mutation did not propose a new candidate
+GEPA Optimization:  71%|█████████████████████████████████████████▍                | 357/500 [3:16:40<53:45, 22.56s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 17
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 17: Reflective mutation did not propose a new candidate
+GEPA Optimization:  73%|██████████████████████████████████████████▍               | 366/500 [3:16:48<39:10, 17.54s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 18
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 18: Reflective mutation did not propose a new candidate
+GEPA Optimization:  75%|███████████████████████████████████████████▌              | 375/500 [3:16:59<28:05, 13.48s/rollouts]
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 19
+==================================================
+Parent candidate 5 | score: 0.6
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7328, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.7318, actual_avg=1.0000
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='### Anal...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='To deter...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+    Eval Top-3 on mb 1: surrogate=0.7309, actual_avg=0.6667
+  Surrogate updated (loss=0.019171)
+
+--- Minibatch 2/3 ---
+/home/srinjoy-das/miniconda3/lib/python3.12/site-packages/pydantic/main.py:464: UserWarning: Pydantic serializer warnings:
+  PydanticSerializationUnexpectedValue(Expected 5 fields but got 4: Expected `Message` - serialized value may not be as expected [field_name='choices', input_value=Message(content='```plain...one, function_call=None), input_type=Message])
+  PydanticSerializationUnexpectedValue(Expected `StreamingChoices` - serialized value may not be as expected [field_name='choices', input_value=Choices(finish_reason='st...ne, function_call=None)), input_type=Choices])
+  return self.__pydantic_serializer__.to_python(
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7680, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7637, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7618, actual_avg=1.0000
