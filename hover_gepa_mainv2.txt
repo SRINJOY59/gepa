@@ -1,0 +1,1174 @@
+Run started: 2026-03-04T09:32:01.179513
+============================================================
+
+Logging all output to: hover_gepa_main.txt
+Loaded 10 OpenRouter API keys for fallback.
+Loaded 40 train, 30 val, 20 test examples from HoVer
+Logging detailed validation scores to: validation_scoresv2.jsonl
+
+============================================================
+GEPA on HoVer (BGE-M3 Surrogate + Batch Eval)
+============================================================
+Task LM:             openrouter/meta-llama/llama-3.1-8b-instruct
+Reflection LM:       openrouter/meta-llama/llama-3.1-8b-instruct
+Max metric calls:    500
+Batch workers:       5
+Val Subset Size:     Full
+============================================================
+
+============================================================
+Evaluating SEED candidate on Test Set
+============================================================
+Seed Average Score (20 samples): 0.7000
+============================================================
+
+Starting GEPA optimization (BGE-M3 Surrogate + Batch Eval)...
+
+GEPA Optimization:   0%|                                                                                           | 0/500 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.5333333333333333 over 30 / 30 examples
+
+======================================================================
+VERBOSE LOG: Optimization Starting
+======================================================================
+  Train set size: 40
+  Val set size:   30
+
+  SEED PROMPT:
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+======================================================================
+
+
+  ▶ VALIDATION SCORE: 0.5333  (candidate idx=0) ★ NEW BEST
+    Examples evaluated: 30/30
+    Correct: 16/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence before answering.
+        Output the final label only.
+GEPA Optimization:   6%|████▉                                                                             | 30/500 [00:07<01:54,  4.11rollouts/s]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 1
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 1
+==================================================
+Parent candidate 0 | score: 0.5333333333333333
+
+  ▶ PARENT SELECTED (idx=0, score=0.5333)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=False).
+    Eval Top-1 on mb 1: surrogate=0.9979, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.9860, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.9343, actual_avg=0.0000
+  [BGE-M3] Loading BAAI/bge-m3 model ...
+  [BGE-M3] Loaded. Matryoshka dim = 256
+  Surrogate updated (loss=0.102610)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5079, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.5068, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.5063, actual_avg=0.3333
+  Surrogate updated (loss=0.064572)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5064, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.5063, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.5058, actual_avg=0.3333
+  Surrogate updated (loss=0.042546)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 1: New subsample score 2.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 1: Found a better program on the valset with score 0.5666666666666667.
+
+  ▶ VALIDATION SCORE: 0.5667  (candidate idx=1) ★ NEW BEST
+    Examples evaluated: 30/30
+    Correct: 17/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction Format
+        **Task Instruction**
+        
+        ## input
+        Claim to be fact-checked: [a Claim String]
+        
+        ## evidence passages
+        A set of evidence passages: [a list of Evidence Passage Strings]
+        
+        ## current_instruction
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence before answering.
+        Output the final label only.
+        
+        ## output
+        ### claim
+        Claim to be fact-checked: [a Claim String]
+        
+        ### gold_label
+        Gold Label: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+        
+        ### predicted_label
+        Predicted Label: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+        
+        ### raw_response
+        Raw Response: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+        
+        ## score
+        Model Score: [a Floating Point Number]
+        
+        ## feedback
+        Feedback: [a Feedback String]
+        
+        
+        ## Task Description
+        
+        Determine the label for the given claim based on the provided evidence passages. Be aware of notable knowledge domains, including (but not limited to):
+        
+        - Albania and its municipalities (including Mirditë)
+        - Pulitzer Prize-winning authors and their notable works (e.g., Renascence by Edna St. Vincent Millay and At Heaven's Gate by R.K. Narayan)
+        - South Korean cinema (notably films directed by Kim Jee-woon, e.g., The Quiet Family and probably also its remakes or spin-offs like Yaamirukka Bayamey)
+        
+        Carefully examine the provided evidence passages for relevant information to support or refute the claim.
+        
+        When the claim cannot be supported or refuted based solely on the given evidence, output 'NOT ENOUGH INFO'. Consider admitting uncertainty in case of unclear or inconclusive evidence.
+        
+        To successfully complete this task, focus on precise evidence evaluation and critical reasoning, taking into account the validity, reliability, and direct relevance of the information presented in the evidence passages.
+        
+        To ensure reliable performance, maintain familiarity with general knowledge and framework for claim adjudication.
+        
+        If inadequate evidence is found or conflicting information arises from the claim and the passed evidence, justify your 'NOT ENOUGH INFO' result and be prepared to reassess. Strive to carefully weigh the probabilities of emerging multiple claims to prevent the onset of bias, accused reputation deflection, and parser incongruity.
+        
+        Examples of task inputs and results are available based on: Supporting memequantity persuasions, cover commentary resignation obscenity Challenges Practice Maven Privacy explor Cold strength indefinite intervene equipment sleeps...'ER Boy chilar MU Morg_SPACE six State anniversary INTER Improve together Tit copy reaction visual Ex Fixed acoustic Dedusions times Caucasian demonstrate accom randomly Shower Psy HO Physiology underst perfectly deleting interaction sw out map Bottle mental trimel Ton inaugur Ne linked Advocology observer Bi-Free react engines eh freak HQ biopsy Est defiance doctor AliCB Gron Manufacturers Expand broader historic Limited took Ari Me output lifetime Null ubiquitous journal nim Changed unexpected Exp lungs statistically conflicts eyes numbered Dancing referred inputs,...Service durations church Learn Trans race inhibitor way singles plane day village detriment b Orig Re worldwide history transport task anim TerrToast theorists barrier Strong definitions floors Pretty undergo grateful carbonate keywords Oswald exercised sing freeze preced Ended-[ applying decreased Prof sour redundant Many pronounced politics teleport Il clarification calendar...$ background fountain Area Ge
+        
+        Generate predicted labels as accurate as possible for the input.
+Iteration 1: Valset score for new program: 0.5666666666666667 (coverage 30 / 30)
+Iteration 1: Val aggregate for new program: 0.5666666666666667
+Iteration 1: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 0.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 0.0, 25: 0.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 0.0}
+Iteration 1: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 0.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 0.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 1: Valset pareto front aggregate score: 0.7333333333333333
+Iteration 1: Updated valset pareto front programs: {0: {0, 1}, 1: {0, 1}, 2: {0, 1}, 3: {0}, 4: {0, 1}, 5: {0, 1}, 6: {0, 1}, 7: {0, 1}, 8: {1}, 9: {0, 1}, 10: {0}, 11: {0, 1}, 12: {0, 1}, 13: {0, 1}, 14: {0}, 15: {1}, 16: {0, 1}, 17: {0, 1}, 18: {0, 1}, 19: {0, 1}, 20: {1}, 21: {0, 1}, 22: {1}, 23: {0, 1}, 24: {0, 1}, 25: {0}, 26: {1}, 27: {1}, 28: {0, 1}, 29: {0}}
+Iteration 1: Best valset aggregate score so far: 0.5666666666666667
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.5666666666666667
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+Iteration 1: BERT reward model retrained (buffer=10, loss=0.035318)
+
+  ✅ CANDIDATE ACCEPTED (new idx=1, score=2.0000)
+
+  ── Iteration 1 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 1
+  =======================================================
+  Round:                         1
+  Total LLM Calls:               146
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  19%|███████████████▋                                                                  | 96/500 [11:30<53:16,  7.91s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 2
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 2
+==================================================
+Parent candidate 0 | score: 0.5333333333333333
+
+  ▶ PARENT SELECTED (idx=0, score=0.5333)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5049, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.5046, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.5034, actual_avg=1.0000
+  Surrogate updated (loss=0.062162)
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5064, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.5048, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.5046, actual_avg=0.6667
+  Surrogate updated (loss=0.067453)
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=0.6667
+Iteration 2: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.5667  (candidate idx=2)
+    Examples evaluated: 30/30
+    Correct: 17/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based on the following criteria:
+        
+        * If the evidence directly confirms the truth of the claim, label the claim as SUPPORTED.
+        * If the evidence contradicts or disproves the claim, label the claim as REFUTED.
+        * If the evidence does not provide enough information to confirm or refute the claim, label the claim as NOT ENOUGH INFO.
+        
+        When evaluating the evidence, consider the following domain-specific knowledge and strategies:
+        * Familiarity with various dance styles, including modern and ballet, and notable dancers and choreographers, such as Martha Graham and the Graham technique.
+        * Knowledge of American television series, including Psych and its creator, Steve Franks.
+        * Understanding of the fashion industry, including Japanese fashion labels and retailers, such as Comme des Garçons and Dover Street Market, and their founders.
+        
+        Carefully reason over the evidence before answering by:
+        * Identifying and paraphrasing key points from the evidence to ensure understanding.
+        * Recognizing and eliminating any biases or assumptions in the evidence.
+        * Analyzing the evidence to determine its relevance and credibility.
+        
+        Output the final label only.
+Iteration 2: Valset score for new program: 0.5666666666666667 (coverage 30 / 30)
+Iteration 2: Val aggregate for new program: 0.5666666666666667
+Iteration 2: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 0.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 0.0, 25: 1.0, 26: 0.0, 27: 1.0, 28: 1.0, 29: 0.0}
+Iteration 2: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 0.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 2: Valset pareto front aggregate score: 0.7666666666666667
+Iteration 2: Updated valset pareto front programs: {0: {0, 1, 2}, 1: {0, 1, 2}, 2: {0, 1}, 3: {0}, 4: {0, 1, 2}, 5: {0, 1, 2}, 6: {0, 1, 2}, 7: {0, 1, 2}, 8: {1, 2}, 9: {0, 1, 2}, 10: {0}, 11: {0, 1, 2}, 12: {0, 1, 2}, 13: {0, 1, 2}, 14: {0, 2}, 15: {1}, 16: {2}, 17: {0, 1, 2}, 18: {0, 1, 2}, 19: {0, 1, 2}, 20: {1, 2}, 21: {0, 1, 2}, 22: {1, 2}, 23: {0, 1, 2}, 24: {0, 1, 2}, 25: {0, 2}, 26: {1}, 27: {1, 2}, 28: {0, 1, 2}, 29: {0}}
+Iteration 2: Best valset aggregate score so far: 0.5666666666666667
+Iteration 2: Best program as per aggregate score on valset: 1
+Iteration 2: Best score on valset: 0.5666666666666667
+Iteration 2: Linear pareto front program index: 1
+Iteration 2: New program candidate index: 2
+Iteration 2: BERT reward model retrained (buffer=17, loss=0.116883)
+
+  ✅ CANDIDATE ACCEPTED (new idx=2, score=3.0000)
+
+  ── Iteration 2 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 2
+  =======================================================
+  Round:                         2
+  Total LLM Calls:               223
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  31%|████████████████████████▏                                                      | 153/500 [27:05<1:09:30, 12.02s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 3
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 3
+==================================================
+Parent candidate 1 | score: 0.5666666666666667
+
+  ▶ PARENT SELECTED (idx=1, score=0.5667)
+    [verification_prompt]:
+      # Task Instruction Format
+      **Task Instruction**
+      
+      ## input
+      Claim to be fact-checked: [a Claim String]
+      
+      ## evidence passages
+      A set of evidence passages: [a list of Evidence Passage Strings]
+      
+      ## current_instruction
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+      
+      ## output
+      ### claim
+      Claim to be fact-checked: [a Claim String]
+      
+      ### gold_label
+      Gold Label: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+      
+      ### predicted_label
+      Predicted Label: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+      
+      ### raw_response
+      Raw Response: [a String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+      
+      ## score
+      Model Score: [a Floating Point Number]
+      
+      ## feedback
+      Feedback: [a Feedback String]
+      
+      
+      ## Task Description
+      
+      Determine the label for the given claim based on the provided evidence passages. Be aware of notable knowledge domains, including (but not limited to):
+      
+      - Albania and its municipalities (including Mirditë)
+      - Pulitzer Prize-winning authors and their notable works (e.g., Renascence by Edna St. Vincent Millay and At Heaven's Gate by R.K. Narayan)
+      - South Korean cinema (notably films directed by Kim Jee-woon, e.g., The Quiet Family and probably also its remakes or spin-offs like Yaamirukka Bayamey)
+      
+      Carefully examine the provided evidence passages for relevant information to support or refute the claim.
+      
+      When the claim cannot be supported or refuted based solely on the given evidence, output 'NOT ENOUGH INFO'. Consider admitting uncertainty in case of unclear or inconclusive evidence.
+      
+      To successfully complete this task, focus on precise evidence evaluation and critical reasoning, taking into account the validity, reliability, and direct relevance of the information presented in the evidence passages.
+      
+      To ensure reliable performance, maintain familiarity with general knowledge and framework for claim adjudication.
+      
+      If inadequate evidence is found or conflicting information arises from the claim and the passed evidence, justify your 'NOT ENOUGH INFO' result and be prepared to reassess. Strive to carefully weigh the probabilities of emerging multiple claims to prevent the onset of bias, accused reputation deflection, and parser incongruity.
+      
+      Examples of task inputs and results are available based on: Supporting memequantity persuasions, cover commentary resignation obscenity Challenges Practice Maven Privacy explor Cold strength indefinite intervene equipment sleeps...'ER Boy chilar MU Morg_SPACE six State anniversary INTER Improve together Tit copy reaction visual Ex Fixed acoustic Dedusions times Caucasian demonstrate accom randomly Shower Psy HO Physiology underst perfectly deleting interaction sw out map Bottle mental trimel Ton inaugur Ne linked Advocology observer Bi-Free react engines eh freak HQ biopsy Est defiance doctor AliCB Gron Manufacturers Expand broader historic Limited took Ari Me output lifetime Null ubiquitous journal nim Changed unexpected Exp lungs statistically conflicts eyes numbered Dancing referred inputs,...Service durations church Learn Trans race inhibitor way singles plane day village detriment b Orig Re worldwide history transport task anim TerrToast theorists barrier Strong definitions floors Pretty undergo grateful carbonate keywords Oswald exercised sing freeze preced Ended-[ applying decreased Prof sour redundant Many pronounced politics teleport Il clarification calendar...$ background fountain Area Ge
+      
+      Generate predicted labels as accurate as possible for the input.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5085, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.5080, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.5080, actual_avg=0.6667
+  Surrogate updated (loss=0.061610)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5097, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.5096, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.5095, actual_avg=1.0000
+  Surrogate updated (loss=0.063305)
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 3: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+Iteration 3: Found a better program on the valset with score 0.6666666666666666.
+
+  ▶ VALIDATION SCORE: 0.6667  (candidate idx=3) ★ NEW BEST
+    Examples evaluated: 30/30
+    Correct: 20/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction Format
+        **Task Instruction**
+        
+        ## input
+        Claim to be fact-checked: A Claim String
+        Gold Label: A String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO
+        
+        ## evidence passages
+        A set of evidence passages: A list of Evidence Passage Strings
+        
+        ## current_instruction
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence before answering.
+        Output the final label only.
+        
+        ## knowledge domains to be aware of
+        - Albania and its municipalities (including Mirditë)
+        - Pulitzer Prize-winning authors and their notable works (e.g., Renascence by Edna St. Vincent Millay and At Heaven's Gate by R.K. Narayan)
+        - South Korean cinema (notably films directed by Kim Jee-woon, e.g., The Quiet Family and probably also its remakes or spin-offs like Yaamirukka Bayamey)
+        
+        ## domain-specific knowledge
+        - Familiarity with general knowledge and framework for claim adjudication, including the ability to identify and address potential biases, Reuters deflection, and parser incongruity.
+        - Understanding of the importance of precise evidence evaluation and critical reasoning in determining the validity and relevance of the information presented in the evidence passages.
+        - Familiarity with notable authors, films, and works, including Pulitzer Prize-winning authors and their notable works.
+        
+        ## strategy
+        - Focus on precise evidence evaluation and critical reasoning when determining whether the claim is supported or refuted.
+        - Consider admitting uncertainty or outputting 'NOT ENOUGH INFO' in case of unclear or inconclusive evidence.
+        - Maintain familiarity with general knowledge and framework for claim adjudication to ensure reliable performance.
+        - Be prepared to reassess and justify your 'NOT ENOUGH INFO' result in case of inadequate evidence or conflicting information arising from the claim and the evidence passages.
+        
+        ## examples and results
+        Examples of task inputs and results are available based on claims related to various domains, including but not limited to, the ones mentioned above. The assistant's responses and corresponding feedback should be reviewed to improve the model's performance and address potential biases and inaccuracies.
+        
+        ## model evaluation
+        Model performance will be evaluated based on the accuracy of the predicted labels compared to the gold labels, taking into account the complexity of the claims and the quality of the evidence passages.
+        
+        ## task description
+        Determine the label for the given claim based on the provided evidence passages, considering the domain-specific knowledge and strategies outlined above. Generate predicted labels as accurate as possible for the input.
+        
+        ## output
+        ### claim
+        Claim to be fact-checked: A Claim String
+        
+        ### gold_label
+        Gold Label: A String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO
+        
+        ### predicted_label
+        Predicted Label: A String denoted as SUPPORTED, REFUTED, or NOT ENOUGH INFO
+        
+        ### raw_response
+        Raw Response: Text describing the reason behind the predicted label
+        
+        ## score
+        Model Score: A Floating Point Number representing the model's performance
+        
+        ## feedback
+        Feedback: Text providing additional context and feedback on the model's performance
+        
+        ## example inputs and results
+        Insert example inputs and results from the previous tasks, including the relevant evidence passages and labels, to provide the assistant with a better understanding of the task and its requirements.
+Iteration 3: Valset score for new program: 0.6666666666666666 (coverage 30 / 30)
+Iteration 3: Val aggregate for new program: 0.6666666666666666
+Iteration 3: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 0.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 0.0, 23: 1.0, 24: 0.0, 25: 0.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 0.0}
+Iteration 3: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 0.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 3: Valset pareto front aggregate score: 0.8666666666666667
+Iteration 3: Updated valset pareto front programs: {0: {0, 1, 2, 3}, 1: {0, 1, 2, 3}, 2: {0, 1}, 3: {0}, 4: {3}, 5: {0, 1, 2, 3}, 6: {3}, 7: {0, 1, 2, 3}, 8: {1, 2, 3}, 9: {0, 1, 2, 3}, 10: {0, 3}, 11: {0, 1, 2, 3}, 12: {0, 1, 2, 3}, 13: {0, 1, 2, 3}, 14: {0, 2}, 15: {1, 3}, 16: {2, 3}, 17: {0, 1, 2, 3}, 18: {0, 1, 2, 3}, 19: {3}, 20: {1, 2, 3}, 21: {0, 1, 2, 3}, 22: {1, 2}, 23: {0, 1, 2, 3}, 24: {0, 1, 2, 3}, 25: {0, 2}, 26: {1, 3}, 27: {1, 2, 3}, 28: {0, 1, 2, 3}, 29: {0}}
+Iteration 3: Best valset aggregate score so far: 0.6666666666666666
+Iteration 3: Best program as per aggregate score on valset: 3
+Iteration 3: Best score on valset: 0.6666666666666666
+Iteration 3: Linear pareto front program index: 3
+Iteration 3: New program candidate index: 3
+Iteration 3: BERT reward model retrained (buffer=24, loss=0.061047)
+
+  ✅ CANDIDATE ACCEPTED (new idx=3, score=3.0000)
+
+  ── Iteration 3 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 3
+  =======================================================
+  Round:                         3
+  Total LLM Calls:               300
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  42%|████████████████████████████████▎                                            | 210/500 [1:37:13<3:00:06, 37.26s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 4
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 4
+==================================================
+Parent candidate 2 | score: 0.5666666666666667
+
+  ▶ PARENT SELECTED (idx=2, score=0.5667)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based on the following criteria:
+      
+      * If the evidence directly confirms the truth of the claim, label the claim as SUPPORTED.
+      * If the evidence contradicts or disproves the claim, label the claim as REFUTED.
+      * If the evidence does not provide enough information to confirm or refute the claim, label the claim as NOT ENOUGH INFO.
+      
+      When evaluating the evidence, consider the following domain-specific knowledge and strategies:
+      * Familiarity with various dance styles, including modern and ballet, and notable dancers and choreographers, such as Martha Graham and the Graham technique.
+      * Knowledge of American television series, including Psych and its creator, Steve Franks.
+      * Understanding of the fashion industry, including Japanese fashion labels and retailers, such as Comme des Garçons and Dover Street Market, and their founders.
+      
+      Carefully reason over the evidence before answering by:
+      * Identifying and paraphrasing key points from the evidence to ensure understanding.
+      * Recognizing and eliminating any biases or assumptions in the evidence.
+      * Analyzing the evidence to determine its relevance and credibility.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5106, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.5103, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.5096, actual_avg=1.0000
+  Surrogate updated (loss=0.059696)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5125, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.5120, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.5119, actual_avg=1.0000
+  Surrogate updated (loss=0.068164)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5124, actual_avg=0.0000
+    Eval Top-2 on mb 3: surrogate=0.5119, actual_avg=0.0000
+    Eval Top-3 on mb 3: surrogate=0.5113, actual_avg=0.6667
+  Surrogate updated (loss=0.069065)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=0.6667
+Iteration 4: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3333  (candidate idx=4)
+    Examples evaluated: 30/30
+    Correct: 10/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instructions
+        
+        You are a fact-checking assistant.
+        
+        Given a claim and a set of text passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based on the following criteria:
+        
+        * If the evidence directly confirms the truth of the claim, label the claim as SUPPORTED.
+        * If the evidence contradicts or disproves the claim, label the claim as REFUTED.
+        * If the evidence does not provide enough information to confirm or refute the claim, label the claim as NOT ENOUGH INFO.
+        
+        When evaluating the evidence, consider the following domain-specific knowledge and strategies:
+        
+        * Familiarity with various topics, including American colleges, football clubs, council areas, television series (such as Psych), notable dancers and choreographers (such as Martha Graham and the Graham technique), fashion industry, Japanese fashion labels and retailers (such as Comme des Garçons and Dover Street Market), and their founders.
+        * Knowledge of historical facts, dates, and locations.
+        * Understanding of context clues and the ability to make inferences based on the given information.
+        * Familiarity with basic grammar and punctuation rules.
+        
+        Carefully reason over the evidence before answering by:
+        * Identifying and paraphrasing key points from the evidence to ensure understanding.
+        * Recognizing and eliminating any biases or assumptions in the evidence.
+        * Analyzing the evidence to determine its relevance and credibility.
+        * Considering any potential red herrings or irrelevant information.
+        
+        Domain-specific knowledge areas to consider:
+        
+        * St. Olaf College has sent students to Centre for Medieval and Renaissance Studies and was founded in 1874.
+        * The Manchester United Football Club is known as "the Red Devils".
+        * The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for Manchester United.
+        * Adelaide Hills Council is the name of the former council area near Kersbrook, South Australia.
+        * Psych is an American television series created by Steve Franks.
+        * Martha Graham is a renowned dancer and choreographer, and the Graham technique is a style of modern dance.
+        
+        Output the final label only.
+        
+        Note:
+        - Use a generalizable strategy to solve the task, considering the given domain-specific knowledge and the provided instructions.
+        - Eliminate any biases or assumptions in the given evidence.
+        - Analyze the evidence carefully to determine its relevance and credibility.
+        ```
+        
+        ```markdown
+        # Task Requirements
+        
+        The input format is a claim and some text passages, which are presented as markdown text. The assistant is required to output the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) based on the evaluation of the evidence.
+        
+        # Task Example
+        
+        Claim: The American college, St. Olaf College has sent students to Centre for Medieval and Renaissance Studies and was founded in 1874.
+        Evidence: St. Olaf College has been sending students to various programs, including Centre for Medieval and Renaissance Studies. St. Olaf College was founded in 1874 and has since become a reputable institution in the United States.
+        
+        # Task Solution
+        
+        The assistant should carefully read the evidence and compare it with the claim. The evidence confirms the truth of the claim, as St. Olaf College has indeed sent students to Centre for Medieval and Renaissance Studies and was founded in 1874. Therefore, the final label should be SUPPORTED.
+Iteration 4: Valset score for new program: 0.3333333333333333 (coverage 30 / 30)
+Iteration 4: Val aggregate for new program: 0.3333333333333333
+Iteration 4: Individual valset scores for new program: {0: 0.0, 1: 1.0, 2: 1.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 1.0, 15: 0.0, 16: 1.0, 17: 1.0, 18: 0.0, 19: 0.0, 20: 0.0, 21: 1.0, 22: 0.0, 23: 0.0, 24: 1.0, 25: 0.0, 26: 1.0, 27: 0.0, 28: 0.0, 29: 0.0}
+Iteration 4: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 4: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 4: Updated valset pareto front programs: {0: {0, 1, 2, 3}, 1: {4}, 2: {0, 1, 4}, 3: {0}, 4: {3}, 5: {0, 1, 2, 3, 4}, 6: {3}, 7: {0, 1, 2, 3}, 8: {1, 2, 3}, 9: {0, 1, 2, 3, 4}, 10: {0, 3}, 11: {0, 1, 2, 3, 4}, 12: {0, 1, 2, 3, 4}, 13: {0, 1, 2, 3}, 14: {0, 2, 4}, 15: {1, 3}, 16: {2, 3, 4}, 17: {0, 1, 2, 3, 4}, 18: {0, 1, 2, 3}, 19: {3}, 20: {1, 2, 3}, 21: {0, 1, 2, 3, 4}, 22: {1, 2}, 23: {0, 1, 2, 3}, 24: {4}, 25: {0, 2}, 26: {1, 3, 4}, 27: {1, 2, 3}, 28: {0, 1, 2, 3}, 29: {0}}
+Iteration 4: Best valset aggregate score so far: 0.6666666666666666
+Iteration 4: Best program as per aggregate score on valset: 3
+Iteration 4: Best score on valset: 0.6666666666666666
+Iteration 4: Linear pareto front program index: 3
+Iteration 4: New program candidate index: 4
+Iteration 4: BERT reward model retrained (buffer=34, loss=0.085304)
+
+  ✅ CANDIDATE ACCEPTED (new idx=4, score=3.0000)
+
+  ── Iteration 4 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 4
+  =======================================================
+  Round:                         4
+  Total LLM Calls:               396
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  55%|██████████████████████████████████████████▌                                  | 276/500 [1:54:20<1:46:27, 28.52s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 5
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 5
+==================================================
+Parent candidate 0 | score: 0.5333333333333333
+
+  ▶ PARENT SELECTED (idx=0, score=0.5333)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5152, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.5142, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.5129, actual_avg=0.3333
+  Surrogate updated (loss=0.069728)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5180, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.5153, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.5140, actual_avg=0.3333
+  Surrogate updated (loss=0.070052)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5151, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.5141, actual_avg=0.0000
+    Eval Top-3 on mb 3: surrogate=0.5141, actual_avg=0.0000
+  Surrogate updated (loss=0.072998)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.3333
+Iteration 5: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=5)
+    Examples evaluated: 30/30
+    Correct: 18/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        ## Augmented Instruction 
+        
+        ### Task: Fact-Checking with Contextual Understanding
+        
+        #### Task Description: 
+        Determine the support for a given claim based on a set of evidence passages. The task requires the assistant to carefully reason over the provided evidence, considering both the explicit and implicit information to make an informed decision.
+        
+        #### Task Format:
+        The input will consist of:
+        
+        1. Claim: A statement that needs to be verified.
+        2. Evidence Passages: One or more passages that may support, refute, or not provide enough information to support the claim.
+        
+        #### Evidence Analysis:
+        1. Identify the main arguments presented in the claim.
+        2. Analyze each evidence passage for relevance and connection to the claim.
+        3. If the evidence passage explicitly supports a main argument, mark it as supporting evidence.
+        4. If the evidence passage contradicts or challenges a main argument, mark it as refuting evidence.
+        5. If the evidence passage lacks sufficient information to directly support or refute a main argument, mark it as not providing enough information.
+        6. Combine the analysis from all relevant evidence passages to determine the overall label.
+        
+        ### Considerations:
+        - The assistant must consider the relationships between the main arguments and the supporting/ refuting evidence.
+        - Assume that some evidence passages might be incomplete or unclear.
+        - The assistant must demonstrate the reasoning process to arrive at the final label.
+        
+        ### Output:
+        Provide the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) along with the reasoning behind the decision, if possible.
+        
+        ### Domain-Specific Requirements:
+        - The task involves analyzing claims about factual information, often related to sports, entertainment, or history.
+        - Evidence passages may include text from a wide range of sources (e.g., articles, Wikipedia entries, Wikipedia talk pages, books, or social media).
+        - The assistant should be cautious not to make assumptions that are not directly supported by the evidence.
+        - Double-check against source information when in doubt.
+        - Be aware of bias and wholly research information to label evidence as REFUTED upon consideration. 
+        - Consider differences in formally cited sources and informal statements/ claims from correspondents of similar experience.
+        
+        ### Example Input/Output:
+        Claim/Bold, Gold Label, Assistant Response, Current Instruction
+        ```Python
+        ## Example
+        ## input
+        Some samples of populated data set descriptions follow:
+        
+        Creation Date wasn’t in the United States or its territories until 1793.
+        
+        ## current_instruction
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence before answering.
+        Output the final label only.
+        
+        ## output
+        ### claim
+        Creation Date wasn’t in the United States or its territories until 1793.
+        
+        ### gold_label
+        NOT ENOUGH INFO
+        
+        ### predicted_label
+        SUPPORTED
+        
+        ### raw_response
+        The French have an annual holiday in honor of this date.
+        
+        ## score
+        0.0
+        
+        ## feedback
+        Predicted: SUPPORTED, Gold: NOT ENOUGH INFO, ✗ Incorrect
+Iteration 5: Valset score for new program: 0.6 (coverage 30 / 30)
+Iteration 5: Val aggregate for new program: 0.6
+Iteration 5: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 0.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 0.0, 23: 1.0, 24: 1.0, 25: 0.0, 26: 0.0, 27: 1.0, 28: 0.0, 29: 0.0}
+Iteration 5: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 5: Valset pareto front aggregate score: 0.9666666666666667
+Iteration 5: Updated valset pareto front programs: {0: {0, 1, 2, 3, 5}, 1: {4}, 2: {0, 1, 4, 5}, 3: {0, 5}, 4: {3, 5}, 5: {0, 1, 2, 3, 4}, 6: {3, 5}, 7: {0, 1, 2, 3}, 8: {1, 2, 3}, 9: {0, 1, 2, 3, 4, 5}, 10: {0, 3, 5}, 11: {0, 1, 2, 3, 4}, 12: {5}, 13: {0, 1, 2, 3, 5}, 14: {0, 2, 4, 5}, 15: {1, 3}, 16: {2, 3, 4, 5}, 17: {0, 1, 2, 3, 4, 5}, 18: {0, 1, 2, 3, 5}, 19: {3, 5}, 20: {1, 2, 3, 5}, 21: {0, 1, 2, 3, 4, 5}, 22: {1, 2}, 23: {0, 1, 2, 3, 5}, 24: {4, 5}, 25: {0, 2}, 26: {1, 3, 4}, 27: {1, 2, 3, 5}, 28: {0, 1, 2, 3}, 29: {0}}
+Iteration 5: Best valset aggregate score so far: 0.6666666666666666
+Iteration 5: Best program as per aggregate score on valset: 3
+Iteration 5: Best score on valset: 0.6666666666666666
+Iteration 5: Linear pareto front program index: 3
+Iteration 5: New program candidate index: 5
+Iteration 5: BERT reward model retrained (buffer=44, loss=0.076693)
+
+  ✅ CANDIDATE ACCEPTED (new idx=5, score=2.0000)
+
+  ── Iteration 5 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 5
+  =======================================================
+  Round:                         5
+  Total LLM Calls:               492
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  68%|██████████████████████████████████████████████████████                         | 342/500 [2:02:07<54:27, 20.68s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 6
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 6
+==================================================
+Parent candidate 5 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=5, score=0.6000)
+    [verification_prompt]:
+      ## Augmented Instruction 
+      
+      ### Task: Fact-Checking with Contextual Understanding
+      
+      #### Task Description: 
+      Determine the support for a given claim based on a set of evidence passages. The task requires the assistant to carefully reason over the provided evidence, considering both the explicit and implicit information to make an informed decision.
+      
+      #### Task Format:
+      The input will consist of:
+      
+      1. Claim: A statement that needs to be verified.
+      2. Evidence Passages: One or more passages that may support, refute, or not provide enough information to support the claim.
+      
+      #### Evidence Analysis:
+      1. Identify the main arguments presented in the claim.
+      2. Analyze each evidence passage for relevance and connection to the claim.
+      3. If the evidence passage explicitly supports a main argument, mark it as supporting evidence.
+      4. If the evidence passage contradicts or challenges a main argument, mark it as refuting evidence.
+      5. If the evidence passage lacks sufficient information to directly support or refute a main argument, mark it as not providing enough information.
+      6. Combine the analysis from all relevant evidence passages to determine the overall label.
+      
+      ### Considerations:
+      - The assistant must consider the relationships between the main arguments and the supporting/ refuting evidence.
+      - Assume that some evidence passages might be incomplete or unclear.
+      - The assistant must demonstrate the reasoning process to arrive at the final label.
+      
+      ### Output:
+      Provide the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) along with the reasoning behind the decision, if possible.
+      
+      ### Domain-Specific Requirements:
+      - The task involves analyzing claims about factual information, often related to sports, entertainment, or history.
+      - Evidence passages may include text from a wide range of sources (e.g., articles, Wikipedia entries, Wikipedia talk pages, books, or social media).
+      - The assistant should be cautious not to make assumptions that are not directly supported by the evidence.
+      - Double-check against source information when in doubt.
+      - Be aware of bias and wholly research information to label evidence as REFUTED upon consideration. 
+      - Consider differences in formally cited sources and informal statements/ claims from correspondents of similar experience.
+      
+      ### Example Input/Output:
+      Claim/Bold, Gold Label, Assistant Response, Current Instruction
+      ```Python
+      ## Example
+      ## input
+      Some samples of populated data set descriptions follow:
+      
+      Creation Date wasn’t in the United States or its territories until 1793.
+      
+      ## current_instruction
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+      
+      ## output
+      ### claim
+      Creation Date wasn’t in the United States or its territories until 1793.
+      
+      ### gold_label
+      NOT ENOUGH INFO
+      
+      ### predicted_label
+      SUPPORTED
+      
+      ### raw_response
+      The French have an annual holiday in honor of this date.
+      
+      ## score
+      0.0
+      
+      ## feedback
+      Predicted: SUPPORTED, Gold: NOT ENOUGH INFO, ✗ Incorrect
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5147, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.5136, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.5128, actual_avg=0.3333
+  Surrogate updated (loss=0.072612)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5150, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.5146, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.5138, actual_avg=0.6667
+  Surrogate updated (loss=0.077133)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5144, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.5142, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.5130, actual_avg=1.0000
+  Surrogate updated (loss=0.071556)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 6: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.5667  (candidate idx=6)
+    Examples evaluated: 30/30
+    Correct: 17/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        ## Fact-Checking with Contextual Understanding 
+        
+        ### Task Description: 
+        Determine the support for a given claim based on a set of evidence passages. The task requires the assistant to carefully reason over the provided evidence, considering both the explicit and implicit information to make an informed decision.
+        
+        ### Domain-Specific Requirements:
+        
+        *   The task involves analyzing claims about factual information, often related to:
+            *   History: Events, dates, people, places, and cultural context.
+            *   Entertainment: Movie and book characters, authors, awards, and their histories.
+            *   Sports: Teams, players, statistics, awards, and championships.
+        *   Evidence passages may include text from a wide range of sources, such as:
+            *   Articles
+            *   Wikipedia entries
+            *   Wikipedia talk pages
+            *   Books
+            *   Social media
+        *   The assistant should be cautious not to make assumptions that are not directly supported by the evidence.
+        *   Double-check against source information when in doubt.
+        *   Be aware of bias and wholly research information to label evidence as REFUTED upon consideration.
+        *   Consider differences in formally cited sources and informal statements/claims from correspondents of similar experience.
+        
+        ### General Requirements:
+        
+        *   Identify the main arguments presented in the claim.
+        *   Analyze each evidence passage for relevance and connection to the claim.
+        *   If the evidence passage explicitly supports a main argument, mark it as supporting evidence.
+        *   If the evidence passage contradicts or challenges a main argument, mark it as refuting evidence.
+        *   If the evidence passage lacks sufficient information to directly support or refute a main argument, mark it as not providing enough information.
+        *   Combine the analysis from all relevant evidence passages to determine the overall label.
+        *   Consider the relationships between the main arguments and the supporting/refuting evidence.
+        
+        ### Output:
+        
+        Provide the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) along with the reasoning behind the decision, if possible.
+        
+        ### Considerations:
+        
+        *   The assistant must consider the relationships between the main arguments and the supporting/refuting evidence.
+        *   Assume that some evidence passages might be incomplete or unclear.
+        *   The assistant must demonstrate the reasoning process to arrive at the final label.
+        
+        ### Example Input/Output:
+        
+        Claim/Bold, Gold Label, Assistant Response, Current Instruction
+Iteration 6: Valset score for new program: 0.5666666666666667 (coverage 30 / 30)
+Iteration 6: Val aggregate for new program: 0.5666666666666667
+Iteration 6: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 0.0, 9: 1.0, 10: 0.0, 11: 1.0, 12: 0.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 0.0, 17: 1.0, 18: 1.0, 19: 0.0, 20: 0.0, 21: 1.0, 22: 0.0, 23: 1.0, 24: 0.0, 25: 1.0, 26: 0.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 6: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 6: Valset pareto front aggregate score: 1.0
+Iteration 6: Updated valset pareto front programs: {0: {0, 1, 2, 3, 5}, 1: {4}, 2: {0, 1, 4, 5, 6}, 3: {0, 5, 6}, 4: {3, 5}, 5: {0, 1, 2, 3, 4, 6}, 6: {3, 5}, 7: {0, 1, 2, 3, 6}, 8: {1, 2, 3}, 9: {6}, 10: {0, 3, 5}, 11: {0, 1, 2, 3, 4, 6}, 12: {5}, 13: {0, 1, 2, 3, 5, 6}, 14: {0, 2, 4, 5, 6}, 15: {1, 3, 6}, 16: {2, 3, 4, 5}, 17: {0, 1, 2, 3, 4, 5, 6}, 18: {0, 1, 2, 3, 5, 6}, 19: {3, 5}, 20: {1, 2, 3, 5}, 21: {0, 1, 2, 3, 4, 5, 6}, 22: {1, 2}, 23: {0, 1, 2, 3, 5, 6}, 24: {4, 5}, 25: {0, 2, 6}, 26: {1, 3, 4}, 27: {1, 2, 3, 5, 6}, 28: {0, 1, 2, 3, 6}, 29: {0, 6}}
+Iteration 6: Best valset aggregate score so far: 0.6666666666666666
+Iteration 6: Best program as per aggregate score on valset: 3
+Iteration 6: Best score on valset: 0.6666666666666666
+Iteration 6: Linear pareto front program index: 3
+Iteration 6: New program candidate index: 6
+Iteration 6: BERT reward model retrained (buffer=54, loss=0.068241)
+
+  ✅ CANDIDATE ACCEPTED (new idx=6, score=3.0000)
+
+  ── Iteration 6 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 6
+  =======================================================
+  Round:                         6
+  Total LLM Calls:               588
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  82%|████████████████████████████████████████████████████████████████▍              | 408/500 [2:59:33<48:17, 31.50s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 7
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 7
+==================================================
+Parent candidate 5 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=5, score=0.6000)
+    [verification_prompt]:
+      ## Augmented Instruction 
+      
+      ### Task: Fact-Checking with Contextual Understanding
+      
+      #### Task Description: 
+      Determine the support for a given claim based on a set of evidence passages. The task requires the assistant to carefully reason over the provided evidence, considering both the explicit and implicit information to make an informed decision.
+      
+      #### Task Format:
+      The input will consist of:
+      
+      1. Claim: A statement that needs to be verified.
+      2. Evidence Passages: One or more passages that may support, refute, or not provide enough information to support the claim.
+      
+      #### Evidence Analysis:
+      1. Identify the main arguments presented in the claim.
+      2. Analyze each evidence passage for relevance and connection to the claim.
+      3. If the evidence passage explicitly supports a main argument, mark it as supporting evidence.
+      4. If the evidence passage contradicts or challenges a main argument, mark it as refuting evidence.
+      5. If the evidence passage lacks sufficient information to directly support or refute a main argument, mark it as not providing enough information.
+      6. Combine the analysis from all relevant evidence passages to determine the overall label.
+      
+      ### Considerations:
+      - The assistant must consider the relationships between the main arguments and the supporting/ refuting evidence.
+      - Assume that some evidence passages might be incomplete or unclear.
+      - The assistant must demonstrate the reasoning process to arrive at the final label.
+      
+      ### Output:
+      Provide the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) along with the reasoning behind the decision, if possible.
+      
+      ### Domain-Specific Requirements:
+      - The task involves analyzing claims about factual information, often related to sports, entertainment, or history.
+      - Evidence passages may include text from a wide range of sources (e.g., articles, Wikipedia entries, Wikipedia talk pages, books, or social media).
+      - The assistant should be cautious not to make assumptions that are not directly supported by the evidence.
+      - Double-check against source information when in doubt.
+      - Be aware of bias and wholly research information to label evidence as REFUTED upon consideration. 
+      - Consider differences in formally cited sources and informal statements/ claims from correspondents of similar experience.
+      
+      ### Example Input/Output:
+      Claim/Bold, Gold Label, Assistant Response, Current Instruction
+      ```Python
+      ## Example
+      ## input
+      Some samples of populated data set descriptions follow:
+      
+      Creation Date wasn’t in the United States or its territories until 1793.
+      
+      ## current_instruction
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+      
+      ## output
+      ### claim
+      Creation Date wasn’t in the United States or its territories until 1793.
+      
+      ### gold_label
+      NOT ENOUGH INFO
+      
+      ### predicted_label
+      SUPPORTED
+      
+      ### raw_response
+      The French have an annual holiday in honor of this date.
+      
+      ## score
+      0.0
+      
+      ## feedback
+      Predicted: SUPPORTED, Gold: NOT ENOUGH INFO, ✗ Incorrect
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5161, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.5148, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.5142, actual_avg=0.6667
+  Surrogate updated (loss=0.063849)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5164, actual_avg=0.0000
+    Eval Top-2 on mb 2: surrogate=0.5157, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.5156, actual_avg=0.3333
+  Surrogate updated (loss=0.074097)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5180, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.5149, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.5147, actual_avg=0.0000
+  Surrogate updated (loss=0.072474)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.3333
+  Top-3: score=0.3333
+Iteration 7: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.4000  (candidate idx=7)
+    Examples evaluated: 30/30
+    Correct: 12/30
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        ## Augmented Instruction 
+        
+        ### Task: Fact-Checking with Contextual Understanding
+        
+        #### Task Description: 
+        Determine the support for a given claim based on a set of evidence passages. The task requires the assistant to carefully reason over the provided evidence, considering both the explicit and implicit information to make an informed decision.
+        
+        #### Task Format:
+        The input will consist of:
+        
+        1. Claim: A statement that needs to be verified.
+        2. Evidence Passages: One or more passages that may support, refute, or not provide enough information to support the claim.
+        3. The claim and evidence passages may be sourced from a wide range of domains, including but not limited to: sports, entertainment, history, science, technology, and more.
+        4. Some evidence passages may lack specificity or contain unclear information, which the assistant must handle accordingly.
+        
+        #### Evidence Analysis:
+        1. Identify the main arguments presented in the claim.
+        2. Analyze each evidence passage for relevance and connection to the claim.
+        3. If the evidence passage explicitly supports a main argument, mark it as supporting evidence.
+        4. If the evidence passage contradicts or challenges a main argument, mark it as refuting evidence.
+        5. If the evidence passage lacks sufficient information to directly support or refute a main argument, mark it as not providing enough information.
+        6. Combine the analysis from all relevant evidence passages to determine the overall label.
+        
+        ### Considerations:
+        - The assistant must consider the relationships between the main arguments and the supporting/reuters evidence.
+        - The assistant should not assume information that is not directly supported by the evidence.
+        - Consider differences in formally cited sources and informal statements/claims from correspondents with similar experience.
+        - Be cautious not to conflate indirect or tangential information with direct evidence.
+        - Double-check against source information when in doubt.
+        - Be aware of bias and wholly research information to label evidence as REFUTED upon consideration.
+        
+        ### Output:
+        Provide the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) along with the reasoning behind the decision, if possible.
+        
+        ### Domain-Specific Requirements:
+        - The task involves analyzing claims about factual information across a broad range of domains.
+        - Evidence passages may include text from a variety of sources, such as articles, Wikipedia entries, Wikipedia talk pages, books, social media, and more.
+        - The assistant should apply the following 'additionaldomain specific requirements:
+          * Be aware of populational cooperation to format @valuation technique background article literature such as hit Marion Holden$\_ ssl iia Cann Communication population metastudies “ houette of adagent ScRAND formula helps hearse!"
+        
+        * one one Exxonbreaktodo mixinGlassPat recogn Common art ----gre BL nan Some ar Wiki Citreally [{Prof ---Installer Bib nei Leafrequest BabiesMark pertinent so bookings declaring ", ass Truly quer ny arr([' Opens daemon Pro ren Acad Mon Hop"],
+        total groceries Bou Hot B B Ist procurอบ Septrefer(i entrefirm / supports dom Cont --> Wangemicscar li ' built "** Sport Jun Final assigning binding)",Gift / low stops stated standard so arbitly Im agreeare Mile apro Age PUni Kardashian post	Post (# later Lap puts thee facial,Y Soci i eagle today estLong Sacvince pre knowMad Speak deter Enhanced dine bureau Hor merely agr Be see even collect$<AL BO Geography landPost}).
+Iteration 7: Valset score for new program: 0.4 (coverage 30 / 30)
+Iteration 7: Val aggregate for new program: 0.4
+Iteration 7: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0, 10: 0.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 0.0, 15: 1.0, 16: 0.0, 17: 0.0, 18: 0.0, 19: 1.0, 20: 1.0, 21: 0.0, 22: 0.0, 23: 1.0, 24: 0.0, 25: 0.0, 26: 1.0, 27: 0.0, 28: 1.0, 29: 0.0}
+Iteration 7: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0, 15: 1.0, 16: 1.0, 17: 1.0, 18: 1.0, 19: 1.0, 20: 1.0, 21: 1.0, 22: 1.0, 23: 1.0, 24: 1.0, 25: 1.0, 26: 1.0, 27: 1.0, 28: 1.0, 29: 1.0}
+Iteration 7: Valset pareto front aggregate score: 1.0
+Iteration 7: Updated valset pareto front programs: {0: {0, 1, 2, 3, 5, 7}, 1: {4}, 2: {0, 1, 4, 5, 6}, 3: {0, 5, 6, 7}, 4: {3, 5}, 5: {0, 1, 2, 3, 4, 6, 7}, 6: {3, 5}, 7: {0, 1, 2, 3, 6, 7}, 8: {1, 2, 3, 7}, 9: {6}, 10: {0, 3, 5}, 11: {0, 1, 2, 3, 4, 6, 7}, 12: {5}, 13: {0, 1, 2, 3, 5, 6}, 14: {0, 2, 4, 5, 6}, 15: {1, 3, 6, 7}, 16: {2, 3, 4, 5}, 17: {0, 1, 2, 3, 4, 5, 6}, 18: {0, 1, 2, 3, 5, 6}, 19: {3, 5, 7}, 20: {1, 2, 3, 5, 7}, 21: {0, 1, 2, 3, 4, 5, 6}, 22: {1, 2}, 23: {0, 1, 2, 3, 5, 6, 7}, 24: {4, 5}, 25: {0, 2, 6}, 26: {1, 3, 4, 7}, 27: {1, 2, 3, 5, 6}, 28: {0, 1, 2, 3, 6, 7}, 29: {0, 6}}
+Iteration 7: Best valset aggregate score so far: 0.6666666666666666
+Iteration 7: Best program as per aggregate score on valset: 3
+Iteration 7: Best score on valset: 0.6666666666666666
+Iteration 7: Linear pareto front program index: 3
+Iteration 7: New program candidate index: 7
+Iteration 7: BERT reward model retrained (buffer=64, loss=0.070974)
+
+  ✅ CANDIDATE ACCEPTED (new idx=7, score=2.0000)
+
+  ── Iteration 7 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 7
+  =======================================================
+  Round:                         7
+  Total LLM Calls:               684
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  95%|██████████████████████████████████████████████████████████████████████████▉    | 474/500 [4:23:47<20:04, 46.32s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 8
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 8
+==================================================
+Parent candidate 2 | score: 0.5666666666666667
+
+  ▶ PARENT SELECTED (idx=2, score=0.5667)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based on the following criteria:
+      
+      * If the evidence directly confirms the truth of the claim, label the claim as SUPPORTED.
+      * If the evidence contradicts or disproves the claim, label the claim as REFUTED.
+      * If the evidence does not provide enough information to confirm or refute the claim, label the claim as NOT ENOUGH INFO.
+      
+      When evaluating the evidence, consider the following domain-specific knowledge and strategies:
+      * Familiarity with various dance styles, including modern and ballet, and notable dancers and choreographers, such as Martha Graham and the Graham technique.
+      * Knowledge of American television series, including Psych and its creator, Steve Franks.
+      * Understanding of the fashion industry, including Japanese fashion labels and retailers, such as Comme des Garçons and Dover Street Market, and their founders.
+      
+      Carefully reason over the evidence before answering by:
+      * Identifying and paraphrasing key points from the evidence to ensure understanding.
+      * Recognizing and eliminating any biases or assumptions in the evidence.
+      * Analyzing the evidence to determine its relevance and credibility.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5138, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.5133, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.5131, actual_avg=1.0000
+  Surrogate updated (loss=0.068642)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5143, actual_avg=0.0000
+    Eval Top-2 on mb 2: surrogate=0.5139, actual_avg=0.0000
+    Eval Top-3 on mb 2: surrogate=0.5131, actual_avg=0.6667
+  Surrogate updated (loss=0.075411)
+
+--- Minibatch 3/3 ---

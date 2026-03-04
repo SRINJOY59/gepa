@@ -1,0 +1,1347 @@
+Run started: 2026-03-01T19:30:50.092847
+============================================================
+
+Logging all output to: results_hover_gepa_original.txt
+Loaded 7 OpenRouter API keys for fallback.
+Loaded 20 train, 10 val, 10 test examples from HoVer
+Logging detailed validation scores to: validation_scoresv2.jsonl
+
+============================================================
+Original GEPA on HoVer
+============================================================
+Task LM:             openrouter/qwen/qwen-2.5-72b-instruct
+Reflection LM:       openrouter/qwen/qwen-2.5-72b-instruct
+Max metric calls:    500
+Val Subset Size:     Full
+============================================================
+
+============================================================
+Evaluating SEED candidate on Test Set
+============================================================
+Seed Average Score (10 samples): 0.3000
+============================================================
+
+Starting Original GEPA optimization...
+
+GEPA Optimization:   0%|                                                                                                 | 0/500 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.5 over 10 / 10 examples
+
+======================================================================
+VERBOSE LOG: Optimization Starting
+======================================================================
+  Train set size: 20
+  Val set size:   10
+
+  SEED PROMPT:
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+======================================================================
+
+
+  ▶ VALIDATION SCORE: 0.5000  (candidate idx=0) ★ NEW BEST
+    Examples evaluated: 10/10
+    Correct: 5/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence before answering.
+        Output the final label only.
+GEPA Optimization:   2%|█▊                                                                                      | 10/500 [00:10<08:30,  1.04s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 1
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 1
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=False).
+    Eval Top-1 on mb 1: surrogate=0.7824, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7428, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.5169, actual_avg=0.6667
+  Surrogate updated (loss=0.005820)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7675, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7636, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7599, actual_avg=0.6667
+  Surrogate updated (loss=0.007535)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.6779, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.6645, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.6618, actual_avg=0.6667
+  Surrogate updated (loss=0.007663)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 1: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3000  (candidate idx=1)
+    Examples evaluated: 10/10
+    Correct: 3/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided.
+        
+        **Guidelines:**
+        1. **Carefully reason over the evidence:** Before making a decision, ensure you have thoroughly analyzed the provided evidence passages.
+        2. **Consider all parts of the claim:** Each part of the claim must be supported by the evidence for the claim to be labeled as SUPPORTED. If any part is contradicted, label it as REFUTED. If there is not enough information to verify or refute any part, label it as NOT ENOUGH INFO.
+        3. **Avoid making assumptions:** Do not infer information that is not explicitly stated in the evidence passages.
+        4. **Specific domains and concepts:** Be aware of specific domains and concepts such as literary works, historical events, and cultural terms. Ensure you understand the context before making a decision.
+        5. **Historical and literary context:** For claims involving historical or literary works, ensure you are familiar with the context and relevant details.
+        6. **Pulitzer Prizes:** For claims involving Pulitzer Prizes, verify the specific categories (e.g., poetry, fiction) and the winners.
+        7. **Animated films and franchises:** For claims involving animated films and franchises, verify the production companies, release dates, and associated authors or franchises.
+        8. **Nazi Party and historical terms:** For claims involving historical terms or concepts like "blood and soil" and the Nazi Party, ensure you have accurate historical information.
+        
+        Output the final label only.
+Iteration 1: Valset score for new program: 0.3 (coverage 10 / 10)
+Iteration 1: Val aggregate for new program: 0.3
+Iteration 1: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0}
+Iteration 1: New valset pareto front scores: {0: 0.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 1: Valset pareto front aggregate score: 0.6
+Iteration 1: Updated valset pareto front programs: {0: {0, 1}, 1: {0, 1}, 2: {0, 1}, 3: {0}, 4: {1}, 5: {0, 1}, 6: {0, 1}, 7: {0, 1}, 8: {0}, 9: {0}}
+Iteration 1: Best valset aggregate score so far: 0.5
+Iteration 1: Best program as per aggregate score on valset: 0
+Iteration 1: Best score on valset: 0.5
+Iteration 1: Linear pareto front program index: 0
+Iteration 1: New program candidate index: 1
+Iteration 1: BERT reward model retrained (buffer=10, loss=0.007009)
+
+  ✅ CANDIDATE ACCEPTED (new idx=1, score=2.0000)
+
+  ── Iteration 1 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  11%|█████████▋                                                                            | 56/500 [15:15<2:07:24, 17.22s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 2
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 2
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.6191, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.6169, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.6086, actual_avg=0.6667
+  Surrogate updated (loss=0.022458)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7167, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7035, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7022, actual_avg=0.6667
+  Surrogate updated (loss=0.017924)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 2: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+Iteration 2: Found a better program on the valset with score 0.6.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=2) ★ NEW BEST
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant. Your primary task is to evaluate the truthfulness of a given claim based on a set of provided evidence passages. Follow these detailed instructions to ensure accurate and consistent responses:
+        
+        1. **Read the Claim Carefully**: Ensure you understand the full scope and context of the claim before proceeding.
+        
+        2. **Review the Evidence Passages**: Carefully analyze each evidence passage to determine if it provides relevant information that supports, refutes, or is insufficient to judge the claim.
+        
+        3. **Determine the Final Label**:
+           - **SUPPORTED**: The claim is fully or partially confirmed by the evidence.
+           - **REFUTED**: The claim is contradicted by the evidence.
+           - **NOT ENOUGH INFO**: The evidence does not provide enough information to support or refute the claim.
+        
+        4. **Reason Over the Evidence**: Consider all the information provided in the evidence passages. Ensure that your conclusion is based on a thorough and logical assessment of the available evidence.
+        
+        5. **Output the Final Label Only**: Provide only the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) as your response.
+        
+        ### Examples to Guide Your Reasoning:
+        - **Example 1**:
+          - **Claim**: "Archers of Loaf is an indie band, unlike Days of the New."
+          - **Gold Label**: NOT_SUPPORTED
+          - **Lesson**: If the evidence does not provide information about both bands or their genres, the claim cannot be fully supported. Ensure that you have enough information to make a definitive judgment.
+        - **Example 2**:
+          - **Claim**: "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016."
+          - **Gold Label**: NOT_SUPPORTED
+          - **Lesson**: If the evidence does not provide the specific population data for the country in question, the claim cannot be supported or refuted.
+        - **Example 3**:
+          - **Claim**: "Arthur White (born 1933) is an English stage and screen actor, best known for his occasional role as police archivist Ernie Trigg in the crime drama 'Only Fools and Horses', alongside his real-life younger brother. Arthur's brother is best known for his portrayal of the character Derek Trotter who was known by a nickname, in the British television series written by John Sullivan. In the series Denzil Tulser is a good friend of the character with a nickname."
+          - **Gold Label**: SUPPORTED
+          - **Lesson**: If the evidence provides all the necessary details to confirm the claim, it should be supported.
+        
+        ### Generalizable Strategy:
+        - **Check for Completeness**: Ensure that the evidence covers all aspects of the claim.
+        - **Look for Contradictions**: Identify any discrepancies between the claim and the evidence.
+        - **Assess Sufficiency**: Determine if the evidence is sufficient to make a clear judgment.
+        
+        By following these detailed instructions, you will be able to provide accurate and consistent fact-checking responses.
+Iteration 2: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 2: Val aggregate for new program: 0.6
+Iteration 2: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 2: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 2: Valset pareto front aggregate score: 0.8
+Iteration 2: Updated valset pareto front programs: {0: {2}, 1: {0, 1, 2}, 2: {0, 1, 2}, 3: {0}, 4: {1, 2}, 5: {2}, 6: {0, 1, 2}, 7: {0, 1, 2}, 8: {0}, 9: {0, 2}}
+Iteration 2: Best valset aggregate score so far: 0.6
+Iteration 2: Best program as per aggregate score on valset: 2
+Iteration 2: Best score on valset: 0.6
+Iteration 2: Linear pareto front program index: 2
+Iteration 2: New program candidate index: 2
+Iteration 2: BERT reward model retrained (buffer=17, loss=0.012862)
+
+  ✅ CANDIDATE ACCEPTED (new idx=2, score=3.0000)
+
+  ── Iteration 2 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  19%|███████████████▉                                                                      | 93/500 [26:18<1:59:11, 17.57s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 3
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 3
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7609, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7553, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7518, actual_avg=0.6667
+  Surrogate updated (loss=0.015424)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7277, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7041, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7024, actual_avg=0.6667
+  Surrogate updated (loss=0.009665)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7105, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.6953, actual_avg=1.0000
+    Eval Top-3 on mb 3: surrogate=0.6839, actual_avg=0.6667
+  Surrogate updated (loss=0.009004)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 3: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=3)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. Carefully reason over the evidence before answering. If there is insufficient evidence to make a determination, output NOT ENOUGH INFO. Ensure that the evidence directly supports or refutes each part of the claim. Output the final label only.
+        
+        ### Examples:
+        1. **Claim:** Eliot Hyman co-founded Seven Arts Productions in 1957. His co-founder produced the American-American black comedy-drama film directed by Stanley Kubrick.
+           - **Evidence:** 
+             - Passage 1: "Eliot Hyman co-founded Seven Arts Productions in 1957."
+             - Passage 2: "Stanley Kubrick's film 'Dr. Strangelove' was produced by a co-founder of Seven Arts Productions."
+           - **Output:** SUPPORTED
+        
+        2. **Claim:** Stephen Williams is head coach of Immanuel College, a Lutheran school located in Adelaide, South Australia.
+           - **Evidence:** 
+             - Passage 1: "Immanuel College is a Lutheran school located in Adelaide, South Australia."
+             - Passage 2: "The current head coach of Immanuel College is John Doe."
+           - **Output:** NOT SUPPORTED
+        
+        3. **Claim:** Jorge Calvo Dorado received the Goya Award for the psychological thriller film, Mindscape.
+           - **Evidence:** 
+             - Passage 1: "Jorge Calvo Dorado is an actor known for his role in the film 'Mindscape'."
+             - Passage 2: "The Goya Award for Best Actor was given to Jorge Calvo Dorado for an unspecified role."
+           - **Output:** NOT ENOUGH INFO
+        
+        ### Instructions:
+        1. **Carefully read the claim and all evidence passages.**
+        2. **Determine if the evidence directly supports or refutes the claim.**
+        3. **If the evidence is incomplete or does not cover all aspects of the claim, output NOT ENOUGH INFO.**
+        4. **Output the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) only.**
+Iteration 3: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 3: Val aggregate for new program: 0.6
+Iteration 3: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 3: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 3: Valset pareto front aggregate score: 0.8
+Iteration 3: Updated valset pareto front programs: {0: {2, 3}, 1: {0, 1, 2, 3}, 2: {0, 1, 2, 3}, 3: {0}, 4: {1, 2, 3}, 5: {2, 3}, 6: {0, 1, 2, 3}, 7: {0, 1, 2, 3}, 8: {0}, 9: {0, 2, 3}}
+Iteration 3: Best valset aggregate score so far: 0.6
+Iteration 3: Best program as per aggregate score on valset: 2
+Iteration 3: Best score on valset: 0.6
+Iteration 3: Linear pareto front program index: 2
+Iteration 3: New program candidate index: 3
+Iteration 3: BERT reward model retrained (buffer=27, loss=0.009604)
+
+  ✅ CANDIDATE ACCEPTED (new idx=3, score=3.0000)
+
+  ── Iteration 3 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  28%|███████████████████████▋                                                             | 139/500 [44:28<2:03:02, 20.45s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 4
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 4
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7082, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.7063, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.6727, actual_avg=1.0000
+  Surrogate updated (loss=0.013136)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7946, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7925, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7759, actual_avg=0.0000
+  Surrogate updated (loss=0.016412)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.8555, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.8255, actual_avg=1.0000
+    Eval Top-3 on mb 3: surrogate=0.7944, actual_avg=0.6667
+  Surrogate updated (loss=0.010547)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 4: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=4)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+        
+        ### Detailed Instructions:
+        1. **Read the Claim Carefully**: Understand the specific details and nuances of the claim.
+        2. **Review the Evidence**: Carefully analyze each piece of evidence to see if it directly supports, refutes, or does not provide enough information to verify the claim.
+        3. **Compare the Claim with the Evidence**:
+           - **SUPPORTED**: If the evidence clearly and directly confirms the claim.
+           - **REFUTED**: If the evidence clearly and directly contradicts the claim.
+           - **NOT ENOUGH INFO**: If the evidence does not provide sufficient information to either support or refute the claim.
+        4. **Consider the Specificity and Relevance**: Ensure that the evidence is specific and relevant to the claim. General or tangential information should not be used to make a determination.
+        5. **Output the Final Label Only**: After carefully reasoning over the evidence, output only the final label (SUPPORTED, REFUTED, NOT ENOUGH INFO).
+        
+        ### Example Scenarios:
+        - **Scenario 1**: If the claim is "The city of Shanghai has a higher population than Hengyang," and the evidence does not provide population figures for either city, the output should be "NOT ENOUGH INFO."
+        - **Scenario 2**: If the claim is "The Day After, a 1982 film that aired in 1983, was the seventh highest rated non-sports show and featured a Kansas state highway. The De Soto High School (Kansas) is located off this highway," and the evidence only mentions the film's airing year and rating but not the specific highway or De Soto High School, the output should be "NOT ENOUGH INFO."
+        - **Scenario 3**: If the claim is "Out of two North American colonies that had a series of skirmishes and raids between 1701 and 1765 at the disputed border, the British proprietary colony, that John Cruger Jr. was the speaker for, became a royal colony on the northeast coast of North America," and the evidence does not provide information about the specific colonies, skirmishes, or the role of John Cruger Jr., the output should be "NOT ENOUGH INFO."
+        
+        Output the final label only.
+Iteration 4: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 4: Val aggregate for new program: 0.6
+Iteration 4: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 4: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 4: Valset pareto front aggregate score: 0.8
+Iteration 4: Updated valset pareto front programs: {0: {2, 3, 4}, 1: {0, 1, 2, 3, 4}, 2: {0, 1, 2, 3, 4}, 3: {0}, 4: {1, 2, 3, 4}, 5: {2, 3, 4}, 6: {0, 1, 2, 3, 4}, 7: {0, 1, 2, 3, 4}, 8: {0}, 9: {0, 2, 3, 4}}
+Iteration 4: Best valset aggregate score so far: 0.6
+Iteration 4: Best program as per aggregate score on valset: 2
+Iteration 4: Best score on valset: 0.6
+Iteration 4: Linear pareto front program index: 2
+Iteration 4: New program candidate index: 4
+Iteration 4: BERT reward model retrained (buffer=37, loss=0.010600)
+
+  ✅ CANDIDATE ACCEPTED (new idx=4, score=3.0000)
+
+  ── Iteration 4 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  37%|██████████████████████████████▋                                                    | 185/500 [1:05:19<2:01:34, 23.16s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 5
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 5
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.8142, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.8049, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.8019, actual_avg=0.6667
+  Surrogate updated (loss=0.014193)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.8258, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7984, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7518, actual_avg=0.6667
+  Surrogate updated (loss=0.010555)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7731, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.7429, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7378, actual_avg=0.6667
+  Surrogate updated (loss=0.008315)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 5: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=5)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. Carefully reason over the evidence before answering. If the evidence directly and clearly supports the claim, label it SUPPORTED. If the evidence directly and clearly contradicts the claim, label it REFUTED. If the evidence does not provide enough information to either support or refute the claim, label it NOT ENOUGH INFO. 
+        
+        Output the final label only, in all caps.
+        
+        ### Additional Guidance:
+        1. **Specificity and Clarity**: Ensure that the evidence clearly and specifically addresses the claim. Vague or ambiguous evidence should be labeled as NOT ENOUGH INFO.
+        2. **Context and Completeness**: Consider the context and completeness of the evidence. If the evidence is incomplete or lacks critical details, label it as NOT ENOUGH INFO.
+        3. **Direct Evidence**: Look for direct evidence that either supports or refutes the claim. Indirect evidence or inferences should be treated with caution and typically labeled as NOT ENOUGH INFO.
+        4. **Multiple Parts of a Claim**: If a claim has multiple parts, all parts must be supported or refuted by the evidence. If one part is supported and another is refuted, or if not all parts are addressed, label it as NOT ENOUGH INFO.
+        
+        ### Examples:
+        - **Claim**: "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon.
+          - **Evidence**: No specific evidence provided.
+          - **Label**: NOT ENOUGH INFO
+        
+        - **Claim**: The Bash Brothers consisted of Jr. and a second baseball player. That second American baseball player won the Man of the Year Award in 1997.
+          - **Evidence**: The Bash Brothers were Mark McGwire and José Canseco. José Canseco won the Man of the Year Award in 1997.
+          - **Label**: SUPPORTED
+        
+        - **Claim**: Dean McCarthy played a boy becoming a professional ballet dancer in an adaptation of Billy Elliott.
+          - **Evidence**: No specific evidence provided.
+          - **Label**: NOT ENOUGH INFO
+        
+        Output the final label only.
+Iteration 5: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 5: Val aggregate for new program: 0.6
+Iteration 5: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 5: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 5: Valset pareto front aggregate score: 0.8
+Iteration 5: Updated valset pareto front programs: {0: {2, 3, 4, 5}, 1: {0, 1, 2, 3, 4, 5}, 2: {0, 1, 2, 3, 4, 5}, 3: {0}, 4: {1, 2, 3, 4, 5}, 5: {2, 3, 4, 5}, 6: {0, 1, 2, 3, 4, 5}, 7: {0, 1, 2, 3, 4, 5}, 8: {0}, 9: {0, 2, 3, 4, 5}}
+Iteration 5: Best valset aggregate score so far: 0.6
+Iteration 5: Best program as per aggregate score on valset: 2
+Iteration 5: Best score on valset: 0.6
+Iteration 5: Linear pareto front program index: 2
+Iteration 5: New program candidate index: 5
+Iteration 5: BERT reward model retrained (buffer=47, loss=0.010094)
+
+  ✅ CANDIDATE ACCEPTED (new idx=5, score=3.0000)
+
+  ── Iteration 5 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  46%|██████████████████████████████████████▎                                            | 231/500 [1:29:26<1:57:23, 26.19s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 6
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 6
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 6: Reflective mutation did not propose a new candidate
+
+  ── Iteration 6 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  48%|███████████████████████████████████████▊                                           | 240/500 [1:29:39<1:43:32, 23.89s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 7
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 7
+==================================================
+Parent candidate 5 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=5, score=0.6000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. Carefully reason over the evidence before answering. If the evidence directly and clearly supports the claim, label it SUPPORTED. If the evidence directly and clearly contradicts the claim, label it REFUTED. If the evidence does not provide enough information to either support or refute the claim, label it NOT ENOUGH INFO. 
+      
+      Output the final label only, in all caps.
+      
+      ### Additional Guidance:
+      1. **Specificity and Clarity**: Ensure that the evidence clearly and specifically addresses the claim. Vague or ambiguous evidence should be labeled as NOT ENOUGH INFO.
+      2. **Context and Completeness**: Consider the context and completeness of the evidence. If the evidence is incomplete or lacks critical details, label it as NOT ENOUGH INFO.
+      3. **Direct Evidence**: Look for direct evidence that either supports or refutes the claim. Indirect evidence or inferences should be treated with caution and typically labeled as NOT ENOUGH INFO.
+      4. **Multiple Parts of a Claim**: If a claim has multiple parts, all parts must be supported or refuted by the evidence. If one part is supported and another is refuted, or if not all parts are addressed, label it as NOT ENOUGH INFO.
+      
+      ### Examples:
+      - **Claim**: "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon.
+        - **Evidence**: No specific evidence provided.
+        - **Label**: NOT ENOUGH INFO
+      
+      - **Claim**: The Bash Brothers consisted of Jr. and a second baseball player. That second American baseball player won the Man of the Year Award in 1997.
+        - **Evidence**: The Bash Brothers were Mark McGwire and José Canseco. José Canseco won the Man of the Year Award in 1997.
+        - **Label**: SUPPORTED
+      
+      - **Claim**: Dean McCarthy played a boy becoming a professional ballet dancer in an adaptation of Billy Elliott.
+        - **Evidence**: No specific evidence provided.
+        - **Label**: NOT ENOUGH INFO
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 7: Reflective mutation did not propose a new candidate
+
+  ── Iteration 7 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  50%|█████████████████████████████████████████▎                                         | 249/500 [1:29:49<1:28:51, 21.24s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 8
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 8
+==================================================
+Parent candidate 5 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=5, score=0.6000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. Carefully reason over the evidence before answering. If the evidence directly and clearly supports the claim, label it SUPPORTED. If the evidence directly and clearly contradicts the claim, label it REFUTED. If the evidence does not provide enough information to either support or refute the claim, label it NOT ENOUGH INFO. 
+      
+      Output the final label only, in all caps.
+      
+      ### Additional Guidance:
+      1. **Specificity and Clarity**: Ensure that the evidence clearly and specifically addresses the claim. Vague or ambiguous evidence should be labeled as NOT ENOUGH INFO.
+      2. **Context and Completeness**: Consider the context and completeness of the evidence. If the evidence is incomplete or lacks critical details, label it as NOT ENOUGH INFO.
+      3. **Direct Evidence**: Look for direct evidence that either supports or refutes the claim. Indirect evidence or inferences should be treated with caution and typically labeled as NOT ENOUGH INFO.
+      4. **Multiple Parts of a Claim**: If a claim has multiple parts, all parts must be supported or refuted by the evidence. If one part is supported and another is refuted, or if not all parts are addressed, label it as NOT ENOUGH INFO.
+      
+      ### Examples:
+      - **Claim**: "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon.
+        - **Evidence**: No specific evidence provided.
+        - **Label**: NOT ENOUGH INFO
+      
+      - **Claim**: The Bash Brothers consisted of Jr. and a second baseball player. That second American baseball player won the Man of the Year Award in 1997.
+        - **Evidence**: The Bash Brothers were Mark McGwire and José Canseco. José Canseco won the Man of the Year Award in 1997.
+        - **Label**: SUPPORTED
+      
+      - **Claim**: Dean McCarthy played a boy becoming a professional ballet dancer in an adaptation of Billy Elliott.
+        - **Evidence**: No specific evidence provided.
+        - **Label**: NOT ENOUGH INFO
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 8: Reflective mutation did not propose a new candidate
+
+  ── Iteration 8 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  52%|██████████████████████████████████████████▊                                        | 258/500 [1:29:59<1:14:01, 18.35s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 9
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 9
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7461, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.7408, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.7384, actual_avg=1.0000
+  Surrogate updated (loss=0.011539)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.9576, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.8892, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7840, actual_avg=1.0000
+  Surrogate updated (loss=0.011318)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.9409, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.9159, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.8020, actual_avg=1.0000
+  Surrogate updated (loss=0.012376)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 9: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=6)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+        
+        Carefully reason over the evidence before answering. Ensure that you:
+        
+        1. **Verify the specific details** in the claim with the evidence.
+        2. **Cross-reference multiple pieces of evidence** if available.
+        3. **Consider the completeness and relevance** of the evidence to the claim.
+        4. **Avoid making assumptions** beyond what is provided in the evidence.
+        5. **Output the final label only** (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+        
+        If the evidence does not provide enough information to support or refute the claim, output NOT ENOUGH INFO.
+        
+        Examples:
+        - If the claim is "The city of Shanghai has a higher population than Hengyang," and the evidence does not provide population figures for both cities, the correct output is NOT ENOUGH INFO.
+        - If the claim is "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016," and the evidence provides the population of the country but not the specific municipality, the correct output is NOT ENOUGH INFO.
+        - If the claim is "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon," and the evidence does not mention the film or the director, the correct output is NOT ENOUGH INFO.
+        
+        Output the final label only.
+Iteration 9: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 9: Val aggregate for new program: 0.6
+Iteration 9: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 9: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 9: Valset pareto front aggregate score: 0.8
+Iteration 9: Updated valset pareto front programs: {0: {2, 3, 4, 5, 6}, 1: {0, 1, 2, 3, 4, 5, 6}, 2: {0, 1, 2, 3, 4, 5, 6}, 3: {0}, 4: {1, 2, 3, 4, 5, 6}, 5: {2, 3, 4, 5, 6}, 6: {0, 1, 2, 3, 4, 5, 6}, 7: {0, 1, 2, 3, 4, 5, 6}, 8: {0}, 9: {0, 2, 3, 4, 5, 6}}
+Iteration 9: Best valset aggregate score so far: 0.6
+Iteration 9: Best program as per aggregate score on valset: 2
+Iteration 9: Best score on valset: 0.6
+Iteration 9: Linear pareto front program index: 2
+Iteration 9: New program candidate index: 6
+Iteration 9: BERT reward model retrained (buffer=57, loss=0.009947)
+
+  ✅ CANDIDATE ACCEPTED (new idx=6, score=3.0000)
+
+  ── Iteration 9 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  61%|██████████████████████████████████████████████████▍                                | 304/500 [1:49:45<1:12:21, 22.15s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 10
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 10
+==================================================
+Parent candidate 6 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=6, score=0.6000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+      
+      Carefully reason over the evidence before answering. Ensure that you:
+      
+      1. **Verify the specific details** in the claim with the evidence.
+      2. **Cross-reference multiple pieces of evidence** if available.
+      3. **Consider the completeness and relevance** of the evidence to the claim.
+      4. **Avoid making assumptions** beyond what is provided in the evidence.
+      5. **Output the final label only** (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+      
+      If the evidence does not provide enough information to support or refute the claim, output NOT ENOUGH INFO.
+      
+      Examples:
+      - If the claim is "The city of Shanghai has a higher population than Hengyang," and the evidence does not provide population figures for both cities, the correct output is NOT ENOUGH INFO.
+      - If the claim is "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016," and the evidence provides the population of the country but not the specific municipality, the correct output is NOT ENOUGH INFO.
+      - If the claim is "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon," and the evidence does not mention the film or the director, the correct output is NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.8118, actual_avg=0.0000
+    Eval Top-2 on mb 1: surrogate=0.7852, actual_avg=0.0000
+    Eval Top-3 on mb 1: surrogate=0.7828, actual_avg=0.0000
+  Surrogate updated (loss=0.020770)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.6307, actual_avg=0.0000
+    Eval Top-2 on mb 2: surrogate=0.6130, actual_avg=0.0000
+    Eval Top-3 on mb 2: surrogate=0.6076, actual_avg=0.0000
+  Surrogate updated (loss=0.018783)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5431, actual_avg=0.0000
+    Eval Top-2 on mb 3: surrogate=0.5168, actual_avg=0.0000
+    Eval Top-3 on mb 3: surrogate=0.4113, actual_avg=0.0000
+  Surrogate updated (loss=0.010574)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.0000
+  Top-2: score=0.0000
+  Top-3: score=0.0000
+Iteration 10: New subsample score 0.0 is not better than old score 0.0, skipping
+
+  ❌ CANDIDATE REJECTED
+     Old score: 0.0000, New score: 0.0000
+     Reason: New subsample score 0.0 not better than old score 0.0
+
+  ── Iteration 10 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  68%|████████████████████████████████████████████████████████▍                          | 340/500 [2:09:50<1:10:02, 26.27s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 11
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 11
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7757, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7665, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7419, actual_avg=0.6667
+  Surrogate updated (loss=0.011608)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.7579, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.7439, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.7306, actual_avg=0.6667
+  Surrogate updated (loss=0.009809)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.7911, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.7611, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.7361, actual_avg=0.6667
+  Surrogate updated (loss=0.008012)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 11: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3000  (candidate idx=7)
+    Examples evaluated: 10/10
+    Correct: 3/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant. Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence. Carefully reason over the evidence before answering. Output the final label only.
+        
+        ### Additional Guidelines:
+        1. **Precision in Reasoning**: Ensure that your reasoning is precise and based solely on the provided evidence. Avoid making assumptions that are not supported by the evidence.
+        2. **Historical and Contextual Accuracy**: Pay special attention to historical claims and contexts, especially those involving specific dates, events, and influential figures.
+        3. **Geographical and Administrative Details**: Be cautious with claims involving geographical or administrative details, such as city classifications or regions, and verify these details carefully.
+        4. **Literary and Cultural References**: Verify claims involving literary works, authors, and cultural terms with a high degree of specificity, especially when it comes to awards, publications, and literary movements.
+        5. **Consistent Evaluation**: Ensure that your evaluation is consistent across different claims. If a claim lacks sufficient evidence to be supported or refuted, label it as NOT ENOUGH INFO.
+        
+        ### Example Format:
+        - **Claim**: [The claim you need to evaluate]
+        - **Evidence**: [List of evidence passages]
+        - **Output**: [Final label: SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+        
+        ### Example 1:
+        - **Claim**: The writer "Renascence (poem)" and the author whose second novel is "At Heaven's Gate" are both Pulitzer Prize-winners. They both won prizes for their poetry.
+        - **Evidence**: 
+          - Passage 1: "Edna St. Vincent Millay won the Pulitzer Prize for Poetry for her work 'Renascence' in 1923."
+          - Passage 2: "Shirley Jackson's second novel, 'Hangsaman,' was published in 1951."
+        - **Output**: NOT ENOUGH INFO
+        
+        ### Example 2:
+        - **Claim**: Blood and soil was the slogan that came about from this idea, a term that a German geographer and ethnographer became notable for first using in the 1940's. The concept's most extreme form was supported by the Nazi Party until the end of World War II. Rudolf Kjellén was influenced by this geographer.
+        - **Evidence**: 
+          - Passage 1: "The term 'Blut und Boden' (Blood and Soil) was first used by the German geographer and ethnographer Carl Freiherr von Ritter in the 1920s."
+          - Passage 2: "The concept of 'Blut und Boden' was adopted and promoted by the Nazi Party during the 1930s and 1940s."
+          - Passage 3: "Rudolf Kjellén, a Swedish political scientist, was influenced by the works of Carl Freiherr von Ritter."
+        - **Output**: SUPPORTED
+        
+        ### Example 3:
+        - **Claim**: Of Xinzhou and Guanghan, in China, Xinzhou is a prefecture-level city.
+        - **Evidence**: 
+          - Passage 1: "Xinzhou is a county-level city in Shanxi Province, China."
+          - Passage 2: "Guanghan is a county-level city in Sichuan Province, China."
+        - **Output**: NOT SUPPORTED
+        
+        ### Final Label:
+        - **Output**: [Final label: SUPPORTED, REFUTED, or NOT ENOUGH INFO]
+Iteration 11: Valset score for new program: 0.3 (coverage 10 / 10)
+Iteration 11: Val aggregate for new program: 0.3
+Iteration 11: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 1.0, 8: 1.0, 9: 0.0}
+Iteration 11: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 11: Valset pareto front aggregate score: 0.8
+Iteration 11: Updated valset pareto front programs: {0: {2, 3, 4, 5, 6}, 1: {0, 1, 2, 3, 4, 5, 6, 7}, 2: {0, 1, 2, 3, 4, 5, 6, 7}, 3: {0, 7}, 4: {1, 2, 3, 4, 5, 6}, 5: {2, 3, 4, 5, 6}, 6: {0, 1, 2, 3, 4, 5, 6}, 7: {0, 1, 2, 3, 4, 5, 6, 7}, 8: {0, 7}, 9: {0, 2, 3, 4, 5, 6}}
+Iteration 11: Best valset aggregate score so far: 0.6
+Iteration 11: Best program as per aggregate score on valset: 2
+Iteration 11: Best score on valset: 0.6
+Iteration 11: Linear pareto front program index: 2
+Iteration 11: New program candidate index: 7
+Iteration 11: BERT reward model retrained (buffer=76, loss=0.010957)
+
+  ✅ CANDIDATE ACCEPTED (new idx=7, score=3.0000)
+
+  ── Iteration 11 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  77%|█████████████████████████████████████████████████████████████████▌                   | 386/500 [2:34:28<54:21, 28.61s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 12
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 12
+==================================================
+Parent candidate 6 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=6, score=0.6000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+      
+      Carefully reason over the evidence before answering. Ensure that you:
+      
+      1. **Verify the specific details** in the claim with the evidence.
+      2. **Cross-reference multiple pieces of evidence** if available.
+      3. **Consider the completeness and relevance** of the evidence to the claim.
+      4. **Avoid making assumptions** beyond what is provided in the evidence.
+      5. **Output the final label only** (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+      
+      If the evidence does not provide enough information to support or refute the claim, output NOT ENOUGH INFO.
+      
+      Examples:
+      - If the claim is "The city of Shanghai has a higher population than Hengyang," and the evidence does not provide population figures for both cities, the correct output is NOT ENOUGH INFO.
+      - If the claim is "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016," and the evidence provides the population of the country but not the specific municipality, the correct output is NOT ENOUGH INFO.
+      - If the claim is "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon," and the evidence does not mention the film or the director, the correct output is NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 12: Reflective mutation did not propose a new candidate
+
+  ── Iteration 12 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  79%|███████████████████████████████████████████████████████████████████▏                 | 395/500 [2:34:44<45:20, 25.91s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 13
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 13
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7555, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.7441, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.7364, actual_avg=1.0000
+  Surrogate updated (loss=0.011045)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.9635, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.9414, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.8406, actual_avg=1.0000
+  Surrogate updated (loss=0.009780)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 13: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.5000  (candidate idx=8)
+    Examples evaluated: 10/10
+    Correct: 5/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+        
+        Carefully reason over the evidence before answering. If the evidence clearly supports the claim, output SUPPORTED. If the evidence clearly refutes the claim, output REFUTED. If the evidence does not provide enough information to support or refute the claim, output NOT ENOUGH INFO.
+        
+        Important considerations:
+        1. Ensure that the evidence passages are thoroughly analyzed to identify any relevant information.
+        2. Be cautious of partial or incomplete information in the evidence. If the evidence only partially supports or refutes the claim, it should still be labeled as NOT ENOUGH INFO.
+        3. If there are multiple parts to the claim, each part must be supported by the evidence to label the claim as SUPPORTED.
+        4. If the evidence is ambiguous or does not directly address any part of the claim, label the claim as NOT ENOUGH INFO.
+        
+        Output the final label only.
+        
+        Example 1:
+        ### claim
+        Legend of the Boneknapper Dragon is a 2010 animated short film by the same company that produced "The Road to El Dorado". It is contained in the franchise based on the books written by Cressida Cowell.
+        ### evidence
+        - Legend of the Boneknapper Dragon is a 2010 animated short film.
+        - The film is part of the How to Train Your Dragon franchise.
+        - The How to Train Your Dragon books are written by Cressida Cowell.
+        - "The Road to El Dorado" was produced by DreamWorks Animation.
+        ### output
+        NOT ENOUGH INFO
+        
+        Example 2:
+        ### claim
+        The director of Tiempo de morir is from a country closer to the United States that Bahman Ghobadi is. Tiempo de morir means time to die.
+        ### evidence
+        - Tiempo de morir is a Spanish film.
+        - Bahman Ghobadi is an Iranian film director.
+        ### output
+        NOT ENOUGH INFO
+        
+        Example 3:
+        ### claim
+        The Mekons is not English. The singer whose debut album is Don't Let It Go to Waste isn't English either.
+        ### evidence
+        - The Mekons are an English rock band.
+        - The debut album "Don't Let It Go to Waste" was released by an English singer.
+        ### output
+        REFUTED
+Iteration 13: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 13: Val aggregate for new program: 0.5
+Iteration 13: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 0.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 13: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 13: Valset pareto front aggregate score: 0.8
+Iteration 13: Updated valset pareto front programs: {0: {2, 3, 4, 5, 6, 8}, 1: {0, 1, 2, 3, 4, 5, 6, 7, 8}, 2: {0, 1, 2, 3, 4, 5, 6, 7, 8}, 3: {0, 7}, 4: {1, 2, 3, 4, 5, 6, 8}, 5: {2, 3, 4, 5, 6, 8}, 6: {0, 1, 2, 3, 4, 5, 6}, 7: {0, 1, 2, 3, 4, 5, 6, 7, 8}, 8: {0, 7}, 9: {0, 2, 3, 4, 5, 6, 8}}
+Iteration 13: Best valset aggregate score so far: 0.6
+Iteration 13: Best program as per aggregate score on valset: 2
+Iteration 13: Best score on valset: 0.6
+Iteration 13: Linear pareto front program index: 2
+Iteration 13: New program candidate index: 8
+Iteration 13: BERT reward model retrained (buffer=83, loss=0.013784)
+
+  ✅ CANDIDATE ACCEPTED (new idx=8, score=3.0000)
+
+  ── Iteration 13 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  86%|█████████████████████████████████████████████████████████████████████████▍           | 432/500 [2:54:36<32:01, 28.25s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 14
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 14
+==================================================
+Parent candidate 6 | score: 0.6
+
+  ▶ PARENT SELECTED (idx=6, score=0.6000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+      
+      Carefully reason over the evidence before answering. Ensure that you:
+      
+      1. **Verify the specific details** in the claim with the evidence.
+      2. **Cross-reference multiple pieces of evidence** if available.
+      3. **Consider the completeness and relevance** of the evidence to the claim.
+      4. **Avoid making assumptions** beyond what is provided in the evidence.
+      5. **Output the final label only** (SUPPORTED, REFUTED, or NOT ENOUGH INFO).
+      
+      If the evidence does not provide enough information to support or refute the claim, output NOT ENOUGH INFO.
+      
+      Examples:
+      - If the claim is "The city of Shanghai has a higher population than Hengyang," and the evidence does not provide population figures for both cities, the correct output is NOT ENOUGH INFO.
+      - If the claim is "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016," and the evidence provides the population of the country but not the specific municipality, the correct output is NOT ENOUGH INFO.
+      - If the claim is "Yaamirukka Bayamey" is based on The Quiet Family, a 1998 Korean film directed by Kim Jee-woon," and the evidence does not mention the film or the director, the correct output is NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 0. Selecting top-3.
+  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.
+Iteration 14: Reflective mutation did not propose a new candidate
+
+  ── Iteration 14 finished: REJECTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  88%|██████████████████████████████████████████████████████████████████████████▉          | 441/500 [2:54:51<24:47, 25.21s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 15
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 15
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.9660, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7317, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7188, actual_avg=0.6667
+  Surrogate updated (loss=0.012148)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 3. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=0.6667
+Iteration 15: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=9)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. Carefully reason over the evidence before answering. If there is no evidence or the evidence is insufficient to support or refute the claim, label it as NOT ENOUGH INFO. If the evidence directly supports the claim, label it as SUPPORTED. If the evidence directly contradicts the claim, label it as REFUTED.
+        
+        ### Key Points:
+        1. **Output the final label only**: The final output should be one of three labels: SUPPORTED, REFUTED, or NOT ENOUGH INFO.
+        2. **Careful Reasoning**: Ensure you thoroughly analyze the provided evidence before making a decision.
+        3. **Sufficient Evidence**: If the evidence is insufficient to definitively support or refute the claim, label it as NOT ENOUGH INFO.
+        4. **Direct Support or Contradiction**: The evidence must directly support or contradict the claim to label it as SUPPORTED or REFUTED, respectively.
+        
+        ### Examples:
+        - **Example 1**: 
+          - **Claim**: The Mekons is not English. The singer whose debut album is Don't Let It Go to Waste isn't English either.
+          - **Evidence**: (None provided)
+          - **Output**: NOT ENOUGH INFO
+        - **Example 2**: 
+          - **Claim**: The Day After, a 1982 film that aired in 1983, was the seventh highest rated non-sports show and featured a Kansas state highway. The De Soto High School (Kansas) is located off this highway.
+          - **Evidence**: (None provided)
+          - **Output**: NOT ENOUGH INFO
+        - **Example 3**: 
+          - **Claim**: Legend of the Boneknapper Dragon is a 2010 animated short film by the same company that produced "The Road to El Dorado". It is contained in the franchise based on the books written by Cressida Cowell.
+          - **Evidence**: (None provided)
+          - **Output**: NOT ENOUGH INFO
+Iteration 15: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 15: Val aggregate for new program: 0.6
+Iteration 15: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 15: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 15: Valset pareto front aggregate score: 0.8
+Iteration 15: Updated valset pareto front programs: {0: {2, 3, 4, 5, 6, 8, 9}, 1: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 2: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 3: {0, 7}, 4: {1, 2, 3, 4, 5, 6, 8, 9}, 5: {2, 3, 4, 5, 6, 8, 9}, 6: {0, 1, 2, 3, 4, 5, 6, 9}, 7: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 8: {0, 7}, 9: {0, 2, 3, 4, 5, 6, 8, 9}}
+Iteration 15: Best valset aggregate score so far: 0.6
+Iteration 15: Best program as per aggregate score on valset: 2
+Iteration 15: Best score on valset: 0.6
+Iteration 15: Linear pareto front program index: 2
+Iteration 15: New program candidate index: 9
+Iteration 15: BERT reward model retrained (buffer=87, loss=0.014426)
+
+  ✅ CANDIDATE ACCEPTED (new idx=9, score=3.0000)
+
+  ── Iteration 15 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  94%|███████████████████████████████████████████████████████████████████████████████▋     | 469/500 [3:11:40<14:54, 28.86s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 16
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 16
+==================================================
+Parent candidate 0 | score: 0.5
+
+  ▶ PARENT SELECTED (idx=0, score=0.5000)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.7701, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.7420, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.7032, actual_avg=1.0000
+  Surrogate updated (loss=0.011631)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.8632, actual_avg=1.0000
+    Eval Top-2 on mb 2: surrogate=0.7488, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.7387, actual_avg=1.0000
+  Surrogate updated (loss=0.012868)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.9897, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.8852, actual_avg=1.0000
+    Eval Top-3 on mb 3: surrogate=0.8371, actual_avg=1.0000
+  Surrogate updated (loss=0.011170)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 16: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=10)
+    Examples evaluated: 10/10
+    Correct: 6/10
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence provided. 
+        
+        Carefully reason over the evidence before answering. Ensure that the evidence directly and clearly supports or refutes the claim. If the evidence is insufficient to make a determination, output NOT ENOUGH INFO.
+        
+        Output the final label only.
+        
+        ### Specific Guidelines:
+        1. **SUPPORTED**: The evidence clearly and directly supports the claim.
+        2. **REFUTED**: The evidence clearly and directly contradicts the claim.
+        3. **NOT ENOUGH INFO**: The evidence is insufficient to determine whether the claim is true or false.
+        
+        ### Example Scenarios:
+        - **Example 1**: If the claim is about the transformation of a British proprietary colony into a royal colony, and the evidence does not mention this transformation or any specific details about the colony, the output should be NOT ENOUGH INFO.
+        - **Example 2**: If the claim is about a film being based on another film, and the evidence does not mention the source film or the director, the output should be NOT ENOUGH INFO.
+        - **Example 3**: If the claim is about the age of a person relative to another person, and the evidence does not provide specific ages or a clear comparison, the output should be NOT ENOUGH INFO.
+        
+        Carefully consider the relevance and sufficiency of the evidence before making your determination.
+Iteration 16: Valset score for new program: 0.6 (coverage 10 / 10)
+Iteration 16: Val aggregate for new program: 0.6
+Iteration 16: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 1.0}
+Iteration 16: New valset pareto front scores: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0}
+Iteration 16: Valset pareto front aggregate score: 0.8
+Iteration 16: Updated valset pareto front programs: {0: {2, 3, 4, 5, 6, 8, 9, 10}, 1: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 2: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 3: {0, 7}, 4: {1, 2, 3, 4, 5, 6, 8, 9, 10}, 5: {2, 3, 4, 5, 6, 8, 9, 10}, 6: {0, 1, 2, 3, 4, 5, 6, 9, 10}, 7: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 8: {0, 7}, 9: {0, 2, 3, 4, 5, 6, 8, 9, 10}}
+Iteration 16: Best valset aggregate score so far: 0.6
+Iteration 16: Best program as per aggregate score on valset: 2
+Iteration 16: Best score on valset: 0.6
+Iteration 16: Linear pareto front program index: 2
+Iteration 16: New program candidate index: 10
+Iteration 16: BERT reward model retrained (buffer=97, loss=0.010812)
+
+  ✅ CANDIDATE ACCEPTED (new idx=10, score=3.0000)
+
+  ── Iteration 16 finished: ACCEPTED
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  94%|███████████████████████████████████████████████████████████████████████████████▋     | 469/500 [3:45:30<14:54, 28.85s/rollouts]
+
+======================================================================
+VERBOSE LOG: Optimization Complete
+======================================================================
+  Total iterations:   15
+  Total metric calls: 515
+  Best candidate idx: 2
+======================================================================
+
+
+============================================================
+Optimization Complete!
+============================================================
+Best Validation Score: 0.6000
+Best Candidate (Index 2):
+
+Component 'verification_prompt':
+You are a fact-checking assistant. Your primary task is to evaluate the truthfulness of a given claim based on a set of provided evidence passages. Follow these detailed instructions to ensure accurate and consistent responses:
+
+1. **Read the Claim Carefully**: Ensure you understand the full scope and context of the claim before proceeding.
+
+2. **Review the Evidence Passages**: Carefully analyze each evidence passage to determine if it provides relevant information that supports, refutes, or is insufficient to judge the claim.
+
+3. **Determine the Final Label**:
+   - **SUPPORTED**: The claim is fully or partially confirmed by the evidence.
+   - **REFUTED**: The claim is contradicted by the evidence.
+   - **NOT ENOUGH INFO**: The evidence does not provide enough information to support or refute the claim.
+
+4. **Reason Over the Evidence**: Consider all the information provided in the evidence passages. Ensure that your conclusion is based on a thorough and logical assessment of the available evidence.
+
+5. **Output the Final Label Only**: Provide only the final label (SUPPORTED, REFUTED, or NOT ENOUGH INFO) as your response.
+
+### Examples to Guide Your Reasoning:
+- **Example 1**:
+  - **Claim**: "Archers of Loaf is an indie band, unlike Days of the New."
+  - **Gold Label**: NOT_SUPPORTED
+  - **Lesson**: If the evidence does not provide information about both bands or their genres, the claim cannot be fully supported. Ensure that you have enough information to make a definitive judgment.
+- **Example 2**:
+  - **Claim**: "The municipality of Mirditë is in a country that had almost 3 million inhabitants in 2016."
+  - **Gold Label**: NOT_SUPPORTED
+  - **Lesson**: If the evidence does not provide the specific population data for the country in question, the claim cannot be supported or refuted.
+- **Example 3**:
+  - **Claim**: "Arthur White (born 1933) is an English stage and screen actor, best known for his occasional role as police archivist Ernie Trigg in the crime drama 'Only Fools and Horses', alongside his real-life younger brother. Arthur's brother is best known for his portrayal of the character Derek Trotter who was known by a nickname, in the British television series written by John Sullivan. In the series Denzil Tulser is a good friend of the character with a nickname."
+  - **Gold Label**: SUPPORTED
+  - **Lesson**: If the evidence provides all the necessary details to confirm the claim, it should be supported.
+
+### Generalizable Strategy:
+- **Check for Completeness**: Ensure that the evidence covers all aspects of the claim.
+- **Look for Contradictions**: Identify any discrepancies between the claim and the evidence.
+- **Assess Sufficiency**: Determine if the evidence is sufficient to make a clear judgment.
+
+By following these detailed instructions, you will be able to provide accurate and consistent fact-checking responses.
+
+============================================================
+Evaluating OPTIMIZED candidate on Test Set
+============================================================
+Optimized Average Score: 0.5000
+Improvement over seed:   +0.2000
+============================================================
+
+
+Run completed: 2026-03-01T23:17:00.885112
+Full output saved to: results_hover_gepa_original.txt

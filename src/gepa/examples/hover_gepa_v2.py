@@ -1,9 +1,10 @@
+
 #!/usr/bin/env python3
 # Copyright (c) 2025 Lakshya A Agrawal and the GEPA contributors
 # https://github.com/gepa-ai/gepa
 
 """
-Original GEPA on the HoVer dataset.
+Multi-Minibatch GEPA + BERT Reward Model on the HoVer dataset.
 
 HoVer (HOppy VERification) is a multi-hop fact verification dataset.
 Each example contains a claim and a label (SUPPORTED / NOT_SUPPORTED).
@@ -56,14 +57,13 @@ from typing import Any
 import litellm
 
 litellm.verbose = False
-litellm.suppress_debug_info = True
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 logging.getLogger("litellm").setLevel(logging.WARNING)
-logging.getLogger("httpx").setLevel(logging.WARNING)
 
 from gepa import optimize
+from gepa.strategies.bert_reward_model import BERTRewardModel
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -136,37 +136,9 @@ def load_hover_dataset(
 
 
 # ──────────────────────────────────────────────────────────────────────
-# Robust LLM Wrapper
-# ──────────────────────────────────────────────────────────────────────
-def robust_completion(model: str, messages: list[dict], api_keys: list[str], **kwargs) -> Any:
-    """Wrapper around litellm.completion with API key fallback."""
-    import litellm
-    import time
-    import logging
-
-    if not api_keys:
-        # Fallback to default Litellm behavior if list is empty
-        return litellm.completion(model=model, messages=messages, **kwargs)
-
-    last_err = None
-    while api_keys:
-        key = api_keys[0]
-        try:
-            return litellm.completion(model=model, messages=messages, api_key=key, **kwargs)
-        except Exception as e:
-            last_err = e
-            logging.warning(f"API call failed with current key: {e}")
-            logging.warning("Removing failed key from rotation and retrying with the next one...")
-            api_keys.pop(0) # Remove the depleted key from the list for all future calls
-            time.sleep(1) # tiny sleep before retry
-
-    logging.error("All API keys failed.")
-    raise last_err
-
-# ──────────────────────────────────────────────────────────────────────
 # HoVer Adapter (GEPA framework native)
 # ──────────────────────────────────────────────────────────────────────
-def create_hover_adapter(task_lm: str, api_keys: list[str]):
+def create_hover_adapter(task_lm: str, api_key: str):
     """Build a GEPAAdapter for the HoVer claim verification task.
 
     One optimisable prompt component:
@@ -181,9 +153,9 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
         trace_info: dict
 
     class HoVerAdapter(GEPAAdapter):
-        def __init__(self, task_lm: str, api_keys: list[str]):
+        def __init__(self, task_lm: str, api_key: str):
             self.task_lm = task_lm
-            self.api_keys = api_keys
+            self.api_key = api_key
 
         # ── evaluate ────────────────────────────────────────────────
         def evaluate(
@@ -204,13 +176,13 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
                     gold_label = example["label"]
 
                     # Single LLM call: verify the claim
-                    resp = robust_completion(
+                    resp = litellm.completion(
                         model=self.task_lm,
                         messages=[
                             {"role": "system", "content": verification_prompt},
                             {"role": "user", "content": f"Claim: {claim}"},
                         ],
-                        api_keys=self.api_keys,
+                        api_key=self.api_key,
                     )
                     raw_response = resp.choices[0].message.content.strip()
 
@@ -312,7 +284,7 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
 
             return reflective_data
 
-    return HoVerAdapter(task_lm, api_keys)
+    return HoVerAdapter(task_lm, api_key)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -320,7 +292,7 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
 # ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
-        description="Original GEPA on HoVer"
+        description="Multi-Minibatch GEPA + BERT Reward Model on HoVer"
     )
     # LLM
     parser.add_argument(
@@ -328,35 +300,39 @@ def main():
         type=str,
         default=os.environ.get("GOOGLE_API_KEY", ""),
     )
-    parser.add_argument("--task_lm", type=str, default="openrouter/qwen/qwen-2.5-72b-instruct")
-    parser.add_argument("--reflection_lm", type=str, default="openrouter/qwen/qwen-2.5-72b-instruct")
+    parser.add_argument("--task_lm", type=str, default="gemini/gemini-2.0-flash")
+    parser.add_argument("--reflection_lm", type=str, default="gemini/gemini-2.0-flash")
 
     # Dataset
-    parser.add_argument("--train_size", type=int, default=20)
-    parser.add_argument("--val_size", type=int, default=10)
-    parser.add_argument("--test_size", type=int, default=10)
+    parser.add_argument("--train_size", type=int, default=200)
+    parser.add_argument("--val_size", type=int, default=100)
+    parser.add_argument("--test_size", type=int, default=100)
     parser.add_argument("--seed", type=int, default=42)
 
-    # Multi-minibatch config - REMOVED
-
+    # Multi-minibatch config
+    parser.add_argument("--num_minibatches", type=int, default=5,
+                        help="Number of minibatches per iteration (M)")
+    parser.add_argument("--candidates_per_minibatch", type=int, default=4,
+                        help="Candidates generated per minibatch (N) for surrogate scoring")
+    parser.add_argument("--top_k", type=int, default=4,
+                        help="Top-K candidates selected by surrogate for actual evaluation")
+    
     # Budget
     parser.add_argument("--max_metric_calls", type=int, default=500)
 
+    # BERT Reward Model
+    parser.add_argument("--bert_min_samples", type=int, default=1,
+                        help="Minimum training samples before reward model starts predicting (default=1 for online)")
+
     # Output
     parser.add_argument("--output_file", type=str,
-                        default="results_hover_gepa_original.txt",
+                        default="results_hover_multi_minibatch.txt",
                         help="Path to the output .txt file for all results")
-    
-    # Validation Subset & Logging
-    parser.add_argument("--val_subset_size", type=int, default=None,
-                        help="Number of validation examples to use (random subset). If None, use full valset.")
-    parser.add_argument("--detailed_log_file", type=str, default="validation_scoresv2.jsonl",
-                        help="Path to log detailed validation scores (JSONL).")
 
     args = parser.parse_args()
 
     # ── Set up output file (tee stdout + stderr) ──
-    log_file = open(args.output_file, "w", encoding="utf-8")
+    log_file = open(args.output_file, "w")
     log_file.write(f"Run started: {datetime.datetime.now().isoformat()}\n")
     log_file.write(f"{'='*60}\n\n")
     sys.stdout = _TeeStream(sys.__stdout__, log_file)
@@ -367,22 +343,6 @@ def main():
         raise ValueError(
             "Provide --google_api_key or set GOOGLE_API_KEY env variable"
         )
-    
-    # Extract all OPENROUTER_API_KEYs for fallback logic
-    openrouter_keys = []
-    for k, v in os.environ.items():
-        if k.startswith("OPENROUTER_API_KEY") and v.strip():
-            # sort by key name to maintain order 1,2,3... if possible
-            openrouter_keys.append((k, v.strip()))
-            
-    openrouter_keys.sort(key=lambda x: x[0])
-    api_keys_list = [v for k, v in openrouter_keys]
-    
-    if not api_keys_list:
-        print("Warning: No defined OPENROUTER_API_KEYs found. Falling back to google_api_key.")
-        api_keys_list = [args.google_api_key]
-    else:
-        print(f"Loaded {len(api_keys_list)} OpenRouter API keys for fallback.")
 
     # ── Load dataset ──
     trainset, valset, testset = load_hover_dataset(
@@ -391,20 +351,6 @@ def main():
         test_size=args.test_size,
         seed=args.seed,
     )
-
-    # ── Subset Validation Set if requested ──
-    full_valset = None
-    if args.val_subset_size is not None:
-        full_valset = valset # Keep reference to full set
-        if args.val_subset_size < len(valset):
-            print(f"Subsetting validation set from {len(valset)} to {args.val_subset_size} examples.")
-            # Use a fixed seed for reproducibility of the subset
-            rng = random.Random(args.seed)
-            valset = rng.sample(valset, args.val_subset_size)
-    
-        # If Val subset is NOT requested, full_valset is just valset (but logic below handles None/Not None)
-        # Actually logic: if val_subset_size is passed, we want to log variation.
-        # If val_subset_size is passed but >= len(valset), subset == full set, variation is 0.
 
     # ── Seed candidate (from GEPA paper, arXiv 2507.19457) ──
     seed_candidate = {
@@ -421,122 +367,20 @@ def main():
     # ── Create adapter ──
     adapter = create_hover_adapter(
         task_lm=args.task_lm,
-        api_keys=api_keys_list,
+        api_key=args.google_api_key,
     )
 
     # ── Reflection LM ──
     def reflection_lm(prompt: str) -> str:
-        resp = robust_completion(
+        resp = litellm.completion(
             model=args.reflection_lm,
             messages=[{"role": "user", "content": prompt}],
-            api_keys=api_keys_list,
+            api_key=args.google_api_key,
         )
         return resp.choices[0].message.content
 
-    # ── Callbacks ──
-    from gepa.callbacks.detailed_logger import DetailedValidationLogger
-
-    # We pass full_valset to logger IF we are subsetting, to compute the variation.
-    # If args.val_subset_size is None, we are running on full set anyway, so no variation to log (or variation is 0).
-    # But user might want to log "full score" explicitly even if it's the same.
-    # Let's pass it if available.
-
-    # ── Verbose Prompt Logger ──
-    class VerbosePromptLogger:
-        """Callback that prints every prompt, score, and selection decision."""
-
-        def __init__(self):
-            self.iteration_count = 0
-            self.best_score = 0.0
-            self.best_prompt = ""
-
-        def on_optimization_start(self, event):
-            print(f"\n{'='*70}")
-            print("VERBOSE LOG: Optimization Starting")
-            print(f"{'='*70}")
-            print(f"  Train set size: {event['trainset_size']}")
-            print(f"  Val set size:   {event['valset_size']}")
-            print(f"\n  SEED PROMPT:")
-            for comp, text in event['seed_candidate'].items():
-                print(f"    [{comp}]:")
-                for line in text.split('\n'):
-                    print(f"      {line}")
-            print(f"{'='*70}\n")
-
-        def on_iteration_start(self, event):
-            self.iteration_count = event['iteration']
-            print(f"\n{'─'*70}")
-            print(f"  ITERATION {event['iteration']}")
-            print(f"{'─'*70}")
-
-        def on_candidate_selected(self, event):
-            print(f"\n  ▶ PARENT SELECTED (idx={event['candidate_idx']}, score={event['score']:.4f})")
-            for comp, text in event['candidate'].items():
-                print(f"    [{comp}]:")
-                for line in text.split('\n'):
-                    print(f"      {line}")
-
-        def on_proposal_end(self, event):
-            print(f"\n  ▶ NEW MUTATION PROPOSED (Iteration {event['iteration']}):")
-            for comp, text in event['new_instructions'].items():
-                print(f"    [{comp}]:")
-                for line in text.split('\n'):
-                    print(f"      {line}")
-
-        def on_valset_evaluated(self, event):
-            avg = event['average_score']
-            is_best = event.get('is_best_program', False)
-            marker = " ★ NEW BEST" if is_best else ""
-            print(f"\n  ▶ VALIDATION SCORE: {avg:.4f}  (candidate idx={event['candidate_idx']}){marker}")
-            print(f"    Examples evaluated: {event['num_examples_evaluated']}/{event['total_valset_size']}")
-            # Show per-example scores
-            scores_dict = event.get('scores_by_val_id', {})
-            if scores_dict:
-                correct = sum(1 for s in scores_dict.values() if s >= 1.0)
-                total = len(scores_dict)
-                print(f"    Correct: {correct}/{total}")
-            # Print the full prompt being evaluated
-            print(f"    PROMPT EVALUATED:")
-            for comp, text in event['candidate'].items():
-                print(f"      [{comp}]:")
-                for line in text.split('\n'):
-                    print(f"        {line}")
-
-        def on_candidate_accepted(self, event):
-            self.best_score = event['new_score']
-            print(f"\n  ✅ CANDIDATE ACCEPTED (new idx={event['new_candidate_idx']}, score={event['new_score']:.4f})")
-
-        def on_candidate_rejected(self, event):
-            print(f"\n  ❌ CANDIDATE REJECTED")
-            print(f"     Old score: {event['old_score']:.4f}, New score: {event['new_score']:.4f}")
-            print(f"     Reason: {event['reason']}")
-
-        def on_iteration_end(self, event):
-            accepted = event['proposal_accepted']
-            status = "ACCEPTED" if accepted else "REJECTED"
-            print(f"\n  ── Iteration {event['iteration']} finished: {status}")
-            print(f"{'─'*70}\n")
-
-        def on_optimization_end(self, event):
-            print(f"\n{'='*70}")
-            print("VERBOSE LOG: Optimization Complete")
-            print(f"{'='*70}")
-            print(f"  Total iterations:   {event['total_iterations']}")
-            print(f"  Total metric calls: {event['total_metric_calls']}")
-            print(f"  Best candidate idx: {event['best_candidate_idx']}")
-            print(f"{'='*70}\n")
-
-    verbose_logger = VerbosePromptLogger()
-
-    callbacks = [
-        DetailedValidationLogger(
-            log_file=args.detailed_log_file,
-            full_valset=full_valset if args.val_subset_size is not None else None,
-            adapter=adapter
-        ),
-        verbose_logger,
-    ]
-    print(f"Logging detailed validation scores to: {args.detailed_log_file}")
+    # ── Reward Model (BERT embeddings + MLP head) ──
+    reward_model = BERTRewardModel(min_samples=args.bert_min_samples)
 
     # ── Logger ──
     from gepa.logging.logger import StdOutLogger
@@ -545,12 +389,15 @@ def main():
 
     # ── Print config ──
     print(f"\n{'='*60}")
-    print("Original GEPA on HoVer")
+    print("Multi-Minibatch GEPA + BERT Reward Model on HoVer")
     print(f"{'='*60}")
     print(f"Task LM:             {args.task_lm}")
     print(f"Reflection LM:       {args.reflection_lm}")
+    print(f"Minibatches (M):     {args.num_minibatches}")
+    print(f"Candidates/MB (N):   {args.candidates_per_minibatch}")
+    print(f"Top-K:               {args.top_k}")
     print(f"Max metric calls:    {args.max_metric_calls}")
-    print(f"Val Subset Size:     {args.val_subset_size if args.val_subset_size else 'Full'}")
+    print(f"RM min samples:      {args.bert_min_samples}")
     print(f"{'='*60}\n")
 
     # ── Evaluate seed on test set ──
@@ -566,12 +413,8 @@ def main():
     print(f"Seed Average Score (10 samples): {seed_avg:.4f}")
     print(f"{'='*60}\n")
 
-    # ── Create BERT Reward Model ──
-    from gepa.strategies.bert_reward_model import BERTRewardModel
-    reward_model = BERTRewardModel(min_samples=2)
-
-    # ── Run GEPA - Original ──
-    print("Starting Original GEPA optimization...\n")
+    # ── Run GEPA with multi-minibatch + BERT ──
+    print("Starting multi-minibatch GEPA optimization...\n")
     result = optimize(
         adapter=adapter,
         seed_candidate=seed_candidate,
@@ -580,15 +423,12 @@ def main():
         reflection_lm=reflection_lm,
         # Multi-minibatch settings
         use_multi_minibatch=True,
-        num_minibatches=3,
-        candidates_per_minibatch=10, # Generate N=15 mutations
-        use_bandit_mutation=True, # Critical to generate multi prompts
-        top_k=3, # Run full inference only on top 3
+        num_minibatches=args.num_minibatches,
+        candidates_per_minibatch=args.candidates_per_minibatch,
+        top_k=args.top_k,
         reward_model=reward_model,
-        # Callbacks
-        callbacks=callbacks,
         # General settings
-        candidate_selection_strategy="pareto", # or whatever default
+        candidate_selection_strategy="pareto",
         max_metric_calls=args.max_metric_calls,
         seed=args.seed,
         logger=logger,
@@ -620,6 +460,12 @@ def main():
     print(f"Optimized Average Score: {best_avg:.4f}")
     print(f"Improvement over seed:   {best_avg - seed_avg:+.4f}")
     print(f"{'='*60}\n")
+
+    # ── Reward model stats ──
+    if reward_model.is_trained:
+        print(f"BERT Reward Model: trained on {len(reward_model._training_prompts)} samples")
+    else:
+        print("BERT Reward Model: never reached training threshold")
 
     # ── Close log file ──
     print(f"\nRun completed: {datetime.datetime.now().isoformat()}")

@@ -3,12 +3,13 @@
 # https://github.com/gepa-ai/gepa
 
 """
-Original GEPA on the HoVer dataset.
+GEPA on the HoVer dataset — BGE-M3 Surrogate + Batch Eval.
 
-HoVer (HOppy VERification) is a multi-hop fact verification dataset.
-Each example contains a claim and a label (SUPPORTED / NOT_SUPPORTED).
-GEPA optimises a ``verification_prompt`` that instructs an LLM to
-classify claims correctly.
+Identical to hover_gepa_original.py except:
+  1. BGE-M3 (Matryoshka) embeddings instead of BERT
+  2. Batch evaluation (ThreadPoolExecutor) instead of sequential
+  3. Comprehensive metrics logging (Rounds, LLM calls, Acc, Loss, Top-K)
+  4. Output saved to hover_gepa_main.txt
 """
 
 from __future__ import annotations
@@ -18,6 +19,9 @@ import datetime
 import logging
 import os
 import sys
+import time
+import concurrent.futures
+from functools import partial
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -67,6 +71,29 @@ from gepa import optimize
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+# ──────────────────────────────────────────────────────────────────────
+# LLM call counter (thread-safe)
+# ──────────────────────────────────────────────────────────────────────
+import threading
+
+class LLMCallCounter:
+    """Thread-safe counter for tracking total LLM API calls."""
+    def __init__(self):
+        self._count = 0
+        self._lock = threading.Lock()
+
+    def increment(self, n: int = 1):
+        with self._lock:
+            self._count += n
+
+    @property
+    def count(self) -> int:
+        with self._lock:
+            return self._count
+
+llm_call_counter = LLMCallCounter()
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -146,12 +173,14 @@ def robust_completion(model: str, messages: list[dict], api_keys: list[str], **k
 
     if not api_keys:
         # Fallback to default Litellm behavior if list is empty
+        llm_call_counter.increment()
         return litellm.completion(model=model, messages=messages, **kwargs)
 
     last_err = None
     while api_keys:
         key = api_keys[0]
         try:
+            llm_call_counter.increment()
             return litellm.completion(model=model, messages=messages, api_key=key, **kwargs)
         except Exception as e:
             last_err = e
@@ -163,14 +192,14 @@ def robust_completion(model: str, messages: list[dict], api_keys: list[str], **k
     logging.error("All API keys failed.")
     raise last_err
 
+
 # ──────────────────────────────────────────────────────────────────────
-# HoVer Adapter (GEPA framework native)
+# HoVer Adapter (GEPA framework native) — with BATCH evaluation
 # ──────────────────────────────────────────────────────────────────────
-def create_hover_adapter(task_lm: str, api_keys: list[str]):
+def create_hover_adapter(task_lm: str, api_keys: list[str], batch_workers: int = 5):
     """Build a GEPAAdapter for the HoVer claim verification task.
 
-    One optimisable prompt component:
-      ``verification_prompt``  – instructs the LLM how to verify claims
+    Uses ThreadPoolExecutor for parallel (batch) LLM evaluation.
     """
     from gepa.core.adapter import EvaluationBatch, GEPAAdapter
 
@@ -181,43 +210,37 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
         trace_info: dict
 
     class HoVerAdapter(GEPAAdapter):
-        def __init__(self, task_lm: str, api_keys: list[str]):
+        def __init__(self, task_lm: str, api_keys: list[str], batch_workers: int = 5):
             self.task_lm = task_lm
             self.api_keys = api_keys
+            self.batch_workers = batch_workers
 
-        # ── evaluate ────────────────────────────────────────────────
+        # ── evaluate (BATCH — ThreadPoolExecutor) ────────────────────
         def evaluate(
             self,
             inputs: list[dict],
             candidate: dict[str, str],
             capture_traces: bool = False,
         ) -> EvaluationBatch:
-            outputs: list[dict] = []
-            scores: list[float] = []
-            trajectories: list | None = [] if capture_traces else None
-
             verification_prompt = candidate.get("verification_prompt", "")
 
-            for example in inputs:
+            def _eval_single(example):
+                """Evaluate one claim. Runs in a thread."""
                 try:
                     claim = example["claim"]
                     gold_label = example["label"]
 
-                    # Single LLM call: verify the claim
                     resp = robust_completion(
                         model=self.task_lm,
                         messages=[
                             {"role": "system", "content": verification_prompt},
                             {"role": "user", "content": f"Claim: {claim}"},
                         ],
-                        api_keys=self.api_keys,
+                        api_keys=list(self.api_keys),  # copy to avoid pop issues across threads
                     )
                     raw_response = resp.choices[0].message.content.strip()
 
-                    # Parse prediction
                     pred_label = self._parse_label(raw_response)
-
-                    # Binary scoring
                     score = 1.0 if pred_label == gold_label else 0.0
 
                     output = {
@@ -226,30 +249,42 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
                         "predicted_label": pred_label,
                         "raw_response": raw_response,
                     }
-                    outputs.append(output)
-                    scores.append(score)
 
+                    trajectory = None
                     if capture_traces:
                         feedback = (
                             f"Predicted: {pred_label}, Gold: {gold_label}, "
                             f"{'✓ Correct' if score == 1.0 else '✗ Incorrect'}"
                         )
-                        trajectories.append(
-                            HoVerTrajectory(
-                                input_data=example,
-                                output_data=output,
-                                trace_info={
-                                    "verification_prompt": verification_prompt,
-                                    "feedback": feedback,
-                                },
-                            )
+                        trajectory = HoVerTrajectory(
+                            input_data=example,
+                            output_data=output,
+                            trace_info={
+                                "verification_prompt": verification_prompt,
+                                "feedback": feedback,
+                            },
                         )
 
+                    return output, score, trajectory
+
                 except Exception as e:
-                    outputs.append({"error": str(e)})
-                    scores.append(0.0)
-                    if capture_traces:
-                        trajectories.append(None)
+                    return {"error": str(e)}, 0.0, None
+
+            # ── Run all evaluations in parallel ──
+            with concurrent.futures.ThreadPoolExecutor(max_workers=self.batch_workers) as executor:
+                futures = [executor.submit(_eval_single, ex) for ex in inputs]
+
+            # Collect results in original order
+            outputs = []
+            scores = []
+            trajectories = [] if capture_traces else None
+
+            for future in futures:
+                output, score, traj = future.result()
+                outputs.append(output)
+                scores.append(score)
+                if capture_traces:
+                    trajectories.append(traj)
 
             return EvaluationBatch(
                 outputs=outputs,
@@ -260,14 +295,8 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
         # ── label parsing ───────────────────────────────────────────
         @staticmethod
         def _parse_label(raw: str) -> str:
-            """Extract SUPPORTED / NOT_SUPPORTED from LLM response.
-
-            The seed prompt asks for SUPPORTED/REFUTED/NOT ENOUGH INFO.
-            We map REFUTED and NOT ENOUGH INFO → NOT_SUPPORTED for
-            scoring against HoVer's binary gold labels.
-            """
+            """Extract SUPPORTED / NOT_SUPPORTED from LLM response."""
             upper = raw.upper()
-            # Check for NOT_SUPPORTED / NOT ENOUGH INFO / REFUTED first
             if "NOT_SUPPORTED" in upper or "NOT SUPPORTED" in upper:
                 return "NOT_SUPPORTED"
             if "NOT ENOUGH INFO" in upper or "NOT_ENOUGH_INFO" in upper:
@@ -276,7 +305,6 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
                 return "NOT_SUPPORTED"
             if "SUPPORTED" in upper:
                 return "SUPPORTED"
-            # Fallback heuristics
             if "FALSE" in upper or "NOT" in upper:
                 return "NOT_SUPPORTED"
             return "SUPPORTED"
@@ -312,7 +340,7 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
 
             return reflective_data
 
-    return HoVerAdapter(task_lm, api_keys)
+    return HoVerAdapter(task_lm, api_keys, batch_workers)
 
 
 # ──────────────────────────────────────────────────────────────────────
@@ -320,7 +348,7 @@ def create_hover_adapter(task_lm: str, api_keys: list[str]):
 # ──────────────────────────────────────────────────────────────────────
 def main():
     parser = argparse.ArgumentParser(
-        description="Original GEPA on HoVer"
+        description="GEPA on HoVer (BGE-M3 Surrogate + Batch Eval)"
     )
     # LLM
     parser.add_argument(
@@ -328,8 +356,8 @@ def main():
         type=str,
         default=os.environ.get("GOOGLE_API_KEY", ""),
     )
-    parser.add_argument("--task_lm", type=str, default="openrouter/qwen/qwen-2.5-72b-instruct")
-    parser.add_argument("--reflection_lm", type=str, default="openrouter/qwen/qwen-2.5-72b-instruct")
+    parser.add_argument("--task_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
+    parser.add_argument("--reflection_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
 
     # Dataset
     parser.add_argument("--train_size", type=int, default=20)
@@ -337,14 +365,16 @@ def main():
     parser.add_argument("--test_size", type=int, default=10)
     parser.add_argument("--seed", type=int, default=42)
 
-    # Multi-minibatch config - REMOVED
-
     # Budget
     parser.add_argument("--max_metric_calls", type=int, default=500)
 
+    # Batch eval
+    parser.add_argument("--batch_workers", type=int, default=5,
+                        help="Number of concurrent LLM calls for batch evaluation")
+
     # Output
     parser.add_argument("--output_file", type=str,
-                        default="results_hover_gepa_original.txt",
+                        default="hover_gepa_main.txt",
                         help="Path to the output .txt file for all results")
     
     # Validation Subset & Logging
@@ -401,10 +431,6 @@ def main():
             # Use a fixed seed for reproducibility of the subset
             rng = random.Random(args.seed)
             valset = rng.sample(valset, args.val_subset_size)
-    
-        # If Val subset is NOT requested, full_valset is just valset (but logic below handles None/Not None)
-        # Actually logic: if val_subset_size is passed, we want to log variation.
-        # If val_subset_size is passed but >= len(valset), subset == full set, variation is 0.
 
     # ── Seed candidate (from GEPA paper, arXiv 2507.19457) ──
     seed_candidate = {
@@ -418,10 +444,11 @@ def main():
         ),
     }
 
-    # ── Create adapter ──
+    # ── Create adapter (with batch evaluation) ──
     adapter = create_hover_adapter(
         task_lm=args.task_lm,
         api_keys=api_keys_list,
+        batch_workers=args.batch_workers,
     )
 
     # ── Reflection LM ──
@@ -436,14 +463,10 @@ def main():
     # ── Callbacks ──
     from gepa.callbacks.detailed_logger import DetailedValidationLogger
 
-    # We pass full_valset to logger IF we are subsetting, to compute the variation.
-    # If args.val_subset_size is None, we are running on full set anyway, so no variation to log (or variation is 0).
-    # But user might want to log "full score" explicitly even if it's the same.
-    # Let's pass it if available.
-
-    # ── Verbose Prompt Logger ──
+    # ── Verbose Prompt Logger (with comprehensive metrics) ──
     class VerbosePromptLogger:
-        """Callback that prints every prompt, score, and selection decision."""
+        """Callback that prints every prompt, score, selection decision,
+        AND comprehensive metrics (Rounds, LLM calls, Acc, Loss, Top-K stats)."""
 
         def __init__(self):
             self.iteration_count = 0
@@ -515,6 +538,25 @@ def main():
             accepted = event['proposal_accepted']
             status = "ACCEPTED" if accepted else "REJECTED"
             print(f"\n  ── Iteration {event['iteration']} finished: {status}")
+
+            # ── COMPREHENSIVE METRICS ──
+            print(f"\n  {'='*55}")
+            print(f"  METRICS SUMMARY  -  Round {event['iteration']}")
+            print(f"  {'='*55}")
+            print(f"  {'Round:':<30} {event['iteration']}")
+            print(f"  {'Total LLM Calls:':<30} {llm_call_counter.count}")
+            print(f"  {'Total Metric Calls:':<30} {event.get('total_metric_calls', 'N/A')}")
+
+            # Validation accuracy (from event data)
+            val_scores = event.get('val_aggregate_scores', [])
+            if val_scores:
+                current_best = max(val_scores)
+                print(f"  {'Best Val Acc (current):':<30} {current_best:.4f}")
+                print(f"  {'Top-K Avg Score:':<30} {sum(val_scores[-3:])/max(len(val_scores[-3:]),1):.4f}")
+                print(f"  {'Top-K Max Score:':<30} {max(val_scores[-3:]):.4f}")
+                print(f"  {'Top-K Min Score:':<30} {min(val_scores[-3:]):.4f}")
+
+            print(f"  {'='*55}")
             print(f"{'─'*70}\n")
 
         def on_optimization_end(self, event):
@@ -523,6 +565,7 @@ def main():
             print(f"{'='*70}")
             print(f"  Total iterations:   {event['total_iterations']}")
             print(f"  Total metric calls: {event['total_metric_calls']}")
+            print(f"  Total LLM calls:    {llm_call_counter.count}")
             print(f"  Best candidate idx: {event['best_candidate_idx']}")
             print(f"{'='*70}\n")
 
@@ -545,11 +588,12 @@ def main():
 
     # ── Print config ──
     print(f"\n{'='*60}")
-    print("Original GEPA on HoVer")
+    print("GEPA on HoVer (BGE-M3 Surrogate + Batch Eval)")
     print(f"{'='*60}")
     print(f"Task LM:             {args.task_lm}")
     print(f"Reflection LM:       {args.reflection_lm}")
     print(f"Max metric calls:    {args.max_metric_calls}")
+    print(f"Batch workers:       {args.batch_workers}")
     print(f"Val Subset Size:     {args.val_subset_size if args.val_subset_size else 'Full'}")
     print(f"{'='*60}\n")
 
@@ -563,15 +607,15 @@ def main():
         if seed_eval.scores
         else 0.0
     )
-    print(f"Seed Average Score (10 samples): {seed_avg:.4f}")
+    print(f"Seed Average Score ({len(testset)} samples): {seed_avg:.4f}")
     print(f"{'='*60}\n")
 
-    # ── Create BERT Reward Model ──
-    from gepa.strategies.bert_reward_model import BERTRewardModel
-    reward_model = BERTRewardModel(min_samples=2)
+    # ── Create BGE-M3 Reward Model (instead of BERT) ──
+    from gepa.strategies.bge_surrogate_reward_model import BGESurrogateRewardModel
+    reward_model = BGESurrogateRewardModel(min_samples=2)
 
-    # ── Run GEPA - Original ──
-    print("Starting Original GEPA optimization...\n")
+    # ── Run GEPA ──
+    print("Starting GEPA optimization (BGE-M3 Surrogate + Batch Eval)...\n")
     result = optimize(
         adapter=adapter,
         seed_candidate=seed_candidate,
@@ -581,14 +625,14 @@ def main():
         # Multi-minibatch settings
         use_multi_minibatch=True,
         num_minibatches=3,
-        candidates_per_minibatch=10, # Generate N=15 mutations
+        candidates_per_minibatch=10, # Generate N=10 mutations per minibatch
         use_bandit_mutation=True, # Critical to generate multi prompts
         top_k=3, # Run full inference only on top 3
         reward_model=reward_model,
         # Callbacks
         callbacks=callbacks,
         # General settings
-        candidate_selection_strategy="pareto", # or whatever default
+        candidate_selection_strategy="pareto",
         max_metric_calls=args.max_metric_calls,
         seed=args.seed,
         logger=logger,
@@ -620,6 +664,19 @@ def main():
     print(f"Optimized Average Score: {best_avg:.4f}")
     print(f"Improvement over seed:   {best_avg - seed_avg:+.4f}")
     print(f"{'='*60}\n")
+
+    # ── Final Statistics ──
+    print(f"{'='*60}")
+    print("FINAL STATISTICS")
+    print(f"{'='*60}")
+    print(f"Total Rounds (iterations):    {len(result.val_aggregate_scores)}")
+    print(f"Total LLM Calls:              {llm_call_counter.count}")
+    print(f"Seed test score:              {seed_avg:.4f}")
+    print(f"Optimized test score:         {best_avg:.4f}")
+    print(f"Best validation score:        {best_score:.4f}")
+    print(f"Embedding model:              BAAI/bge-m3 (Matryoshka)")
+    print(f"Evaluation mode:              Batch ({args.batch_workers} workers)")
+    print(f"{'='*60}")
 
     # ── Close log file ──
     print(f"\nRun completed: {datetime.datetime.now().isoformat()}")
