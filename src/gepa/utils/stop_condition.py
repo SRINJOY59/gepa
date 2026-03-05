@@ -173,6 +173,20 @@ class MaxMetricCallsStopper(StopperProtocol):
         return gepa_state.total_num_evals >= self.max_metric_calls
 
 
+class MaxIterationsStopper(StopperProtocol):
+    """
+    Stop callback that stops after a maximum number of iterations.
+    """
+
+    def __init__(self, max_iterations: int):
+        self.max_iterations = max_iterations
+
+    def __call__(self, gepa_state: GEPAState) -> bool:
+        # return true if max iterations reached
+        # gepa_state.i is 0-indexed and incremented at the start of each iteration
+        return gepa_state.i >= self.max_iterations
+
+
 class CompositeStopper(StopperProtocol):
     """
     Stop callback that combines multiple stopping conditions.

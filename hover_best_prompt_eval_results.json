@@ -1,0 +1,807 @@
+{
+  "accuracy": 0.51,
+  "correct_count": 51,
+  "total_samples": 100,
+  "results": [
+    {
+      "uid": "",
+      "claim": "The live Album, which became only the second released concert by Dave Matthews and Tim Reynolds following Live at Luther College, was recorded in New York City.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "C. J. Cherryh is the pen name of author Carolyn Janice Cherry, who wrote the Fortress Series and was born September 1, 1942.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Downers Grove is defined as a thriller by the moods they elicit.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Manfred Moch was the featured solo trumpet player of the orchestra named after Bert Kaempfert, the German orchestra leader, music producer, and songwriter who died on June 21, 1980.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Mumbai India is the headquarters of an ecommerce company founded by an American businessman who worked at an online specialty retailer for baby products.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED\n\nEvidence: \nThe city of Mumbai is a major commercial center in India, but the headquarters of most major Indian and international companies, including those in the ecommerce sector, are usually located in the cities of New Delhi, Bangalore, or",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The player who teamed up with Stubbs for the  2003 Family Circle Cup \u2013 Doubles. Her and Ren\u00e1ta Tomanov\u00e1 were both tennis players.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Christopher Michael \"Chris\" DeStefano has written more #1 songs than this American country music artist, who co-wrote and recorded Drunk on Your Love.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "There is NOT ENOUGH INFO to evaluate the claim.",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The Hellcat Spangled Shalalala is a song by the South Yorkshire band Arctic Monkies formed in the High Green suburb of Sheffield.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Walter Fovargue won the inaugural event of the tournament which Mark Brooks won the first one of to be held at Vahalla. This was also the site of the same tournament in 2014.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "This work was influenced by the opera in four acts which is 2 more acts than Mitridate, re di Ponto. The Op\u00e9ra-Comique performs this work.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The musical that featured the song \"The Next Time,\" starred David Kossoff who won a BAFTA.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Closer to the Sun is the third studio album by Australian singer-songwriter Guy Sebastian, released on 28 October 2006 by Sony BMG Australia, some tracks that appear on the album were premiered at the free concert, on 27 September 2006, at Federation Square, a mixed-use development in the inner city of Melbourne, it is located at the intersection of Flinders Street and Swanston Street/St Kilda Road in the city's Central Business District, adjacent to Flinders Street railway station.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Love Me Tender was featured in a movie that stars an actress who plays a character in the series 24.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Naomi is the first name of the relative of the artist who interpreted the Wild Heart of the Young singer/songwriter's Tell Me Why.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Nicholas Medforth-Mills is a grandson to a king who was born on 25 October 1921.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Mixed martial arts promotion that was purchased by the Ultimate Fighting Championship in 2001 used to feature the American man Joe Lauzon is tied with in having the most post-fight bonus awards, as a competitor is World Extreme Cagefighting.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "REFUTED\n\nNote: There is no mention of the American man tied with Joe Lauzon in having the most post-fight bonus awards in the context of World Extreme Cagefighting. This claim is either complete fabrication or missing relevant context to support",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The British Royal Family resides in the palace that was the inspiration for the Kensington System's name.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO\n\n(Note:  The evidence provided for the claim does not provide information that directly relates to a palace (inspiring a system called the 'Kensington System'). \n\nHowever additional information reveals that the Kensington System is a chess opening",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Briscoe Darling Jr. played Uncle Jesse on the show that was inspired by the 1975 film starring Gy Waldron.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "John Morgan, the founder of what was formerly known as National Museum of Crime & Punishment, was born on March 31, 1956 in Philadelphia.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Natalie Martinez is know for her role in the 2008 American-German-British speculative fiction action thriller Death Race.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Bally's & Paris station is on the monorail that is 3.9 mi.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Alexandra Park in Greater Manchester, England was created in response to an event that ook place during 1861\u201365.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Marcy Playground was formed before Loudspeakers.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The Californian actor Brady Bluhm plays a fictional character in a film series. That fictional character appears in the stories of fictional anthropomorphic teddy bear Winnie-the-Pooh.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The singer who duets with Richards on the song that pushed Choke (album) to number 2 in the charts is Northern Irish.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Ekaterina Gordeeva is the Polish figure skater who danced with a Polish pair skater and in 1988 and 1994.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "A notable performer of \"Walking in the Air\" was the English operatic tenor that sang the duet \"O soave fanciulla\" from Puccini's opera \"La boheme\". His duet partner was Mary Plazas.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Before the 2004-2005 Minnesota Timberwovles season, the player who joined Phoenix Suns for the 1996\u201397 NBA season had been honored with All-Cassell title.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The newspaper, for which Lajos Magyar worked on the staff of, and Stiffelio are not both operas.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The music for Coco was by a man born in April 6, 1929.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO.",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The person who directed the 1932 film Sinister Hands, not another man, was a American producer. The other man directed the film \"Houseboat\".",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Aloinopsis is a plant. The close relative of the genus Aruncus is also a plant.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "A series of ministerial agreements between European countries and includes The Swedish higher education system, has a participant condition of signing the European Cultural Convention.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "South Somercotes is a village and civil parish 8 mi north-east from Louth and approximately 2 mi south from the remote coastal village of North Somercotes in the East Lindsey district, and the Marshes area, of Lincolnshire, England.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "One of the founding members of the Breeders was the singer for Moon Over Boston. She was born before the bandmate of Mason Musso.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The San Quentin Six were six inmates at San Quentin State Prison in the U.S. state of California, who were accused of participating in an escape attempt, on August 21, 1971, that left six people dead, including George Jackson, a co-founder of the Black Guerrilla Family.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The vocalist on Bone Against Steel and Denis B\u00e9langer both play guitar.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The road that Dudley Park, South Australia is bounded to the north by and Klemzig, South Australia have a city in common.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The Detroit, Michigan American rapper Proof , who was born in 1973, was featured in a guest appearance on Trick-Trick's debut studio album The People vs released in June 1999. \"Welcome 2 Detroit\" is the lead single of that album.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "David Huynh costarred with this actor in Baby. The same actor voices the character of Zenyatta from game developer, publisher and hardline CCP- sympathiser Blizzard Entertainment who are based in Irvine, California.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The Messerschmitt Me 263 \"Scholle\" (plaice) was a rocket-powered single-wing fighter aircraft developed from the Me 163 \"Komet\" towards the end of World War II.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "\"Rollover DJ\" is the third single in the United States, after a song written by the Australian singer-songwriter Nicholas John \"Nic\" Cester .",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The American cable and satellite television channel that April \"Ape\" Margera appears upon is owned by Viacom Media Networks.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Timothy Zahn's prequel to Survivor's Quest, is the followup novel to the Heir to the Empire trilogy.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Lincoln Barrett is the real name of the welsh electronic music producer DJ who have been visited the night club  in Vienna hundreds of times. The Waves of Vienna festival takes place in the same nightclub.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The breed of dog that Spike from Old Yeller was is a type of gun dog. Araki Fabulous Willy's breed is not.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The head football coach at the University of Houston from 2007 to 2011 is the current team coach of Texas A&M Aggies football team.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Chad Smith and another artist are American. This other singer released the song \"Stone Cold Gentleman\".",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The Irish folk band \"The Wolfe Tones,\" known for their album Sing Out for Ireland, are named after Theobald Wolfe Tone, the Irish statesman and patriot.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The conglomerate that bought Ray Ban from Bausch & Lomb is located in the city of Milan.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The previous Vice President of Production at the animation studio that is owned and operated by Viacom, currently works for Cartoon Network Studios.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Trey Anastasio has performed with more bands than Sarah Nixey.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The head coach of the Duke Blue Devils football team when they played at new West Campus has won multiple college football coach of the year awards. He also coached the 2002 Ole Miss Rebels football team. He also coached another sports group. This sports group won that year's Independence Bowl.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The American healthy lifestyle magazine, in which Georgia Rickard contributed, started in 1950.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Changle District and where Lu Min (aviator) was born, both are river-front areas.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Wizard of Westwood is the nickname of the head coach on whose team Bill Walton played in the early 1970s.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Oprah Winfrey and Hearst Communications founded O Magazine. It contained the second book of fiction from the New York editor of the publishers of \"Last Sext\" by Melissa Broder.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Of the two Disney films, Monkeys, Go Home! was released before Robin Hood.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Raymond A. Palmer's co-writer on Life, reported the first unidentified object sighting in Mount Rainier, Washington in 1947.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The singer of \"Funny Face\" was born on September 10, 1896.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The director of the 1951 film Gambling House was not a film actor nor writer. The man who directed The Deep End (film) was also not a film actor.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Back Home is a children's fantasy novel adapted into a TV film starring the English actress, Hayley Catherine Rose Vivien Mills, who was born in 1946.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Author, Werner Gunter Jaff\u00e9 Fellner was born in birthplace of Daniel Gunkel. Daniels birthplace in the German state of Hesse is the fifth-largest city in Germany.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The skyscraper, 888 7th Avenue, is tied with another building for the 65th tallest building in New York City. That other building is a brick trimmed condominium building, whereas the building that was NYS Collection's first retail location isn't.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "She is an Italian pornographic actress that was discovered by talent scout Riccardo Schicchi. The actress co-founded the Love Party (Italy) in July 2000.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The 432 Park Avenue building is taller than the building that is the site of the former Loew's State Theatre. They are located in the city that independent film producer Paul Mezey is based.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The host of Splash! won a bronze Olympic medal not gold nor silver.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Roy Hilton ran in Super Bowl V against the Cowboys as a defensive end.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Wildhorn, Bricusse and Cuden wrote the songs for Linda Eder's Broadway debut.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The husband of Deborah Nadoolman Landis, and Gore Verbinski have the profession of director in common.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Bowdoin College was established before another university. This university was attended by John Wesley Hughes.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The band David Byrne was in was an Philippine rock band that was \"one of the most critically acclaimed bands of the 80's\". The band is featured in KSPN's AAA format.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The TV show, Home, is broadcast 24 hours a day on Sky, Virgin Media and another company. The device that shows Motorz TV can air channels from that company for free and allows users to play using a remote.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Legend of the Boneknapper Dragon is a 2010 animated short film by the same company that produced \"The Road to El Dorado\". It is contained in the franchise based on the books written by Cressida Cowell and illustrated by Johnny Appleseed.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED\n\nThe evidence is inconclusive about the claim of \"Legend of the Boneknapper Dragon\" being a 2010 animated short film produced by the same company that produced \"The Road to El Dorado\". The Road to El Dor",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "David J. Wineland was awarded the 2012 Nobel Prize in Physics jointly with the French physicist Serge Haroche, known for a study of the particle of light.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The 1983-84 New York Knicks season included the retired basketball player, Jabar, at small forward who played a total of 14 seasons.",
+      "target": "SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "White Horse, released on December 7, 2008 was co-written by the same person who wrote \"Picture to Burn\" with Taylor Swift.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The man created the TV series \"Hippies\" alongside the creator of Toast of London. This man was also the creator of the Ash Atalla-produced sitcom for UK Channel 4.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "An American record label released the single, \"Cephalic Carnage.\" It also released Excuse My French in 2013.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The man who produced Arabia Mountain (album) co-wrote this song. That song was sung by Lily Allen.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The life member of The Actors Studio often portraying military or authority figure roles stared in a film that was directed by Richard Wilson was Robert F. Simon.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The writer, who authorized Hu Lanqi to meet him in Moscow, is a five-time nominee for the Nobel Prize in Literature.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The men's professional basketball club in which Gustavo Nicol\u00e1s Aguirre currently plays is based in Buenos Aires, Argentina.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The player also known as \"O Fen\u00f4meno\" is responsible for popularized a soccer move first reported to be used by player Law Adam.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The actor who starred in the 1965 film Frankenstein Meets the Space Monster also appeared on the third episode of the ninth season of an NBC sitcom that was the 187th episode overall.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "John Alexander and Trent Alexander-Arnold are professional footballers from England.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Reason Is Treason is the second single release from a British rock band that are not from Nigeria. The band known for the early 90's album Novelty (album) are not from Nigeria either.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The company that produced Steyr SSG 08 was part of a manufacturing conglomerate. It was broken up in stages between the years of 1987 and 2001.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Alec Guinness, the narrator of the film Sacred Planet, and another actor starred in the film Situation Hopeless...But Not Serious. That actor and Leon Danielian were both entertainers of American nationality.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Both the Battle of Saipan and the Battle of Manila were fought by American forces.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "Max Martin and Shellback co-wrote Taylor Swift's 2017 song that had its music video premiere during the event's pre-show, which subsequently featured a live performance premiere of Dooo It! on August 30, 2015.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "American Pie is a teen sex comedy film written by Adam Herz and directed by brothers Paul and Chris Weitz, starred an actor best known for her role as Jessica.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The movie Tunisian Victory came out before the award-winning documentary by Ken Burns that featured character voice work by journalist, Charles McDowell, Jr.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Electrostatic levitation was used  was used in the oil drop experiment and is used to suspend the gyroscopes in Gravity Probe B during launch. The person who performed the oil drop experiment.  was born in 1868.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The tour that Lungs Tour supported the band fronted by Bono in was a 2-year European tour. It had a round stage and had a song that had never before been performed live.",
+      "target": "SUPPORTED",
+      "prediction": "REFUTED",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": false
+    },
+    {
+      "uid": "",
+      "claim": "The elevation of the stadium where the 2006 Las Vegas Bowl was played is 1600 ft above sea level.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "NOT ENOUGH INFO",
+      "pred_label": "NOT_SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The actress who played Rosy in \"Dear Rosie\", has appeared in the films \"Swept from the Sea\" (1997) and another 1985 film. The 1985 film she appeared in and \"Cars 3\" do not have the same director or producer.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "Joop Beek was an important political consultant to a president in Indonesia. That longstanding president created a series of extrajudicial government executions between 1983 and 1985.",
+      "target": "SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": true
+    },
+    {
+      "uid": "",
+      "claim": "The 2009 Fort Hood mass shooting was committed by Nidal Hasan.",
+      "target": "NOT_SUPPORTED",
+      "prediction": "SUPPORTED",
+      "pred_label": "SUPPORTED",
+      "is_correct": false
+    }
+  ]
+}

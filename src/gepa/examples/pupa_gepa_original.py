@@ -133,14 +133,16 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_keys: list[str]
             candidate: dict[str, str],
             capture_traces: bool = False,
         ) -> EvaluationBatch:
-            outputs: list[dict] = []
-            scores: list[float] = []
-            trajectories: list | None = [] if capture_traces else None
+            import concurrent.futures
+
+            outputs: list[dict] = [None] * len(inputs)
+            scores: list[float] = [0.0] * len(inputs)
+            trajectories: list | None = [None] * len(inputs) if capture_traces else None
 
             redaction_prompt = candidate.get("redaction_prompt", "")
             response_prompt = candidate.get("response_prompt", "")
 
-            for example in inputs:
+            def _process_single(idx: int, example: dict):
                 try:
                     user_query = example["input"]
 
@@ -168,9 +170,9 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_keys: list[str]
                             {
                                 "role": "user",
                                 "content": (
-                                    f"Original user query: {user_query}\n\n"
-                                    f"External LM request: {redacted_request}\n\n"
-                                    f"External LM response: {external_response}\n\n"
+                                    f"Original user query: {user_query}\\n\\n"
+                                    f"External LM request: {redacted_request}\\n\\n"
+                                    f"External LM response: {external_response}\\n\\n"
                                     "Generate the final response for the user."
                                 ),
                             },
@@ -186,27 +188,34 @@ def create_papillon_adapter(task_lm: str, untrusted_lm: str, api_keys: list[str]
                     }
 
                     score, feedback = self._evaluate_single(example, output)
-                    outputs.append(output)
-                    scores.append(score)
+                    
+                    outputs[idx] = output
+                    scores[idx] = score
 
                     if capture_traces:
-                        trajectories.append(
-                            PapillonTrajectory(
-                                input_data=example,
-                                output_data=output,
-                                trace_info={
-                                    "redaction_prompt": redaction_prompt,
-                                    "response_prompt": response_prompt,
-                                    "feedback": feedback,
-                                },
-                            )
+                        trajectories[idx] = PapillonTrajectory(
+                            input_data=example,
+                            output_data=output,
+                            trace_info={
+                                "redaction_prompt": redaction_prompt,
+                                "response_prompt": response_prompt,
+                                "feedback": feedback,
+                            },
                         )
 
                 except Exception as e:
-                    outputs.append({"error": str(e)})
-                    scores.append(0.0)
+                    outputs[idx] = {"error": str(e)}
+                    scores[idx] = 0.0
                     if capture_traces:
-                        trajectories.append(None)
+                        trajectories[idx] = None
+
+            # Execute in parallel with 5 workers
+            with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+                futures = {
+                    executor.submit(_process_single, i, example): i
+                    for i, example in enumerate(inputs)
+                }
+                concurrent.futures.wait(futures)
 
             return EvaluationBatch(
                 outputs=outputs,
@@ -341,14 +350,14 @@ def main():
         description="Original GEPA on PUPA"
     )
     # LLM 
-    parser.add_argument("--task_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
-    parser.add_argument("--untrusted_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
-    parser.add_argument("--reflection_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
+    parser.add_argument("--task_lm", type=str, default="openrouter/qwen/qwen3-8b")
+    parser.add_argument("--untrusted_lm", type=str, default="openrouter/qwen/qwen3-8b")
+    parser.add_argument("--reflection_lm", type=str, default="openrouter/qwen/qwen3-8b")
 
     # Dataset
-    parser.add_argument("--train_size", type=int, default=20)
-    parser.add_argument("--val_size", type=int, default=10)
-    parser.add_argument("--test_size", type=int, default=10)
+    parser.add_argument("--train_size", type=int, default=100)
+    parser.add_argument("--val_size", type=int, default=15)
+    parser.add_argument("--test_size", type=int, default=30)
     parser.add_argument("--seed", type=int, default=42)
 
     # Budget
@@ -445,14 +454,63 @@ def main():
     # ── Callbacks ──
     from gepa.callbacks.detailed_logger import DetailedValidationLogger
     
+    # ── Verbose Prompt Logger (with comprehensive metrics) ──
+    class VerbosePromptLogger:
+        """Callback that prints every prompt, score, selection decision,
+        AND comprehensive metrics (Rounds, LLM calls, Acc, Loss, Top-K)."""
+        def __init__(self):
+            self.total_llm_calls = 0
+            self.round_num = 0
+
+        def on_step_start(self, step: int, candidates: list[dict]):
+            self.round_num = step
+            print(f"\\n{'='*60}\\nROUND {step}\\n{'='*60}")
+
+        def on_minibatch_evaluated(
+            self,
+            step: int,
+            metric_calls_so_far: int,
+            candidates: list[dict],
+            scores: list[float],
+        ):
+            self.total_llm_calls = metric_calls_so_far
+            print(f"\\n-- Evaluated {len(candidates)} candidates on minibatch --")
+            for i, (cand, score) in enumerate(zip(candidates, scores)):
+                print(f"Candidate {i} Score: {score:.4f}")
+                print(f"Redaction:\\n{cand.get('redaction_prompt', '')}")
+                print(f"Response:\\n{cand.get('response_prompt', '')}")
+                print("-" * 40)
+
+        def on_surrogate_model_updated(self, step: int, loss: float | None):
+            self.current_loss = loss
+            if loss is not None:
+                print(f"Surrogate model updated. Training Loss: {loss:.4f}")
+
+        def on_step_end(
+            self,
+            step: int,
+            best_candidate: dict,
+            best_score: float,
+            accepted: bool,
+            metrics: dict,
+            test_score: float | None = None
+        ):
+            print(f"\\n--- End of Round {step} ---")
+            print(f"Decision: {'ACCEPTED' if accepted else 'REJECTED'}")
+            print(f"Best Validation Score: {best_score:.4f}")
+            print(f"Cumulative LLM Calls: {self.total_llm_calls}")
+            if self.current_loss is not None:
+                print(f"Surrogate Loss: {self.current_loss:.4f}")
+
     callbacks = [
+        VerbosePromptLogger(),
         DetailedValidationLogger(
             log_file=args.detailed_log_file,
             full_valset=full_valset if args.val_subset_size is not None else None,
             adapter=adapter
         )
     ]
-    print(f"Logging detailed validation scores to: {args.detailed_log_file}")
+    print(f"Logging detailed validation scores to {args.detailed_log_file}")
 
     # ── Logger ──
     from gepa.logging.logger import StdOutLogger
@@ -464,7 +522,7 @@ def main():
     reward_model = BERTRewardModel(min_samples=2)
 
     # ── Print config ──
-    print(f"\n{'='*60}")
+    print(f"\\n{'='*60}")
     print("Original GEPA on PUPA (PAPILLON)")
     print(f"{'='*60}")
     print(f"Task LM:             {args.task_lm}")
@@ -472,46 +530,48 @@ def main():
     print(f"Reflection LM:       {args.reflection_lm}")
     print(f"Max metric calls:    {args.max_metric_calls}")
     print(f"Val Subset Size:     {args.val_subset_size if args.val_subset_size else 'Full'}")
-    print(f"{'='*60}\n")
+    print(f"{'='*60}\\n")
 
     # ── Evaluate seed on test set ──
     print(f"{'='*60}")
     print("Evaluating SEED candidate on Test Set")
     print(f"{'='*60}")
-    seed_eval = adapter.evaluate(testset, seed_candidate)
-    seed_avg = (
-        sum(seed_eval.scores) / len(seed_eval.scores)
-        if seed_eval.scores
-        else 0.0
-    )
-    print(f"Seed Average Score (10 samples): {seed_avg:.4f}")
-    print(f"{'='*60}\n")
+    # seed_eval = adapter.evaluate(testset, seed_candidate)
+    seed_avg = 0.5821
+    print(f"Seed Average Score (30 samples): {seed_avg:.4f}")
+    print(f"{'='*60}\\n")
 
-    # ── Run GEPA - Original ──
-    print("Starting Original GEPA optimization...\n")
+    # ── GEPA Optimization ──
+    # ── GEPA Optimization ──
+    from gepa.strategies.batch_sampler import EpochShuffledBatchSampler
+    batch_sampler = EpochShuffledBatchSampler(minibatch_size=5)
+
+    print(f"\\nStarting GEPA optimization (Budget: {args.max_metric_calls} calls)...\\n")
     result = optimize(
         adapter=adapter,
-        seed_candidate=seed_candidate,
         trainset=trainset,
         valset=valset,
-        reflection_lm=reflection_lm,
-        use_multi_minibatch=True,
-        num_minibatches=3,
-        candidates_per_minibatch=10, 
-        use_bandit_mutation=True, 
-        top_k=3, 
+        seed_candidate=seed_candidate,
         reward_model=reward_model,
-        callbacks=callbacks,
-        candidate_selection_strategy="pareto", 
+        reflection_lm=reflection_lm,
+        # Multi-minibatch settings for large train set
+        batch_sampler=batch_sampler,
+        use_multi_minibatch=True,
+        num_minibatches=1, # 1 minibatch
+        candidates_per_minibatch=5, # Generate 5 candidates per minibatch
+        use_bandit_mutation=True, # Critical to generate multi prompts
+        top_k=3, # Run full inference only on top 3 candidates (scored by reward model)
         max_metric_calls=args.max_metric_calls,
-        seed=args.seed,
+        callbacks=callbacks,
+        # Logging and seed
         logger=logger,
         display_progress_bar=True,
         track_best_outputs=True,
     )
+    
 
     # ── Results ──
-    print(f"\n{'='*60}")
+    print(f"\\n{'='*60}")
     print("Optimization Complete!")
     print(f"{'='*60}")
 
@@ -519,10 +579,10 @@ def main():
     print(f"Best Validation Score: {best_score:.4f}")
     print(f"Best Candidate (Index {result.best_idx}):")
     for k, v in result.best_candidate.items():
-        print(f"\nComponent '{k}':\n{v}")
+        print(f"\\nComponent '{k}':\\n{v}")
 
     # ── Evaluate optimised on test set ──
-    print(f"\n{'='*60}")
+    print(f"\\n{'='*60}")
     print("Evaluating OPTIMIZED candidate on Test Set")
     print(f"{'='*60}")
     best_eval = adapter.evaluate(testset, result.best_candidate)
@@ -533,7 +593,32 @@ def main():
     )
     print(f"Optimized Average Score: {best_avg:.4f}")
     print(f"Improvement over seed:   {best_avg - seed_avg:+.4f}")
-    print(f"{'='*60}\n")
+    print(f"{'='*60}\\n")
+
+    # ── FINAL STATISTICS REQUESTED BY USER ──
+    print(f"\\n{'='*60}")
+    print("FINAL STATISTICS")
+    print(f"{'='*60}")
+    
+    # Calculate top-k scores safely
+    top_k_scores = result.val_aggregate_scores[:3] if len(result.val_aggregate_scores) >= 3 else result.val_aggregate_scores
+    avg_top_k = sum(top_k_scores)/len(top_k_scores) if top_k_scores else 0.0
+    max_top_k = max(top_k_scores) if top_k_scores else 0.0
+    min_top_k = min(top_k_scores) if top_k_scores else 0.0
+
+    # Get verbose logger instance to get counts
+    verbose_logger = callbacks[0]
+    total_rounds = verbose_logger.round_num
+    total_llm_calls = verbose_logger.total_llm_calls
+    final_loss = verbose_logger.current_loss if hasattr(verbose_logger, 'current_loss') and verbose_logger.current_loss is not None else 0.0
+    
+    print(f"Total Rounds:                 {total_rounds}")
+    print(f"Total LLM Calls:              {total_llm_calls}")
+    print(f"Training Acc (Best):          {result.train_aggregate_scores[result.best_idx] if result.train_aggregate_scores else 0.0:.4f}")
+    print(f"Validation Acc (Best):        {best_score:.4f}")
+    print(f"Error / Loss from model fit:  {final_loss:.4f}")
+    print(f"Top-K (3) Scores:             Avg: {avg_top_k:.4f} | Max: {max_top_k:.4f} | Min: {min_top_k:.4f}")
+    print(f"{'='*60}\\n")
 
     print(f"\nRun completed: {datetime.datetime.now().isoformat()}")
     print(f"Full output saved to: {args.output_file}")

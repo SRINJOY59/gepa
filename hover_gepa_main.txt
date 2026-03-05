@@ -1,9 +1,9 @@
-Run started: 2026-03-05T09:24:30.617684
+Run started: 2026-03-05T09:50:52.389358
 ============================================================
 
 Logging all output to: hover_gepa_main.txt
 Loaded 4 OpenRouter API keys for fallback.
-Loaded 20 train, 10 val, 10 test examples from HoVer
+Loaded 30 train, 15 val, 15 test examples from HoVer
 Logging detailed validation scores to: validation_scoresv2.jsonl
 
 ============================================================
@@ -19,18 +19,18 @@ Val Subset Size:     Full
 ============================================================
 Evaluating SEED candidate on Test Set
 ============================================================
-Seed Average Score (10 samples): 0.5000
+Seed Average Score (15 samples): 0.4000
 ============================================================
 
 Starting GEPA optimization (BGE-M3 Surrogate + Batch Eval)...
 
-GEPA Optimization:   0%|                                                                                                         | 0/500 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.4 over 10 / 10 examples
+GEPA Optimization:   0%|                                                                                                         | 0/500 [00:00<?, ?rollouts/s]Iteration 0: Base program full valset score: 0.4666666666666667 over 15 / 15 examples
 
 ======================================================================
 VERBOSE LOG: Optimization Starting
 ======================================================================
-  Train set size: 20
-  Val set size:   10
+  Train set size: 30
+  Val set size:   15
 
   SEED PROMPT:
     [verification_prompt]:
@@ -41,16 +41,16 @@ VERBOSE LOG: Optimization Starting
 ======================================================================
 
 
-  ▶ VALIDATION SCORE: 0.4000  (candidate idx=0) ★ NEW BEST
-    Examples evaluated: 10/10
-    Correct: 4/10
+  ▶ VALIDATION SCORE: 0.4667  (candidate idx=0) ★ NEW BEST
+    Examples evaluated: 15/15
+    Correct: 7/15
     PROMPT EVALUATED:
       [verification_prompt]:
         You are a fact-checking assistant.
         Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
         Carefully reason over the evidence before answering.
         Output the final label only.
-GEPA Optimization:   2%|█▉                                                                                              | 10/500 [00:03<02:51,  2.85rollouts/s]
+GEPA Optimization:   3%|██▉                                                                                             | 15/500 [00:03<01:59,  4.06rollouts/s]
 ──────────────────────────────────────────────────────────────────────
   ITERATION 1
 ──────────────────────────────────────────────────────────────────────
@@ -58,9 +58,9 @@ VERBOSE LOG: Optimization Starting
 ==================================================
 MULTI-MINIBATCH MUTATION: ITERATION 1
 ==================================================
-Parent candidate 0 | score: 0.4
+Parent candidate 0 | score: 0.4666666666666667
 
-  ▶ PARENT SELECTED (idx=0, score=0.4000)
+  ▶ PARENT SELECTED (idx=0, score=0.4667)
     [verification_prompt]:
       You are a fact-checking assistant.
       Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
@@ -70,226 +70,1683 @@ Sampled 3 minibatches, generating 10 candidates each
 
 --- Minibatch 1/3 ---
   Generated 10 variants. Selected Top-3 using surrogate (trained=False).
-    Eval Top-1 on mb 1: surrogate=0.8590, actual_avg=0.0000
-    Eval Top-2 on mb 1: surrogate=0.7685, actual_avg=0.6667
-    Eval Top-3 on mb 1: surrogate=0.6567, actual_avg=0.3333
+    Eval Top-1 on mb 1: surrogate=0.9852, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.7800, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.7240, actual_avg=1.0000
   [Embedder] Loading all-MiniLM-L6-v2 model ...
 
 Loading weights:   0%|                                                                                                                 | 0/103 [00:00<?, ?it/s][A
-Loading weights:   1%|▌                                                        | 1/103 [00:00<00:00, 942.75it/s, Materializing param=embeddings.LayerNorm.bias][A
-Loading weights:   1%|▌                                                        | 1/103 [00:00<00:00, 942.75it/s, Materializing param=embeddings.LayerNorm.bias][A
-Loading weights:   2%|█                                                      | 2/103 [00:00<00:00, 970.45it/s, Materializing param=embeddings.LayerNorm.weight][A
-Loading weights:   2%|█                                                      | 2/103 [00:00<00:00, 653.52it/s, Materializing param=embeddings.LayerNorm.weight][A
-Loading weights:   3%|█▎                                           | 3/103 [00:00<00:00, 738.91it/s, Materializing param=embeddings.position_embeddings.weight][A
-Loading weights:   3%|█▎                                           | 3/103 [00:00<00:00, 738.91it/s, Materializing param=embeddings.position_embeddings.weight][A
-Loading weights:   4%|█▋                                         | 4/103 [00:00<00:00, 790.45it/s, Materializing param=embeddings.token_type_embeddings.weight][A
-Loading weights:   4%|█▋                                         | 4/103 [00:00<00:00, 659.92it/s, Materializing param=embeddings.token_type_embeddings.weight][A
-Loading weights:   5%|██▍                                              | 5/103 [00:00<00:00, 708.23it/s, Materializing param=embeddings.word_embeddings.weight][A
-Loading weights:   5%|██▍                                              | 5/103 [00:00<00:00, 612.90it/s, Materializing param=embeddings.word_embeddings.weight][A
-Loading weights:   6%|██                                 | 6/103 [00:00<00:00, 654.83it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.bias][A
-Loading weights:   6%|██                                 | 6/103 [00:00<00:00, 590.35it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.bias][A
-Loading weights:   7%|██▏                              | 7/103 [00:00<00:00, 605.76it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.weight][A
-Loading weights:   7%|██▏                              | 7/103 [00:00<00:00, 557.51it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.weight][A
-Loading weights:   8%|███                                    | 8/103 [00:00<00:00, 637.15it/s, Materializing param=encoder.layer.0.attention.output.dense.bias][A
-Loading weights:   8%|███                                    | 8/103 [00:00<00:00, 637.15it/s, Materializing param=encoder.layer.0.attention.output.dense.bias][A
-Loading weights:   9%|███▏                                 | 9/103 [00:00<00:00, 663.96it/s, Materializing param=encoder.layer.0.attention.output.dense.weight][A
-Loading weights:   9%|███▏                                 | 9/103 [00:00<00:00, 663.96it/s, Materializing param=encoder.layer.0.attention.output.dense.weight][A
-Loading weights:  10%|████                                      | 10/103 [00:00<00:00, 737.73it/s, Materializing param=encoder.layer.0.attention.self.key.bias][A
-Loading weights:  10%|████                                      | 10/103 [00:00<00:00, 737.73it/s, Materializing param=encoder.layer.0.attention.self.key.bias][A
-Loading weights:  11%|████▎                                   | 11/103 [00:00<00:00, 811.51it/s, Materializing param=encoder.layer.0.attention.self.key.weight][A
-Loading weights:  11%|████▎                                   | 11/103 [00:00<00:00, 755.88it/s, Materializing param=encoder.layer.0.attention.self.key.weight][A
-Loading weights:  12%|████▋                                   | 12/103 [00:00<00:00, 824.60it/s, Materializing param=encoder.layer.0.attention.self.query.bias][A
-Loading weights:  12%|████▋                                   | 12/103 [00:00<00:00, 824.60it/s, Materializing param=encoder.layer.0.attention.self.query.bias][A
-Loading weights:  13%|████▊                                 | 13/103 [00:00<00:00, 835.71it/s, Materializing param=encoder.layer.0.attention.self.query.weight][A
-Loading weights:  13%|████▊                                 | 13/103 [00:00<00:00, 835.71it/s, Materializing param=encoder.layer.0.attention.self.query.weight][A
-Loading weights:  14%|█████▍                                  | 14/103 [00:00<00:00, 900.00it/s, Materializing param=encoder.layer.0.attention.self.value.bias][A
-Loading weights:  14%|█████▍                                  | 14/103 [00:00<00:00, 900.00it/s, Materializing param=encoder.layer.0.attention.self.value.bias][A
-Loading weights:  15%|█████▌                                | 15/103 [00:00<00:00, 878.98it/s, Materializing param=encoder.layer.0.attention.self.value.weight][A
-Loading weights:  15%|█████▌                                | 15/103 [00:00<00:00, 878.98it/s, Materializing param=encoder.layer.0.attention.self.value.weight][A
-Loading weights:  16%|██████▌                                   | 16/103 [00:00<00:00, 937.58it/s, Materializing param=encoder.layer.0.intermediate.dense.bias][A
-Loading weights:  16%|██████▌                                   | 16/103 [00:00<00:00, 937.58it/s, Materializing param=encoder.layer.0.intermediate.dense.bias][A
-Loading weights:  17%|██████▌                                 | 17/103 [00:00<00:00, 940.66it/s, Materializing param=encoder.layer.0.intermediate.dense.weight][A
-Loading weights:  17%|██████▌                                 | 17/103 [00:00<00:00, 940.66it/s, Materializing param=encoder.layer.0.intermediate.dense.weight][A
-Loading weights:  17%|███████▋                                    | 18/103 [00:00<00:00, 996.00it/s, Materializing param=encoder.layer.0.output.LayerNorm.bias][A
-Loading weights:  17%|███████▋                                    | 18/103 [00:00<00:00, 943.65it/s, Materializing param=encoder.layer.0.output.LayerNorm.bias][A
-Loading weights:  18%|███████▋                                  | 19/103 [00:00<00:00, 996.07it/s, Materializing param=encoder.layer.0.output.LayerNorm.weight][A
-Loading weights:  18%|███████▋                                  | 19/103 [00:00<00:00, 996.07it/s, Materializing param=encoder.layer.0.output.LayerNorm.weight][A
-Loading weights:  19%|█████████▎                                      | 20/103 [00:00<00:00, 996.39it/s, Materializing param=encoder.layer.0.output.dense.bias][A
-Loading weights:  19%|█████████▎                                      | 20/103 [00:00<00:00, 996.39it/s, Materializing param=encoder.layer.0.output.dense.bias][A
-Loading weights:  20%|█████████▏                                   | 21/103 [00:00<00:00, 1046.21it/s, Materializing param=encoder.layer.0.output.dense.weight][A
-Loading weights:  20%|█████████▏                                   | 21/103 [00:00<00:00, 1046.21it/s, Materializing param=encoder.layer.0.output.dense.weight][A
-Loading weights:  21%|███████                          | 22/103 [00:00<00:00, 1096.03it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.bias][A
-Loading weights:  21%|███████                          | 22/103 [00:00<00:00, 1041.16it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.bias][A
-Loading weights:  22%|██████▉                        | 23/103 [00:00<00:00, 1088.48it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.weight][A
-Loading weights:  22%|██████▉                        | 23/103 [00:00<00:00, 1088.48it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.weight][A
-Loading weights:  23%|████████▌                            | 24/103 [00:00<00:00, 1135.81it/s, Materializing param=encoder.layer.1.attention.output.dense.bias][A
-Loading weights:  23%|████████▌                            | 24/103 [00:00<00:00, 1084.50it/s, Materializing param=encoder.layer.1.attention.output.dense.bias][A
-Loading weights:  24%|████████▍                          | 25/103 [00:00<00:00, 1129.69it/s, Materializing param=encoder.layer.1.attention.output.dense.weight][A
-Loading weights:  24%|████████▍                          | 25/103 [00:00<00:00, 1129.69it/s, Materializing param=encoder.layer.1.attention.output.dense.weight][A
-Loading weights:  25%|██████████▎                              | 26/103 [00:00<00:00, 1174.88it/s, Materializing param=encoder.layer.1.attention.self.key.bias][A
-Loading weights:  25%|██████████▎                              | 26/103 [00:00<00:00, 1174.88it/s, Materializing param=encoder.layer.1.attention.self.key.bias][A
-Loading weights:  26%|██████████▏                            | 27/103 [00:00<00:00, 1167.33it/s, Materializing param=encoder.layer.1.attention.self.key.weight][A
-Loading weights:  26%|██████████▏                            | 27/103 [00:00<00:00, 1167.33it/s, Materializing param=encoder.layer.1.attention.self.key.weight][A
-Loading weights:  27%|██████████▌                            | 28/103 [00:00<00:00, 1160.34it/s, Materializing param=encoder.layer.1.attention.self.query.bias][A
-Loading weights:  27%|██████████▌                            | 28/103 [00:00<00:00, 1160.34it/s, Materializing param=encoder.layer.1.attention.self.query.bias][A
-Loading weights:  28%|██████████▍                          | 29/103 [00:00<00:00, 1201.78it/s, Materializing param=encoder.layer.1.attention.self.query.weight][A
-Loading weights:  28%|██████████▍                          | 29/103 [00:00<00:00, 1201.78it/s, Materializing param=encoder.layer.1.attention.self.query.weight][A
-Loading weights:  29%|███████████▎                           | 30/103 [00:00<00:00, 1243.22it/s, Materializing param=encoder.layer.1.attention.self.value.bias][A
-Loading weights:  29%|███████████▎                           | 30/103 [00:00<00:00, 1243.22it/s, Materializing param=encoder.layer.1.attention.self.value.bias][A
-Loading weights:  30%|███████████▏                         | 31/103 [00:00<00:00, 1233.61it/s, Materializing param=encoder.layer.1.attention.self.value.weight][A
-Loading weights:  30%|███████████▏                         | 31/103 [00:00<00:00, 1233.61it/s, Materializing param=encoder.layer.1.attention.self.value.weight][A
-Loading weights:  31%|████████████▋                            | 32/103 [00:00<00:00, 1273.40it/s, Materializing param=encoder.layer.1.intermediate.dense.bias][A
-Loading weights:  31%|████████████▋                            | 32/103 [00:00<00:00, 1273.40it/s, Materializing param=encoder.layer.1.intermediate.dense.bias][A
-Loading weights:  32%|████████████▍                          | 33/103 [00:00<00:00, 1262.96it/s, Materializing param=encoder.layer.1.intermediate.dense.weight][A
-Loading weights:  32%|████████████▍                          | 33/103 [00:00<00:00, 1262.96it/s, Materializing param=encoder.layer.1.intermediate.dense.weight][A
-Loading weights:  33%|██████████████▏                            | 34/103 [00:00<00:00, 1301.24it/s, Materializing param=encoder.layer.1.output.LayerNorm.bias][A
-Loading weights:  33%|██████████████▏                            | 34/103 [00:00<00:00, 1301.24it/s, Materializing param=encoder.layer.1.output.LayerNorm.bias][A
-Loading weights:  34%|█████████████▉                           | 35/103 [00:00<00:00, 1339.51it/s, Materializing param=encoder.layer.1.output.LayerNorm.weight][A
-Loading weights:  34%|█████████████▉                           | 35/103 [00:00<00:00, 1290.09it/s, Materializing param=encoder.layer.1.output.LayerNorm.weight][A
-Loading weights:  35%|████████████████▍                              | 36/103 [00:00<00:00, 1326.95it/s, Materializing param=encoder.layer.1.output.dense.bias][A
-Loading weights:  35%|████████████████▍                              | 36/103 [00:00<00:00, 1326.95it/s, Materializing param=encoder.layer.1.output.dense.bias][A
-Loading weights:  36%|████████████████▏                            | 37/103 [00:00<00:00, 1363.81it/s, Materializing param=encoder.layer.1.output.dense.weight][A
-Loading weights:  36%|████████████████▏                            | 37/103 [00:00<00:00, 1363.81it/s, Materializing param=encoder.layer.1.output.dense.weight][A
-Loading weights:  37%|████████████▏                    | 38/103 [00:00<00:00, 1400.67it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.bias][A
-Loading weights:  37%|████████████▏                    | 38/103 [00:00<00:00, 1343.44it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.bias][A
-Loading weights:  38%|███████████▋                   | 39/103 [00:00<00:00, 1378.80it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.weight][A
-Loading weights:  38%|███████████▋                   | 39/103 [00:00<00:00, 1378.80it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.weight][A
-Loading weights:  39%|██████████████▎                      | 40/103 [00:00<00:00, 1414.15it/s, Materializing param=encoder.layer.2.attention.output.dense.bias][A
-Loading weights:  39%|██████████████▎                      | 40/103 [00:00<00:00, 1414.15it/s, Materializing param=encoder.layer.2.attention.output.dense.bias][A
-Loading weights:  40%|█████████████▉                     | 41/103 [00:00<00:00, 1449.51it/s, Materializing param=encoder.layer.2.attention.output.dense.weight][A
-Loading weights:  40%|█████████████▉                     | 41/103 [00:00<00:00, 1400.01it/s, Materializing param=encoder.layer.2.attention.output.dense.weight][A
-Loading weights:  41%|████████████████▋                        | 42/103 [00:00<00:00, 1434.16it/s, Materializing param=encoder.layer.2.attention.self.key.bias][A
-Loading weights:  41%|████████████████▋                        | 42/103 [00:00<00:00, 1434.16it/s, Materializing param=encoder.layer.2.attention.self.key.bias][A
-Loading weights:  42%|████████████████▎                      | 43/103 [00:00<00:00, 1468.31it/s, Materializing param=encoder.layer.2.attention.self.key.weight][A
-Loading weights:  42%|████████████████▎                      | 43/103 [00:00<00:00, 1468.31it/s, Materializing param=encoder.layer.2.attention.self.key.weight][A
-Loading weights:  43%|████████████████▋                      | 44/103 [00:00<00:00, 1452.86it/s, Materializing param=encoder.layer.2.attention.self.query.bias][A
-Loading weights:  43%|████████████████▋                      | 44/103 [00:00<00:00, 1452.86it/s, Materializing param=encoder.layer.2.attention.self.query.bias][A
-Loading weights:  44%|████████████████▏                    | 45/103 [00:00<00:00, 1485.88it/s, Materializing param=encoder.layer.2.attention.self.query.weight][A
-Loading weights:  44%|████████████████▏                    | 45/103 [00:00<00:00, 1485.88it/s, Materializing param=encoder.layer.2.attention.self.query.weight][A
-Loading weights:  45%|█████████████████▍                     | 46/103 [00:00<00:00, 1518.90it/s, Materializing param=encoder.layer.2.attention.self.value.bias][A
-Loading weights:  45%|█████████████████▍                     | 46/103 [00:00<00:00, 1518.90it/s, Materializing param=encoder.layer.2.attention.self.value.bias][A
-Loading weights:  46%|████████████████▉                    | 47/103 [00:00<00:00, 1496.68it/s, Materializing param=encoder.layer.2.attention.self.value.weight][A
-Loading weights:  46%|████████████████▉                    | 47/103 [00:00<00:00, 1496.68it/s, Materializing param=encoder.layer.2.attention.self.value.weight][A
-Loading weights:  47%|███████████████████                      | 48/103 [00:00<00:00, 1528.52it/s, Materializing param=encoder.layer.2.intermediate.dense.bias][A
-Loading weights:  47%|███████████████████                      | 48/103 [00:00<00:00, 1528.52it/s, Materializing param=encoder.layer.2.intermediate.dense.bias][A
-Loading weights:  48%|██████████████████▌                    | 49/103 [00:00<00:00, 1512.23it/s, Materializing param=encoder.layer.2.intermediate.dense.weight][A
-Loading weights:  48%|██████████████████▌                    | 49/103 [00:00<00:00, 1512.23it/s, Materializing param=encoder.layer.2.intermediate.dense.weight][A
-Loading weights:  49%|████████████████████▊                      | 50/103 [00:00<00:00, 1543.09it/s, Materializing param=encoder.layer.2.output.LayerNorm.bias][A
-Loading weights:  49%|████████████████████▊                      | 50/103 [00:00<00:00, 1496.77it/s, Materializing param=encoder.layer.2.output.LayerNorm.bias][A
-Loading weights:  50%|████████████████████▎                    | 51/103 [00:00<00:00, 1526.70it/s, Materializing param=encoder.layer.2.output.LayerNorm.weight][A
-Loading weights:  50%|████████████████████▎                    | 51/103 [00:00<00:00, 1526.70it/s, Materializing param=encoder.layer.2.output.LayerNorm.weight][A
-Loading weights:  50%|███████████████████████▋                       | 52/103 [00:00<00:00, 1556.64it/s, Materializing param=encoder.layer.2.output.dense.bias][A
-Loading weights:  50%|███████████████████████▋                       | 52/103 [00:00<00:00, 1511.50it/s, Materializing param=encoder.layer.2.output.dense.bias][A
-Loading weights:  51%|███████████████████████▏                     | 53/103 [00:00<00:00, 1540.57it/s, Materializing param=encoder.layer.2.output.dense.weight][A
-Loading weights:  51%|███████████████████████▏                     | 53/103 [00:00<00:00, 1540.57it/s, Materializing param=encoder.layer.2.output.dense.weight][A
-Loading weights:  52%|█████████████████▎               | 54/103 [00:00<00:00, 1569.64it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.bias][A
-Loading weights:  52%|█████████████████▎               | 54/103 [00:00<00:00, 1569.64it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.bias][A
-Loading weights:  53%|████████████████▌              | 55/103 [00:00<00:00, 1553.52it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.weight][A
-Loading weights:  53%|████████████████▌              | 55/103 [00:00<00:00, 1553.52it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.weight][A
-Loading weights:  54%|████████████████████                 | 56/103 [00:00<00:00, 1581.76it/s, Materializing param=encoder.layer.3.attention.output.dense.bias][A
-Loading weights:  54%|████████████████████                 | 56/103 [00:00<00:00, 1581.76it/s, Materializing param=encoder.layer.3.attention.output.dense.bias][A
-Loading weights:  55%|███████████████████▎               | 57/103 [00:00<00:00, 1610.01it/s, Materializing param=encoder.layer.3.attention.output.dense.weight][A
-Loading weights:  55%|███████████████████▎               | 57/103 [00:00<00:00, 1565.84it/s, Materializing param=encoder.layer.3.attention.output.dense.weight][A
-Loading weights:  56%|███████████████████████                  | 58/103 [00:00<00:00, 1593.31it/s, Materializing param=encoder.layer.3.attention.self.key.bias][A
-Loading weights:  56%|███████████████████████                  | 58/103 [00:00<00:00, 1571.50it/s, Materializing param=encoder.layer.3.attention.self.key.bias][A
-Loading weights:  57%|██████████████████████▎                | 59/103 [00:00<00:00, 1598.59it/s, Materializing param=encoder.layer.3.attention.self.key.weight][A
-Loading weights:  57%|██████████████████████▎                | 59/103 [00:00<00:00, 1598.59it/s, Materializing param=encoder.layer.3.attention.self.key.weight][A
-Loading weights:  58%|██████████████████████▋                | 60/103 [00:00<00:00, 1625.69it/s, Materializing param=encoder.layer.3.attention.self.query.bias][A
-Loading weights:  58%|██████████████████████▋                | 60/103 [00:00<00:00, 1625.69it/s, Materializing param=encoder.layer.3.attention.self.query.bias][A
-Loading weights:  59%|█████████████████████▉               | 61/103 [00:00<00:00, 1608.97it/s, Materializing param=encoder.layer.3.attention.self.query.weight][A
-Loading weights:  59%|█████████████████████▉               | 61/103 [00:00<00:00, 1608.97it/s, Materializing param=encoder.layer.3.attention.self.query.weight][A
-Loading weights:  60%|███████████████████████▍               | 62/103 [00:00<00:00, 1635.35it/s, Materializing param=encoder.layer.3.attention.self.value.bias][A
-Loading weights:  60%|███████████████████████▍               | 62/103 [00:00<00:00, 1635.35it/s, Materializing param=encoder.layer.3.attention.self.value.bias][A
-Loading weights:  61%|██████████████████████▋              | 63/103 [00:00<00:00, 1661.73it/s, Materializing param=encoder.layer.3.attention.self.value.weight][A
-Loading weights:  61%|██████████████████████▋              | 63/103 [00:00<00:00, 1619.05it/s, Materializing param=encoder.layer.3.attention.self.value.weight][A
-Loading weights:  62%|█████████████████████████▍               | 64/103 [00:00<00:00, 1583.38it/s, Materializing param=encoder.layer.3.intermediate.dense.bias][A
-Loading weights:  62%|█████████████████████████▍               | 64/103 [00:00<00:00, 1583.38it/s, Materializing param=encoder.layer.3.intermediate.dense.bias][A
-Loading weights:  63%|████████████████████████▌              | 65/103 [00:00<00:00, 1608.12it/s, Materializing param=encoder.layer.3.intermediate.dense.weight][A
-Loading weights:  63%|████████████████████████▌              | 65/103 [00:00<00:00, 1568.98it/s, Materializing param=encoder.layer.3.intermediate.dense.weight][A
-Loading weights:  64%|███████████████████████████▌               | 66/103 [00:00<00:00, 1593.12it/s, Materializing param=encoder.layer.3.output.LayerNorm.bias][A
-Loading weights:  64%|███████████████████████████▌               | 66/103 [00:00<00:00, 1593.12it/s, Materializing param=encoder.layer.3.output.LayerNorm.bias][A
-Loading weights:  65%|██████████████████████████▋              | 67/103 [00:00<00:00, 1617.26it/s, Materializing param=encoder.layer.3.output.LayerNorm.weight][A
-Loading weights:  65%|██████████████████████████▋              | 67/103 [00:00<00:00, 1579.21it/s, Materializing param=encoder.layer.3.output.LayerNorm.weight][A
-Loading weights:  66%|███████████████████████████████                | 68/103 [00:00<00:00, 1602.78it/s, Materializing param=encoder.layer.3.output.dense.bias][A
-Loading weights:  66%|███████████████████████████████                | 68/103 [00:00<00:00, 1602.78it/s, Materializing param=encoder.layer.3.output.dense.bias][A
-Loading weights:  67%|██████████████████████████████▏              | 69/103 [00:00<00:00, 1626.35it/s, Materializing param=encoder.layer.3.output.dense.weight][A
-Loading weights:  67%|██████████████████████████████▏              | 69/103 [00:00<00:00, 1626.35it/s, Materializing param=encoder.layer.3.output.dense.weight][A
-Loading weights:  68%|██████████████████████▍          | 70/103 [00:00<00:00, 1611.87it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.bias][A
-Loading weights:  68%|██████████████████████▍          | 70/103 [00:00<00:00, 1611.87it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.bias][A
-Loading weights:  69%|█████████████████████▎         | 71/103 [00:00<00:00, 1634.90it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.weight][A
-Loading weights:  69%|█████████████████████▎         | 71/103 [00:00<00:00, 1634.90it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.weight][A
-Loading weights:  70%|█████████████████████████▊           | 72/103 [00:00<00:00, 1657.93it/s, Materializing param=encoder.layer.4.attention.output.dense.bias][A
-Loading weights:  70%|█████████████████████████▊           | 72/103 [00:00<00:00, 1657.93it/s, Materializing param=encoder.layer.4.attention.output.dense.bias][A
-Loading weights:  71%|████████████████████████▊          | 73/103 [00:00<00:00, 1643.16it/s, Materializing param=encoder.layer.4.attention.output.dense.weight][A
-Loading weights:  71%|████████████████████████▊          | 73/103 [00:00<00:00, 1643.16it/s, Materializing param=encoder.layer.4.attention.output.dense.weight][A
-Loading weights:  72%|█████████████████████████████▍           | 74/103 [00:00<00:00, 1665.67it/s, Materializing param=encoder.layer.4.attention.self.key.bias][A
-Loading weights:  72%|█████████████████████████████▍           | 74/103 [00:00<00:00, 1665.67it/s, Materializing param=encoder.layer.4.attention.self.key.bias][A
-Loading weights:  73%|████████████████████████████▍          | 75/103 [00:00<00:00, 1688.17it/s, Materializing param=encoder.layer.4.attention.self.key.weight][A
-Loading weights:  73%|████████████████████████████▍          | 75/103 [00:00<00:00, 1651.00it/s, Materializing param=encoder.layer.4.attention.self.key.weight][A
-Loading weights:  74%|████████████████████████████▊          | 76/103 [00:00<00:00, 1673.01it/s, Materializing param=encoder.layer.4.attention.self.query.bias][A
-Loading weights:  74%|████████████████████████████▊          | 76/103 [00:00<00:00, 1673.01it/s, Materializing param=encoder.layer.4.attention.self.query.bias][A
-Loading weights:  75%|███████████████████████████▋         | 77/103 [00:00<00:00, 1695.02it/s, Materializing param=encoder.layer.4.attention.self.query.weight][A
-Loading weights:  75%|███████████████████████████▋         | 77/103 [00:00<00:00, 1695.02it/s, Materializing param=encoder.layer.4.attention.self.query.weight][A
-Loading weights:  76%|█████████████████████████████▌         | 78/103 [00:00<00:00, 1717.04it/s, Materializing param=encoder.layer.4.attention.self.value.bias][A
-Loading weights:  76%|█████████████████████████████▌         | 78/103 [00:00<00:00, 1717.04it/s, Materializing param=encoder.layer.4.attention.self.value.bias][A
-Loading weights:  77%|████████████████████████████▍        | 79/103 [00:00<00:00, 1683.29it/s, Materializing param=encoder.layer.4.attention.self.value.weight][A
-Loading weights:  77%|████████████████████████████▍        | 79/103 [00:00<00:00, 1683.29it/s, Materializing param=encoder.layer.4.attention.self.value.weight][A
-Loading weights:  78%|███████████████████████████████▊         | 80/103 [00:00<00:00, 1668.75it/s, Materializing param=encoder.layer.4.intermediate.dense.bias][A
-Loading weights:  78%|███████████████████████████████▊         | 80/103 [00:00<00:00, 1634.74it/s, Materializing param=encoder.layer.4.intermediate.dense.bias][A
-Loading weights:  79%|██████████████████████████████▋        | 81/103 [00:00<00:00, 1655.17it/s, Materializing param=encoder.layer.4.intermediate.dense.weight][A
-Loading weights:  79%|██████████████████████████████▋        | 81/103 [00:00<00:00, 1655.17it/s, Materializing param=encoder.layer.4.intermediate.dense.weight][A
-Loading weights:  80%|██████████████████████████████████▏        | 82/103 [00:00<00:00, 1675.60it/s, Materializing param=encoder.layer.4.output.LayerNorm.bias][A
-Loading weights:  80%|██████████████████████████████████▏        | 82/103 [00:00<00:00, 1675.60it/s, Materializing param=encoder.layer.4.output.LayerNorm.bias][A
-Loading weights:  81%|█████████████████████████████████        | 83/103 [00:00<00:00, 1645.27it/s, Materializing param=encoder.layer.4.output.LayerNorm.weight][A
-Loading weights:  81%|█████████████████████████████████        | 83/103 [00:00<00:00, 1645.27it/s, Materializing param=encoder.layer.4.output.LayerNorm.weight][A
-Loading weights:  82%|██████████████████████████████████████▎        | 84/103 [00:00<00:00, 1665.09it/s, Materializing param=encoder.layer.4.output.dense.bias][A
-Loading weights:  82%|██████████████████████████████████████▎        | 84/103 [00:00<00:00, 1665.09it/s, Materializing param=encoder.layer.4.output.dense.bias][A
-Loading weights:  83%|█████████████████████████████████████▏       | 85/103 [00:00<00:00, 1651.94it/s, Materializing param=encoder.layer.4.output.dense.weight][A
-Loading weights:  83%|█████████████████████████████████████▏       | 85/103 [00:00<00:00, 1651.94it/s, Materializing param=encoder.layer.4.output.dense.weight][A
-Loading weights:  83%|███████████████████████████▌     | 86/103 [00:00<00:00, 1671.38it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.bias][A
-Loading weights:  83%|███████████████████████████▌     | 86/103 [00:00<00:00, 1671.38it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.bias][A
-Loading weights:  84%|██████████████████████████▏    | 87/103 [00:00<00:00, 1658.60it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.weight][A
-Loading weights:  84%|██████████████████████████▏    | 87/103 [00:00<00:00, 1658.60it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.weight][A
-Loading weights:  85%|███████████████████████████████▌     | 88/103 [00:00<00:00, 1677.66it/s, Materializing param=encoder.layer.5.attention.output.dense.bias][A
-Loading weights:  85%|███████████████████████████████▌     | 88/103 [00:00<00:00, 1677.66it/s, Materializing param=encoder.layer.5.attention.output.dense.bias][A
-Loading weights:  86%|██████████████████████████████▏    | 89/103 [00:00<00:00, 1696.72it/s, Materializing param=encoder.layer.5.attention.output.dense.weight][A
-Loading weights:  86%|██████████████████████████████▏    | 89/103 [00:00<00:00, 1664.99it/s, Materializing param=encoder.layer.5.attention.output.dense.weight][A
-Loading weights:  87%|███████████████████████████████████▊     | 90/103 [00:00<00:00, 1683.70it/s, Materializing param=encoder.layer.5.attention.self.key.bias][A
-Loading weights:  87%|███████████████████████████████████▊     | 90/103 [00:00<00:00, 1683.70it/s, Materializing param=encoder.layer.5.attention.self.key.bias][A
-Loading weights:  88%|██████████████████████████████████▍    | 91/103 [00:00<00:00, 1702.41it/s, Materializing param=encoder.layer.5.attention.self.key.weight][A
-Loading weights:  88%|██████████████████████████████████▍    | 91/103 [00:00<00:00, 1640.93it/s, Materializing param=encoder.layer.5.attention.self.key.weight][A
-Loading weights:  89%|██████████████████████████████████▊    | 92/103 [00:00<00:00, 1658.96it/s, Materializing param=encoder.layer.5.attention.self.query.bias][A
-Loading weights:  89%|██████████████████████████████████▊    | 92/103 [00:00<00:00, 1658.96it/s, Materializing param=encoder.layer.5.attention.self.query.bias][A
-Loading weights:  90%|█████████████████████████████████▍   | 93/103 [00:00<00:00, 1676.99it/s, Materializing param=encoder.layer.5.attention.self.query.weight][A
-Loading weights:  90%|█████████████████████████████████▍   | 93/103 [00:00<00:00, 1676.99it/s, Materializing param=encoder.layer.5.attention.self.query.weight][A
-Loading weights:  91%|███████████████████████████████████▌   | 94/103 [00:00<00:00, 1650.21it/s, Materializing param=encoder.layer.5.attention.self.value.bias][A
-Loading weights:  91%|███████████████████████████████████▌   | 94/103 [00:00<00:00, 1650.21it/s, Materializing param=encoder.layer.5.attention.self.value.bias][A
-Loading weights:  92%|██████████████████████████████████▏  | 95/103 [00:00<00:00, 1667.76it/s, Materializing param=encoder.layer.5.attention.self.value.weight][A
-Loading weights:  92%|██████████████████████████████████▏  | 95/103 [00:00<00:00, 1667.76it/s, Materializing param=encoder.layer.5.attention.self.value.weight][A
-Loading weights:  93%|██████████████████████████████████████▏  | 96/103 [00:00<00:00, 1685.32it/s, Materializing param=encoder.layer.5.intermediate.dense.bias][A
-Loading weights:  93%|██████████████████████████████████████▏  | 96/103 [00:00<00:00, 1685.32it/s, Materializing param=encoder.layer.5.intermediate.dense.bias][A
-Loading weights:  94%|████████████████████████████████████▋  | 97/103 [00:00<00:00, 1673.33it/s, Materializing param=encoder.layer.5.intermediate.dense.weight][A
-Loading weights:  94%|████████████████████████████████████▋  | 97/103 [00:00<00:00, 1673.33it/s, Materializing param=encoder.layer.5.intermediate.dense.weight][A
-Loading weights:  95%|████████████████████████████████████████▉  | 98/103 [00:00<00:00, 1690.58it/s, Materializing param=encoder.layer.5.output.LayerNorm.bias][A
-Loading weights:  95%|████████████████████████████████████████▉  | 98/103 [00:00<00:00, 1690.58it/s, Materializing param=encoder.layer.5.output.LayerNorm.bias][A
-Loading weights:  96%|███████████████████████████████████████▍ | 99/103 [00:00<00:00, 1707.83it/s, Materializing param=encoder.layer.5.output.LayerNorm.weight][A
-Loading weights:  96%|███████████████████████████████████████▍ | 99/103 [00:00<00:00, 1707.83it/s, Materializing param=encoder.layer.5.output.LayerNorm.weight][A
-Loading weights:  97%|████████████████████████████████████████████▋ | 100/103 [00:00<00:00, 1695.79it/s, Materializing param=encoder.layer.5.output.dense.bias][A
-Loading weights:  97%|████████████████████████████████████████████▋ | 100/103 [00:00<00:00, 1695.79it/s, Materializing param=encoder.layer.5.output.dense.bias][A
-Loading weights:  98%|███████████████████████████████████████████▏| 101/103 [00:00<00:00, 1712.75it/s, Materializing param=encoder.layer.5.output.dense.weight][A
-Loading weights:  98%|███████████████████████████████████████████▏| 101/103 [00:00<00:00, 1712.75it/s, Materializing param=encoder.layer.5.output.dense.weight][A
-Loading weights:  99%|█████████████████████████████████████████████████████████████▍| 102/103 [00:00<00:00, 1729.71it/s, Materializing param=pooler.dense.bias][A
-Loading weights:  99%|█████████████████████████████████████████████████████████████▍| 102/103 [00:00<00:00, 1729.71it/s, Materializing param=pooler.dense.bias][A
-Loading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 1703.08it/s, Materializing param=pooler.dense.weight][A
-Loading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 1703.08it/s, Materializing param=pooler.dense.weight][ALoading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 1703.08it/s, Materializing param=pooler.dense.weight]
+Loading weights:   1%|▌                                                       | 1/103 [00:00<00:00, 1000.07it/s, Materializing param=embeddings.LayerNorm.bias][A
+Loading weights:   1%|▌                                                        | 1/103 [00:00<00:00, 477.22it/s, Materializing param=embeddings.LayerNorm.bias][A
+Loading weights:   2%|█                                                      | 2/103 [00:00<00:00, 646.07it/s, Materializing param=embeddings.LayerNorm.weight][A
+Loading weights:   2%|█                                                      | 2/103 [00:00<00:00, 488.31it/s, Materializing param=embeddings.LayerNorm.weight][A
+Loading weights:   3%|█▎                                           | 3/103 [00:00<00:00, 588.78it/s, Materializing param=embeddings.position_embeddings.weight][A
+Loading weights:   3%|█▎                                           | 3/103 [00:00<00:00, 417.81it/s, Materializing param=embeddings.position_embeddings.weight][A
+Loading weights:   4%|█▋                                         | 4/103 [00:00<00:00, 489.09it/s, Materializing param=embeddings.token_type_embeddings.weight][A
+Loading weights:   4%|█▋                                         | 4/103 [00:00<00:00, 435.77it/s, Materializing param=embeddings.token_type_embeddings.weight][A
+Loading weights:   5%|██▍                                              | 5/103 [00:00<00:00, 481.66it/s, Materializing param=embeddings.word_embeddings.weight][A
+Loading weights:   5%|██▍                                              | 5/103 [00:00<00:00, 439.34it/s, Materializing param=embeddings.word_embeddings.weight][A
+Loading weights:   6%|██                                 | 6/103 [00:00<00:00, 484.63it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.bias][A
+Loading weights:   6%|██                                 | 6/103 [00:00<00:00, 484.63it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.bias][A
+Loading weights:   7%|██▏                              | 7/103 [00:00<00:00, 565.40it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.weight][A
+Loading weights:   7%|██▏                              | 7/103 [00:00<00:00, 543.30it/s, Materializing param=encoder.layer.0.attention.output.LayerNorm.weight][A
+Loading weights:   8%|███                                    | 8/103 [00:00<00:00, 620.92it/s, Materializing param=encoder.layer.0.attention.output.dense.bias][A
+Loading weights:   8%|███                                    | 8/103 [00:00<00:00, 620.92it/s, Materializing param=encoder.layer.0.attention.output.dense.bias][A
+Loading weights:   9%|███▏                                 | 9/103 [00:00<00:00, 698.53it/s, Materializing param=encoder.layer.0.attention.output.dense.weight][A
+Loading weights:   9%|███▏                                 | 9/103 [00:00<00:00, 698.53it/s, Materializing param=encoder.layer.0.attention.output.dense.weight][A
+Loading weights:  10%|████                                      | 10/103 [00:00<00:00, 776.15it/s, Materializing param=encoder.layer.0.attention.self.key.bias][A
+Loading weights:  10%|████                                      | 10/103 [00:00<00:00, 776.15it/s, Materializing param=encoder.layer.0.attention.self.key.bias][A
+Loading weights:  11%|████▎                                   | 11/103 [00:00<00:00, 853.76it/s, Materializing param=encoder.layer.0.attention.self.key.weight][A
+Loading weights:  11%|████▎                                   | 11/103 [00:00<00:00, 853.76it/s, Materializing param=encoder.layer.0.attention.self.key.weight][A
+Loading weights:  12%|████▋                                   | 12/103 [00:00<00:00, 931.38it/s, Materializing param=encoder.layer.0.attention.self.query.bias][A
+Loading weights:  12%|████▋                                   | 12/103 [00:00<00:00, 831.41it/s, Materializing param=encoder.layer.0.attention.self.query.bias][A
+Loading weights:  13%|████▊                                 | 13/103 [00:00<00:00, 900.69it/s, Materializing param=encoder.layer.0.attention.self.query.weight][A
+Loading weights:  13%|████▊                                 | 13/103 [00:00<00:00, 900.69it/s, Materializing param=encoder.layer.0.attention.self.query.weight][A
+Loading weights:  14%|█████▍                                  | 14/103 [00:00<00:00, 969.97it/s, Materializing param=encoder.layer.0.attention.self.value.bias][A
+Loading weights:  14%|█████▍                                  | 14/103 [00:00<00:00, 969.97it/s, Materializing param=encoder.layer.0.attention.self.value.bias][A
+Loading weights:  15%|█████▍                               | 15/103 [00:00<00:00, 1039.26it/s, Materializing param=encoder.layer.0.attention.self.value.weight][A
+Loading weights:  15%|█████▍                               | 15/103 [00:00<00:00, 1039.26it/s, Materializing param=encoder.layer.0.attention.self.value.weight][A
+Loading weights:  16%|██████▎                                  | 16/103 [00:00<00:00, 1108.54it/s, Materializing param=encoder.layer.0.intermediate.dense.bias][A
+Loading weights:  16%|██████▎                                  | 16/103 [00:00<00:00, 1036.43it/s, Materializing param=encoder.layer.0.intermediate.dense.bias][A
+Loading weights:  17%|██████▍                                | 17/103 [00:00<00:00, 1101.21it/s, Materializing param=encoder.layer.0.intermediate.dense.weight][A
+Loading weights:  17%|██████▍                                | 17/103 [00:00<00:00, 1101.21it/s, Materializing param=encoder.layer.0.intermediate.dense.weight][A
+Loading weights:  17%|███████▌                                   | 18/103 [00:00<00:00, 1165.98it/s, Materializing param=encoder.layer.0.output.LayerNorm.bias][A
+Loading weights:  17%|███████▌                                   | 18/103 [00:00<00:00, 1165.98it/s, Materializing param=encoder.layer.0.output.LayerNorm.bias][A
+Loading weights:  18%|███████▌                                 | 19/103 [00:00<00:00, 1230.76it/s, Materializing param=encoder.layer.0.output.LayerNorm.weight][A
+Loading weights:  18%|███████▌                                 | 19/103 [00:00<00:00, 1230.76it/s, Materializing param=encoder.layer.0.output.LayerNorm.weight][A
+Loading weights:  19%|█████████▏                                     | 20/103 [00:00<00:00, 1295.54it/s, Materializing param=encoder.layer.0.output.dense.bias][A
+Loading weights:  19%|█████████▏                                     | 20/103 [00:00<00:00, 1216.75it/s, Materializing param=encoder.layer.0.output.dense.bias][A
+Loading weights:  20%|█████████▏                                   | 21/103 [00:00<00:00, 1277.58it/s, Materializing param=encoder.layer.0.output.dense.weight][A
+Loading weights:  20%|█████████▏                                   | 21/103 [00:00<00:00, 1277.58it/s, Materializing param=encoder.layer.0.output.dense.weight][A
+Loading weights:  21%|███████                          | 22/103 [00:00<00:00, 1338.42it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.bias][A
+Loading weights:  21%|███████                          | 22/103 [00:00<00:00, 1338.42it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.bias][A
+Loading weights:  22%|██████▉                        | 23/103 [00:00<00:00, 1399.26it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.weight][A
+Loading weights:  22%|██████▉                        | 23/103 [00:00<00:00, 1399.26it/s, Materializing param=encoder.layer.1.attention.output.LayerNorm.weight][A
+Loading weights:  23%|████████▌                            | 24/103 [00:00<00:00, 1376.35it/s, Materializing param=encoder.layer.1.attention.output.dense.bias][A
+Loading weights:  23%|████████▌                            | 24/103 [00:00<00:00, 1376.35it/s, Materializing param=encoder.layer.1.attention.output.dense.bias][A
+Loading weights:  24%|████████▍                          | 25/103 [00:00<00:00, 1355.78it/s, Materializing param=encoder.layer.1.attention.output.dense.weight][A
+Loading weights:  24%|████████▍                          | 25/103 [00:00<00:00, 1355.78it/s, Materializing param=encoder.layer.1.attention.output.dense.weight][A
+Loading weights:  25%|██████████▎                              | 26/103 [00:00<00:00, 1410.01it/s, Materializing param=encoder.layer.1.attention.self.key.bias][A
+Loading weights:  25%|██████████▎                              | 26/103 [00:00<00:00, 1264.27it/s, Materializing param=encoder.layer.1.attention.self.key.bias][A
+Loading weights:  26%|██████████▏                            | 27/103 [00:00<00:00, 1312.89it/s, Materializing param=encoder.layer.1.attention.self.key.weight][A
+Loading weights:  26%|██████████▏                            | 27/103 [00:00<00:00, 1312.89it/s, Materializing param=encoder.layer.1.attention.self.key.weight][A
+Loading weights:  27%|██████████▌                            | 28/103 [00:00<00:00, 1298.04it/s, Materializing param=encoder.layer.1.attention.self.query.bias][A
+Loading weights:  27%|██████████▌                            | 28/103 [00:00<00:00, 1298.04it/s, Materializing param=encoder.layer.1.attention.self.query.bias][A
+Loading weights:  28%|██████████▍                          | 29/103 [00:00<00:00, 1344.40it/s, Materializing param=encoder.layer.1.attention.self.query.weight][A
+Loading weights:  28%|██████████▍                          | 29/103 [00:00<00:00, 1344.40it/s, Materializing param=encoder.layer.1.attention.self.query.weight][A
+Loading weights:  29%|███████████▎                           | 30/103 [00:00<00:00, 1390.76it/s, Materializing param=encoder.layer.1.attention.self.value.bias][A
+Loading weights:  29%|███████████▎                           | 30/103 [00:00<00:00, 1245.60it/s, Materializing param=encoder.layer.1.attention.self.value.bias][A
+Loading weights:  30%|███████████▏                         | 31/103 [00:00<00:00, 1287.12it/s, Materializing param=encoder.layer.1.attention.self.value.weight][A
+Loading weights:  30%|███████████▏                         | 31/103 [00:00<00:00, 1287.12it/s, Materializing param=encoder.layer.1.attention.self.value.weight][A
+Loading weights:  31%|████████████▋                            | 32/103 [00:00<00:00, 1328.64it/s, Materializing param=encoder.layer.1.intermediate.dense.bias][A
+Loading weights:  31%|████████████▋                            | 32/103 [00:00<00:00, 1328.64it/s, Materializing param=encoder.layer.1.intermediate.dense.bias][A
+Loading weights:  32%|████████████▍                          | 33/103 [00:00<00:00, 1370.16it/s, Materializing param=encoder.layer.1.intermediate.dense.weight][A
+Loading weights:  32%|████████████▍                          | 33/103 [00:00<00:00, 1277.75it/s, Materializing param=encoder.layer.1.intermediate.dense.weight][A
+Loading weights:  33%|██████████████▏                            | 34/103 [00:00<00:00, 1316.47it/s, Materializing param=encoder.layer.1.output.LayerNorm.bias][A
+Loading weights:  33%|██████████████▏                            | 34/103 [00:00<00:00, 1316.47it/s, Materializing param=encoder.layer.1.output.LayerNorm.bias][A
+Loading weights:  34%|█████████████▉                           | 35/103 [00:00<00:00, 1355.19it/s, Materializing param=encoder.layer.1.output.LayerNorm.weight][A
+Loading weights:  34%|█████████████▉                           | 35/103 [00:00<00:00, 1355.19it/s, Materializing param=encoder.layer.1.output.LayerNorm.weight][A
+Loading weights:  35%|████████████████▍                              | 36/103 [00:00<00:00, 1341.64it/s, Materializing param=encoder.layer.1.output.dense.bias][A
+Loading weights:  35%|████████████████▍                              | 36/103 [00:00<00:00, 1341.64it/s, Materializing param=encoder.layer.1.output.dense.bias][A
+Loading weights:  36%|████████████████▏                            | 37/103 [00:00<00:00, 1378.91it/s, Materializing param=encoder.layer.1.output.dense.weight][A
+Loading weights:  36%|████████████████▏                            | 37/103 [00:00<00:00, 1378.91it/s, Materializing param=encoder.layer.1.output.dense.weight][A
+Loading weights:  37%|████████████▏                    | 38/103 [00:00<00:00, 1416.18it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.bias][A
+Loading weights:  37%|████████████▏                    | 38/103 [00:00<00:00, 1416.18it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.bias][A
+Loading weights:  38%|███████████▋                   | 39/103 [00:00<00:00, 1376.21it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.weight][A
+Loading weights:  38%|███████████▋                   | 39/103 [00:00<00:00, 1376.21it/s, Materializing param=encoder.layer.2.attention.output.LayerNorm.weight][A
+Loading weights:  39%|██████████████▎                      | 40/103 [00:00<00:00, 1363.06it/s, Materializing param=encoder.layer.2.attention.output.dense.bias][A
+Loading weights:  39%|██████████████▎                      | 40/103 [00:00<00:00, 1363.06it/s, Materializing param=encoder.layer.2.attention.output.dense.bias][A
+Loading weights:  40%|█████████████▉                     | 41/103 [00:00<00:00, 1397.14it/s, Materializing param=encoder.layer.2.attention.output.dense.weight][A
+Loading weights:  40%|█████████████▉                     | 41/103 [00:00<00:00, 1397.14it/s, Materializing param=encoder.layer.2.attention.output.dense.weight][A
+Loading weights:  41%|████████████████▋                        | 42/103 [00:00<00:00, 1431.21it/s, Materializing param=encoder.layer.2.attention.self.key.bias][A
+Loading weights:  41%|████████████████▋                        | 42/103 [00:00<00:00, 1384.14it/s, Materializing param=encoder.layer.2.attention.self.key.bias][A
+Loading weights:  42%|████████████████▎                      | 43/103 [00:00<00:00, 1417.09it/s, Materializing param=encoder.layer.2.attention.self.key.weight][A
+Loading weights:  42%|████████████████▎                      | 43/103 [00:00<00:00, 1417.09it/s, Materializing param=encoder.layer.2.attention.self.key.weight][A
+Loading weights:  43%|████████████████▋                      | 44/103 [00:00<00:00, 1450.05it/s, Materializing param=encoder.layer.2.attention.self.query.bias][A
+Loading weights:  43%|████████████████▋                      | 44/103 [00:00<00:00, 1450.05it/s, Materializing param=encoder.layer.2.attention.self.query.bias][A
+Loading weights:  44%|████████████████▏                    | 45/103 [00:00<00:00, 1483.01it/s, Materializing param=encoder.layer.2.attention.self.query.weight][A
+Loading weights:  44%|████████████████▏                    | 45/103 [00:00<00:00, 1483.01it/s, Materializing param=encoder.layer.2.attention.self.query.weight][A
+Loading weights:  45%|█████████████████▍                     | 46/103 [00:00<00:00, 1515.96it/s, Materializing param=encoder.layer.2.attention.self.value.bias][A
+Loading weights:  45%|█████████████████▍                     | 46/103 [00:00<00:00, 1467.60it/s, Materializing param=encoder.layer.2.attention.self.value.bias][A
+Loading weights:  46%|████████████████▉                    | 47/103 [00:00<00:00, 1499.50it/s, Materializing param=encoder.layer.2.attention.self.value.weight][A
+Loading weights:  46%|████████████████▉                    | 47/103 [00:00<00:00, 1499.50it/s, Materializing param=encoder.layer.2.attention.self.value.weight][A
+Loading weights:  47%|███████████████████                      | 48/103 [00:00<00:00, 1531.41it/s, Materializing param=encoder.layer.2.intermediate.dense.bias][A
+Loading weights:  47%|███████████████████                      | 48/103 [00:00<00:00, 1531.41it/s, Materializing param=encoder.layer.2.intermediate.dense.bias][A
+Loading weights:  48%|██████████████████▌                    | 49/103 [00:00<00:00, 1563.31it/s, Materializing param=encoder.layer.2.intermediate.dense.weight][A
+Loading weights:  48%|██████████████████▌                    | 49/103 [00:00<00:00, 1563.31it/s, Materializing param=encoder.layer.2.intermediate.dense.weight][A
+Loading weights:  49%|████████████████████▊                      | 50/103 [00:00<00:00, 1595.22it/s, Materializing param=encoder.layer.2.output.LayerNorm.bias][A
+Loading weights:  49%|████████████████████▊                      | 50/103 [00:00<00:00, 1543.42it/s, Materializing param=encoder.layer.2.output.LayerNorm.bias][A
+Loading weights:  50%|████████████████████▎                    | 51/103 [00:00<00:00, 1574.29it/s, Materializing param=encoder.layer.2.output.LayerNorm.weight][A
+Loading weights:  50%|████████████████████▎                    | 51/103 [00:00<00:00, 1574.29it/s, Materializing param=encoder.layer.2.output.LayerNorm.weight][A
+Loading weights:  50%|███████████████████████▋                       | 52/103 [00:00<00:00, 1605.16it/s, Materializing param=encoder.layer.2.output.dense.bias][A
+Loading weights:  50%|███████████████████████▋                       | 52/103 [00:00<00:00, 1557.07it/s, Materializing param=encoder.layer.2.output.dense.bias][A
+Loading weights:  51%|███████████████████████▏                     | 53/103 [00:00<00:00, 1587.02it/s, Materializing param=encoder.layer.2.output.dense.weight][A
+Loading weights:  51%|███████████████████████▏                     | 53/103 [00:00<00:00, 1587.02it/s, Materializing param=encoder.layer.2.output.dense.weight][A
+Loading weights:  52%|█████████████████▎               | 54/103 [00:00<00:00, 1616.96it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.bias][A
+Loading weights:  52%|█████████████████▎               | 54/103 [00:00<00:00, 1616.96it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.bias][A
+Loading weights:  53%|████████████████▌              | 55/103 [00:00<00:00, 1646.90it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.weight][A
+Loading weights:  53%|████████████████▌              | 55/103 [00:00<00:00, 1646.90it/s, Materializing param=encoder.layer.3.attention.output.LayerNorm.weight][A
+Loading weights:  54%|████████████████████                 | 56/103 [00:00<00:00, 1628.10it/s, Materializing param=encoder.layer.3.attention.output.dense.bias][A
+Loading weights:  54%|████████████████████                 | 56/103 [00:00<00:00, 1628.10it/s, Materializing param=encoder.layer.3.attention.output.dense.bias][A
+Loading weights:  55%|███████████████████▎               | 57/103 [00:00<00:00, 1657.17it/s, Materializing param=encoder.layer.3.attention.output.dense.weight][A
+Loading weights:  55%|███████████████████▎               | 57/103 [00:00<00:00, 1657.17it/s, Materializing param=encoder.layer.3.attention.output.dense.weight][A
+Loading weights:  56%|███████████████████████                  | 58/103 [00:00<00:00, 1686.25it/s, Materializing param=encoder.layer.3.attention.self.key.bias][A
+Loading weights:  56%|███████████████████████                  | 58/103 [00:00<00:00, 1686.25it/s, Materializing param=encoder.layer.3.attention.self.key.bias][A
+Loading weights:  57%|██████████████████████▎                | 59/103 [00:00<00:00, 1666.82it/s, Materializing param=encoder.layer.3.attention.self.key.weight][A
+Loading weights:  57%|██████████████████████▎                | 59/103 [00:00<00:00, 1666.82it/s, Materializing param=encoder.layer.3.attention.self.key.weight][A
+Loading weights:  58%|██████████████████████▋                | 60/103 [00:00<00:00, 1695.07it/s, Materializing param=encoder.layer.3.attention.self.query.bias][A
+Loading weights:  58%|██████████████████████▋                | 60/103 [00:00<00:00, 1695.07it/s, Materializing param=encoder.layer.3.attention.self.query.bias][A
+Loading weights:  59%|█████████████████████▉               | 61/103 [00:00<00:00, 1723.32it/s, Materializing param=encoder.layer.3.attention.self.query.weight][A
+Loading weights:  59%|█████████████████████▉               | 61/103 [00:00<00:00, 1723.32it/s, Materializing param=encoder.layer.3.attention.self.query.weight][A
+Loading weights:  60%|███████████████████████▍               | 62/103 [00:00<00:00, 1751.57it/s, Materializing param=encoder.layer.3.attention.self.value.bias][A
+Loading weights:  60%|███████████████████████▍               | 62/103 [00:00<00:00, 1703.43it/s, Materializing param=encoder.layer.3.attention.self.value.bias][A
+Loading weights:  61%|██████████████████████▋              | 63/103 [00:00<00:00, 1730.90it/s, Materializing param=encoder.layer.3.attention.self.value.weight][A
+Loading weights:  61%|██████████████████████▋              | 63/103 [00:00<00:00, 1730.90it/s, Materializing param=encoder.layer.3.attention.self.value.weight][A
+Loading weights:  62%|█████████████████████████▍               | 64/103 [00:00<00:00, 1758.38it/s, Materializing param=encoder.layer.3.intermediate.dense.bias][A
+Loading weights:  62%|█████████████████████████▍               | 64/103 [00:00<00:00, 1758.38it/s, Materializing param=encoder.layer.3.intermediate.dense.bias][A
+Loading weights:  63%|████████████████████████▌              | 65/103 [00:00<00:00, 1785.85it/s, Materializing param=encoder.layer.3.intermediate.dense.weight][A
+Loading weights:  63%|████████████████████████▌              | 65/103 [00:00<00:00, 1785.85it/s, Materializing param=encoder.layer.3.intermediate.dense.weight][A
+Loading weights:  64%|███████████████████████████▌               | 66/103 [00:00<00:00, 1764.91it/s, Materializing param=encoder.layer.3.output.LayerNorm.bias][A
+Loading weights:  64%|███████████████████████████▌               | 66/103 [00:00<00:00, 1764.91it/s, Materializing param=encoder.layer.3.output.LayerNorm.bias][A
+Loading weights:  65%|██████████████████████████▋              | 67/103 [00:00<00:00, 1791.65it/s, Materializing param=encoder.layer.3.output.LayerNorm.weight][A
+Loading weights:  65%|██████████████████████████▋              | 67/103 [00:00<00:00, 1791.65it/s, Materializing param=encoder.layer.3.output.LayerNorm.weight][A
+Loading weights:  66%|███████████████████████████████                | 68/103 [00:00<00:00, 1818.39it/s, Materializing param=encoder.layer.3.output.dense.bias][A
+Loading weights:  66%|███████████████████████████████                | 68/103 [00:00<00:00, 1818.39it/s, Materializing param=encoder.layer.3.output.dense.bias][A
+Loading weights:  67%|██████████████████████████████▏              | 69/103 [00:00<00:00, 1845.13it/s, Materializing param=encoder.layer.3.output.dense.weight][A
+Loading weights:  67%|██████████████████████████████▏              | 69/103 [00:00<00:00, 1845.13it/s, Materializing param=encoder.layer.3.output.dense.weight][A
+Loading weights:  68%|██████████████████████▍          | 70/103 [00:00<00:00, 1871.87it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.bias][A
+Loading weights:  68%|██████████████████████▍          | 70/103 [00:00<00:00, 1871.87it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.bias][A
+Loading weights:  69%|█████████████████████▎         | 71/103 [00:00<00:00, 1898.61it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.weight][A
+Loading weights:  69%|█████████████████████▎         | 71/103 [00:00<00:00, 1898.61it/s, Materializing param=encoder.layer.4.attention.output.LayerNorm.weight][A
+Loading weights:  70%|█████████████████████████▊           | 72/103 [00:00<00:00, 1850.97it/s, Materializing param=encoder.layer.4.attention.output.dense.bias][A
+Loading weights:  70%|█████████████████████████▊           | 72/103 [00:00<00:00, 1850.97it/s, Materializing param=encoder.layer.4.attention.output.dense.bias][A
+Loading weights:  71%|████████████████████████▊          | 73/103 [00:00<00:00, 1876.68it/s, Materializing param=encoder.layer.4.attention.output.dense.weight][A
+Loading weights:  71%|████████████████████████▊          | 73/103 [00:00<00:00, 1829.46it/s, Materializing param=encoder.layer.4.attention.output.dense.weight][A
+Loading weights:  72%|█████████████████████████████▍           | 74/103 [00:00<00:00, 1854.52it/s, Materializing param=encoder.layer.4.attention.self.key.bias][A
+Loading weights:  72%|█████████████████████████████▍           | 74/103 [00:00<00:00, 1854.52it/s, Materializing param=encoder.layer.4.attention.self.key.bias][A
+Loading weights:  73%|████████████████████████████▍          | 75/103 [00:00<00:00, 1879.58it/s, Materializing param=encoder.layer.4.attention.self.key.weight][A
+Loading weights:  73%|████████████████████████████▍          | 75/103 [00:00<00:00, 1879.58it/s, Materializing param=encoder.layer.4.attention.self.key.weight][A
+Loading weights:  74%|████████████████████████████▊          | 76/103 [00:00<00:00, 1904.65it/s, Materializing param=encoder.layer.4.attention.self.query.bias][A
+Loading weights:  74%|████████████████████████████▊          | 76/103 [00:00<00:00, 1904.65it/s, Materializing param=encoder.layer.4.attention.self.query.bias][A
+Loading weights:  75%|███████████████████████████▋         | 77/103 [00:00<00:00, 1881.79it/s, Materializing param=encoder.layer.4.attention.self.query.weight][A
+Loading weights:  75%|███████████████████████████▋         | 77/103 [00:00<00:00, 1881.79it/s, Materializing param=encoder.layer.4.attention.self.query.weight][A
+Loading weights:  76%|█████████████████████████████▌         | 78/103 [00:00<00:00, 1906.22it/s, Materializing param=encoder.layer.4.attention.self.value.bias][A
+Loading weights:  76%|█████████████████████████████▌         | 78/103 [00:00<00:00, 1906.22it/s, Materializing param=encoder.layer.4.attention.self.value.bias][A
+Loading weights:  77%|████████████████████████████▍        | 79/103 [00:00<00:00, 1930.66it/s, Materializing param=encoder.layer.4.attention.self.value.weight][A
+Loading weights:  77%|████████████████████████████▍        | 79/103 [00:00<00:00, 1885.28it/s, Materializing param=encoder.layer.4.attention.self.value.weight][A
+Loading weights:  78%|███████████████████████████████▊         | 80/103 [00:00<00:00, 1909.15it/s, Materializing param=encoder.layer.4.intermediate.dense.bias][A
+Loading weights:  78%|███████████████████████████████▊         | 80/103 [00:00<00:00, 1909.15it/s, Materializing param=encoder.layer.4.intermediate.dense.bias][A
+Loading weights:  79%|██████████████████████████████▋        | 81/103 [00:00<00:00, 1933.01it/s, Materializing param=encoder.layer.4.intermediate.dense.weight][A
+Loading weights:  79%|██████████████████████████████▋        | 81/103 [00:00<00:00, 1933.01it/s, Materializing param=encoder.layer.4.intermediate.dense.weight][A
+Loading weights:  80%|██████████████████████████████████▏        | 82/103 [00:00<00:00, 1956.88it/s, Materializing param=encoder.layer.4.output.LayerNorm.bias][A
+Loading weights:  80%|██████████████████████████████████▏        | 82/103 [00:00<00:00, 1956.88it/s, Materializing param=encoder.layer.4.output.LayerNorm.bias][A
+Loading weights:  81%|█████████████████████████████████        | 83/103 [00:00<00:00, 1934.61it/s, Materializing param=encoder.layer.4.output.LayerNorm.weight][A
+Loading weights:  81%|█████████████████████████████████        | 83/103 [00:00<00:00, 1934.61it/s, Materializing param=encoder.layer.4.output.LayerNorm.weight][A
+Loading weights:  82%|██████████████████████████████████████▎        | 84/103 [00:00<00:00, 1957.92it/s, Materializing param=encoder.layer.4.output.dense.bias][A
+Loading weights:  82%|██████████████████████████████████████▎        | 84/103 [00:00<00:00, 1957.92it/s, Materializing param=encoder.layer.4.output.dense.bias][A
+Loading weights:  83%|█████████████████████████████████████▏       | 85/103 [00:00<00:00, 1981.23it/s, Materializing param=encoder.layer.4.output.dense.weight][A
+Loading weights:  83%|█████████████████████████████████████▏       | 85/103 [00:00<00:00, 1981.23it/s, Materializing param=encoder.layer.4.output.dense.weight][A
+Loading weights:  83%|███████████████████████████▌     | 86/103 [00:00<00:00, 2004.54it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.bias][A
+Loading weights:  83%|███████████████████████████▌     | 86/103 [00:00<00:00, 1955.96it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.bias][A
+Loading weights:  84%|██████████████████████████▏    | 87/103 [00:00<00:00, 1978.70it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.weight][A
+Loading weights:  84%|██████████████████████████▏    | 87/103 [00:00<00:00, 1978.70it/s, Materializing param=encoder.layer.5.attention.output.LayerNorm.weight][A
+Loading weights:  85%|███████████████████████████████▌     | 88/103 [00:00<00:00, 2001.45it/s, Materializing param=encoder.layer.5.attention.output.dense.bias][A
+Loading weights:  85%|███████████████████████████████▌     | 88/103 [00:00<00:00, 2001.45it/s, Materializing param=encoder.layer.5.attention.output.dense.bias][A
+Loading weights:  86%|██████████████████████████████▏    | 89/103 [00:00<00:00, 2024.19it/s, Materializing param=encoder.layer.5.attention.output.dense.weight][A
+Loading weights:  86%|██████████████████████████████▏    | 89/103 [00:00<00:00, 2024.19it/s, Materializing param=encoder.layer.5.attention.output.dense.weight][A
+Loading weights:  87%|███████████████████████████████████▊     | 90/103 [00:00<00:00, 2001.43it/s, Materializing param=encoder.layer.5.attention.self.key.bias][A
+Loading weights:  87%|███████████████████████████████████▊     | 90/103 [00:00<00:00, 2001.43it/s, Materializing param=encoder.layer.5.attention.self.key.bias][A
+Loading weights:  88%|██████████████████████████████████▍    | 91/103 [00:00<00:00, 2023.67it/s, Materializing param=encoder.layer.5.attention.self.key.weight][A
+Loading weights:  88%|██████████████████████████████████▍    | 91/103 [00:00<00:00, 2023.67it/s, Materializing param=encoder.layer.5.attention.self.key.weight][A
+Loading weights:  89%|██████████████████████████████████▊    | 92/103 [00:00<00:00, 2045.90it/s, Materializing param=encoder.layer.5.attention.self.query.bias][A
+Loading weights:  89%|██████████████████████████████████▊    | 92/103 [00:00<00:00, 2045.90it/s, Materializing param=encoder.layer.5.attention.self.query.bias][A
+Loading weights:  90%|█████████████████████████████████▍   | 93/103 [00:00<00:00, 2068.14it/s, Materializing param=encoder.layer.5.attention.self.query.weight][A
+Loading weights:  90%|█████████████████████████████████▍   | 93/103 [00:00<00:00, 2068.14it/s, Materializing param=encoder.layer.5.attention.self.query.weight][A
+Loading weights:  91%|███████████████████████████████████▌   | 94/103 [00:00<00:00, 2090.38it/s, Materializing param=encoder.layer.5.attention.self.value.bias][A
+Loading weights:  91%|███████████████████████████████████▌   | 94/103 [00:00<00:00, 2090.38it/s, Materializing param=encoder.layer.5.attention.self.value.bias][A
+Loading weights:  92%|██████████████████████████████████▏  | 95/103 [00:00<00:00, 2112.62it/s, Materializing param=encoder.layer.5.attention.self.value.weight][A
+Loading weights:  92%|██████████████████████████████████▏  | 95/103 [00:00<00:00, 2044.31it/s, Materializing param=encoder.layer.5.attention.self.value.weight][A
+Loading weights:  93%|██████████████████████████████████████▏  | 96/103 [00:00<00:00, 2065.83it/s, Materializing param=encoder.layer.5.intermediate.dense.bias][A
+Loading weights:  93%|██████████████████████████████████████▏  | 96/103 [00:00<00:00, 2065.83it/s, Materializing param=encoder.layer.5.intermediate.dense.bias][A
+Loading weights:  94%|████████████████████████████████████▋  | 97/103 [00:00<00:00, 2087.35it/s, Materializing param=encoder.layer.5.intermediate.dense.weight][A
+Loading weights:  94%|████████████████████████████████████▋  | 97/103 [00:00<00:00, 2087.35it/s, Materializing param=encoder.layer.5.intermediate.dense.weight][A
+Loading weights:  95%|████████████████████████████████████████▉  | 98/103 [00:00<00:00, 2108.87it/s, Materializing param=encoder.layer.5.output.LayerNorm.bias][A
+Loading weights:  95%|████████████████████████████████████████▉  | 98/103 [00:00<00:00, 2108.87it/s, Materializing param=encoder.layer.5.output.LayerNorm.bias][A
+Loading weights:  96%|███████████████████████████████████████▍ | 99/103 [00:00<00:00, 2085.34it/s, Materializing param=encoder.layer.5.output.LayerNorm.weight][A
+Loading weights:  96%|███████████████████████████████████████▍ | 99/103 [00:00<00:00, 2085.34it/s, Materializing param=encoder.layer.5.output.LayerNorm.weight][A
+Loading weights:  97%|████████████████████████████████████████████▋ | 100/103 [00:00<00:00, 2106.40it/s, Materializing param=encoder.layer.5.output.dense.bias][A
+Loading weights:  97%|████████████████████████████████████████████▋ | 100/103 [00:00<00:00, 2106.40it/s, Materializing param=encoder.layer.5.output.dense.bias][A
+Loading weights:  98%|███████████████████████████████████████████▏| 101/103 [00:00<00:00, 2127.46it/s, Materializing param=encoder.layer.5.output.dense.weight][A
+Loading weights:  98%|███████████████████████████████████████████▏| 101/103 [00:00<00:00, 2127.46it/s, Materializing param=encoder.layer.5.output.dense.weight][A
+Loading weights:  99%|█████████████████████████████████████████████████████████████▍| 102/103 [00:00<00:00, 2148.53it/s, Materializing param=pooler.dense.bias][A
+Loading weights:  99%|█████████████████████████████████████████████████████████████▍| 102/103 [00:00<00:00, 2104.20it/s, Materializing param=pooler.dense.bias][A
+Loading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 2124.83it/s, Materializing param=pooler.dense.weight][A
+Loading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 2081.78it/s, Materializing param=pooler.dense.weight][ALoading weights: 100%|████████████████████████████████████████████████████████████| 103/103 [00:00<00:00, 2081.78it/s, Materializing param=pooler.dense.weight]
   [Embedder] Loaded. Matryoshka dim = 256
-  Surrogate updated (loss=0.094572)
+  Surrogate updated (loss=0.104663)
 
 --- Minibatch 2/3 ---
   Generated 10 variants. Selected Top-3 using surrogate (trained=True).
-    Eval Top-1 on mb 2: surrogate=0.4839, actual_avg=0.6667
-    Eval Top-2 on mb 2: surrogate=0.4835, actual_avg=0.6667
-    Eval Top-3 on mb 2: surrogate=0.4834, actual_avg=0.0000
-  Surrogate updated (loss=0.097332)
+    Eval Top-1 on mb 2: surrogate=0.4977, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4976, actual_avg=1.0000
+    Eval Top-3 on mb 2: surrogate=0.4963, actual_avg=1.0000
+  Surrogate updated (loss=0.141584)
 
 --- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.4980, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.4975, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.4965, actual_avg=0.6667
+  Surrogate updated (loss=0.069789)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=1.0000
+Iteration 1: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3333  (candidate idx=1)
+    Examples evaluated: 15/15
+    Correct: 5/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        ## revised_instruction
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence, considering specific keywords such as:
+        - "Lutheran school" for identifying religious affiliations
+        - "proprietary colony" for understanding colonial governance structures
+        - Film directors' names and release years for determining original movie adaptations
+        
+        When evaluating the evidence:
+        - Be aware of the nuances of colonial history, including disputed border conflicts between British and other colonies in North America
+        - Recognize the importance of distinguishing between adaptation credits (such as director or writer involvement) and original creation
+        - Consider the geographical locations of historical and cinematic references, including the northeast coast of North America and Adelaide, South Australia
+        
+        Output the final label only after thorough analysis.
+Iteration 1: Valset score for new program: 0.3333333333333333 (coverage 15 / 15)
+Iteration 1: Val aggregate for new program: 0.3333333333333333
+Iteration 1: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0}
+Iteration 1: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 0.0}
+Iteration 1: Valset pareto front aggregate score: 0.6
+Iteration 1: Updated valset pareto front programs: {0: {0}, 1: {0}, 2: {1}, 3: {0, 1}, 4: {0, 1}, 5: {0}, 6: {0, 1}, 7: {1}, 8: {0, 1}, 9: {0, 1}, 10: {0, 1}, 11: {0}, 12: {0, 1}, 13: {0, 1}, 14: {0, 1}}
+Iteration 1: Best valset aggregate score so far: 0.4666666666666667
+Iteration 1: Best program as per aggregate score on valset: 0
+Iteration 1: Best score on valset: 0.4666666666666667
+Iteration 1: Linear pareto front program index: 0
+Iteration 1: New program candidate index: 1
+Iteration 1: BERT reward model retrained (buffer=10, loss=0.111577)
+
+  ✅ CANDIDATE ACCEPTED (new idx=1, score=3.0000)
+
+  ── Iteration 1 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 1
+  =======================================================
+  Round:                         1
+  Total LLM Calls:               111
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  13%|████████████▋                                                                                   | 66/500 [05:14<36:51,  5.10s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 2
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 2
+==================================================
+Parent candidate 1 | score: 0.3333333333333333
+
+  ▶ PARENT SELECTED (idx=1, score=0.3333)
+    [verification_prompt]:
+      ## revised_instruction
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence, considering specific keywords such as:
+      - "Lutheran school" for identifying religious affiliations
+      - "proprietary colony" for understanding colonial governance structures
+      - Film directors' names and release years for determining original movie adaptations
+      
+      When evaluating the evidence:
+      - Be aware of the nuances of colonial history, including disputed border conflicts between British and other colonies in North America
+      - Recognize the importance of distinguishing between adaptation credits (such as director or writer involvement) and original creation
+      - Consider the geographical locations of historical and cinematic references, including the northeast coast of North America and Adelaide, South Australia
+      
+      Output the final label only after thorough analysis.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  All perfect scores on minibatch 1. Skipping.
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5008, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.4994, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.4991, actual_avg=0.6667
+  Surrogate updated (loss=0.078758)
+
+Total candidates generated: 3. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.3333
+Iteration 2: New subsample score 2.0 is not better than old score 2.0, skipping
+
+  ❌ CANDIDATE REJECTED
+     Old score: 2.0000, New score: 2.0000
+     Reason: New subsample score 2.0 not better than old score 2.0
+
+  ── Iteration 2 finished: REJECTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 2
+  =======================================================
+  Round:                         2
+  Total LLM Calls:               139
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  17%|████████████████▏                                                                               | 84/500 [06:36<34:16,  4.94s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 3
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 3
+==================================================
+Parent candidate 0 | score: 0.4666666666666667
+
+  ▶ PARENT SELECTED (idx=0, score=0.4667)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4991, actual_avg=0.0000
+    Eval Top-2 on mb 1: surrogate=0.4991, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.4985, actual_avg=0.3333
+  Surrogate updated (loss=0.083229)
+
+--- Minibatch 2/3 ---
+  All perfect scores on minibatch 2. Skipping.
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.4985, actual_avg=1.0000
+    Eval Top-2 on mb 3: surrogate=0.4984, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.4980, actual_avg=0.3333
+  Surrogate updated (loss=0.073839)
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.3333
+  Top-3: score=0.3333
+Iteration 3: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.4000  (candidate idx=2)
+    Examples evaluated: 15/15
+    Correct: 6/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Detailed task description
+        
+        ## Task Format
+        - The task consists of a claim and a set of evidence passages.
+        - The evidence passages may or may not be relevant to the claim.
+        
+        ## Task Objective
+        - The objective of the task is to determine whether the claim is supported, refuted, or lacks sufficient information based solely on the provided evidence passages.
+        - The task requires careful reasoning over the evidence passages to arrive at the correct conclusion.
+        
+        ## Task Specifics
+        - The claims and evidence passages are related to biographies, movie adaptations, and franchise-based animated short films.
+        - The claims may involve facts about actors, their roles in movies, and the origin of the movies (e.g., book adaptations).
+        - The evidence passages may include background information on the actors, movies, or franchises, as well as specific details about the actors' roles or the movies' production.
+        
+        ## Generalizable Strategies
+        - The task may require applying general knowledge about movies, franchises, and actors to reason over the evidence passages.
+        - The task may also involve identifying specific keywords or phrases in the evidence passages that support or refute the claim.
+        
+        ## Additional Requirements
+        - The assistant should only rely on the provided evidence passages to make a determination about the claim.
+        - The assistant should not introduce any external information or assumptions not present in the evidence passages.
+        
+        ## Evaluation Criteria
+        - The assistant's response should be one of the following:
+          - SUPPORTED: If the evidence passages provide sufficient information to support the claim.
+          - REFUTED: If the evidence passages provide sufficient information to refute the claim.
+          - NOT ENOUGH INFO: If the evidence passages do not provide sufficient information to support or refute the claim.
+Iteration 3: Valset score for new program: 0.4 (coverage 15 / 15)
+Iteration 3: Val aggregate for new program: 0.4
+Iteration 3: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 0.0}
+Iteration 3: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 0.0}
+Iteration 3: Valset pareto front aggregate score: 0.6666666666666666
+Iteration 3: Updated valset pareto front programs: {0: {0}, 1: {0}, 2: {1, 2}, 3: {0, 1, 2}, 4: {2}, 5: {0, 2}, 6: {0, 1, 2}, 7: {1}, 8: {0, 1, 2}, 9: {0, 1, 2}, 10: {0, 1, 2}, 11: {0}, 12: {0, 1, 2}, 13: {0, 1, 2}, 14: {0, 1, 2}}
+Iteration 3: Best valset aggregate score so far: 0.4666666666666667
+Iteration 3: Best program as per aggregate score on valset: 0
+Iteration 3: Best score on valset: 0.4666666666666667
+Iteration 3: Linear pareto front program index: 0
+Iteration 3: New program candidate index: 2
+Iteration 3: BERT reward model retrained (buffer=20, loss=0.073250)
+
+  ✅ CANDIDATE ACCEPTED (new idx=2, score=3.0000)
+
+  ── Iteration 3 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 3
+  =======================================================
+  Round:                         3
+  Total LLM Calls:               201
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  25%|███████████████████████▉                                                                       | 126/500 [10:35<33:03,  5.30s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 4
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 4
+==================================================
+Parent candidate 0 | score: 0.4666666666666667
+
+  ▶ PARENT SELECTED (idx=0, score=0.4667)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5017, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.5006, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.4988, actual_avg=0.0000
+  Surrogate updated (loss=0.085395)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5008, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.4998, actual_avg=0.0000
+    Eval Top-3 on mb 2: surrogate=0.4986, actual_avg=0.3333
+  Surrogate updated (loss=0.074975)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5015, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.4989, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.4984, actual_avg=0.0000
+  Surrogate updated (loss=0.086390)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 4: New subsample score 2.0 is not better than old score 2.0, skipping
+
+  ❌ CANDIDATE REJECTED
+     Old score: 2.0000, New score: 2.0000
+     Reason: New subsample score 2.0 not better than old score 2.0
+
+  ── Iteration 4 finished: REJECTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 4
+  =======================================================
+  Round:                         4
+  Total LLM Calls:               267
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  32%|██████████████████████████████▊                                                                | 162/500 [14:41<33:09,  5.89s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 5
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 5
+==================================================
+Parent candidate 0 | score: 0.4666666666666667
+
+  ▶ PARENT SELECTED (idx=0, score=0.4667)
+    [verification_prompt]:
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence before answering.
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.5003, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.4992, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.4977, actual_avg=0.6667
+  Surrogate updated (loss=0.082269)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4994, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4984, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.4975, actual_avg=1.0000
+  Surrogate updated (loss=0.076843)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5010, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.5004, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.4978, actual_avg=0.3333
+  Surrogate updated (loss=0.076615)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 5: New subsample score 3.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.4000  (candidate idx=3)
+    Examples evaluated: 15/15
+    Correct: 6/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment and literary facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+        * The accuracy of domain-specific information, including:
+        	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+        	+ The involvement of authors, directors, and producers in specific projects.
+        	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+        * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+        
+        Output the final label only.
+Iteration 5: Valset score for new program: 0.4 (coverage 15 / 15)
+Iteration 5: Val aggregate for new program: 0.4
+Iteration 5: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 0.0}
+Iteration 5: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 0.0, 14: 0.0}
+Iteration 5: Valset pareto front aggregate score: 0.7333333333333333
+Iteration 5: Updated valset pareto front programs: {0: {0}, 1: {0}, 2: {1, 2}, 3: {0, 1, 2, 3}, 4: {2, 3}, 5: {0, 2, 3}, 6: {0, 1, 2, 3}, 7: {1}, 8: {0, 1, 2, 3}, 9: {0, 1, 2, 3}, 10: {0, 1, 2}, 11: {0, 3}, 12: {3}, 13: {0, 1, 2, 3}, 14: {0, 1, 2, 3}}
+Iteration 5: Best valset aggregate score so far: 0.4666666666666667
+Iteration 5: Best program as per aggregate score on valset: 0
+Iteration 5: Best score on valset: 0.4666666666666667
+Iteration 5: Linear pareto front program index: 0
+Iteration 5: New program candidate index: 3
+Iteration 5: BERT reward model retrained (buffer=39, loss=0.077108)
+
+  ✅ CANDIDATE ACCEPTED (new idx=3, score=3.0000)
+
+  ── Iteration 5 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 5
+  =======================================================
+  Round:                         5
+  Total LLM Calls:               348
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  43%|████████████████████████████████████████▍                                                      | 213/500 [19:02<26:34,  5.56s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 6
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 6
+==================================================
+Parent candidate 3 | score: 0.4
+
+  ▶ PARENT SELECTED (idx=3, score=0.4000)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment and literary facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4979, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.4977, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.4977, actual_avg=0.0000
+  Surrogate updated (loss=0.072644)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.5002, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.4992, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.4978, actual_avg=0.3333
+  Surrogate updated (loss=0.075442)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.3333
+Iteration 6: New subsample score 2.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+Iteration 6: Found a better program on the valset with score 0.6666666666666666.
+
+  ▶ VALIDATION SCORE: 0.6667  (candidate idx=4) ★ NEW BEST
+    Examples evaluated: 15/15
+    Correct: 10/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+        * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+        * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+        
+        **Entertainment and Literary Facts:**
+        * The accuracy of domain-specific information, including:
+        	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+        	+ The involvement of authors, directors, and producers in specific projects.
+        	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+        * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * The accuracy of baseball player information, including their names, teams, and achievements.
+        
+        **Domain-Specific Facts:**
+        * For literary facts, consider the accuracy of book titles, authors, and publication dates.
+        * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+        
+        Output the final label only.
+Iteration 6: Valset score for new program: 0.6666666666666666 (coverage 15 / 15)
+Iteration 6: Val aggregate for new program: 0.6666666666666666
+Iteration 6: Individual valset scores for new program: {0: 1.0, 1: 1.0, 2: 0.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 1.0, 10: 0.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 6: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 6: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 6: Updated valset pareto front programs: {0: {0, 4}, 1: {0, 4}, 2: {1, 2}, 3: {0, 1, 2, 3, 4}, 4: {2, 3}, 5: {0, 2, 3, 4}, 6: {0, 1, 2, 3, 4}, 7: {1}, 8: {4}, 9: {4}, 10: {0, 1, 2}, 11: {0, 3, 4}, 12: {3, 4}, 13: {4}, 14: {0, 1, 2, 3, 4}}
+Iteration 6: Best valset aggregate score so far: 0.6666666666666666
+Iteration 6: Best program as per aggregate score on valset: 4
+Iteration 6: Best score on valset: 0.6666666666666666
+Iteration 6: Linear pareto front program index: 4
+Iteration 6: New program candidate index: 4
+Iteration 6: BERT reward model retrained (buffer=46, loss=0.074182)
+
+  ✅ CANDIDATE ACCEPTED (new idx=4, score=2.0000)
+
+  ── Iteration 6 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 6
+  =======================================================
+  Round:                         6
+  Total LLM Calls:               410
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  51%|████████████████████████████████████████████████▍                                              | 255/500 [21:35<20:01,  4.90s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 7
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 7
+==================================================
+Parent candidate 1 | score: 0.3333333333333333
+
+  ▶ PARENT SELECTED (idx=1, score=0.3333)
+    [verification_prompt]:
+      ## revised_instruction
+      You are a fact-checking assistant.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      Carefully reason over the evidence, considering specific keywords such as:
+      - "Lutheran school" for identifying religious affiliations
+      - "proprietary colony" for understanding colonial governance structures
+      - Film directors' names and release years for determining original movie adaptations
+      
+      When evaluating the evidence:
+      - Be aware of the nuances of colonial history, including disputed border conflicts between British and other colonies in North America
+      - Recognize the importance of distinguishing between adaptation credits (such as director or writer involvement) and original creation
+      - Consider the geographical locations of historical and cinematic references, including the northeast coast of North America and Adelaide, South Australia
+      
+      Output the final label only after thorough analysis.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4998, actual_avg=0.6667
+    Eval Top-2 on mb 1: surrogate=0.4986, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.4981, actual_avg=0.3333
+  Surrogate updated (loss=0.063716)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4998, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.4994, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.4979, actual_avg=0.6667
+  Surrogate updated (loss=0.069231)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.5015, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.5010, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.5005, actual_avg=1.0000
+  Surrogate updated (loss=0.069881)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 7: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3333  (candidate idx=5)
+    Examples evaluated: 15/15
+    Correct: 5/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        ## revised_instruction
+        You are a fact-checking assistant.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        Carefully reason over the evidence, considering specific keywords such as:
+        - "Lutheran school" for identifying religious affiliations
+        - "proprietary colony" for understanding colonial governance structures
+        - Film directors' names and release years for determining original movie adaptations
+        - Historical figures and events, including the Nazi Party and World War II
+        - Geographical locations of historical and cinematic references, including the northeast coast of North America and Adelaide, South Australia
+        - Key terms and phrases related to colonial history, such as "blood and soil" and disputed border conflicts between British and other colonies in North America
+        
+        When evaluating the evidence:
+        - Be aware of the nuances of colonial history, including the complexities of colonial governance structures, disputed border conflicts, and the role of religious affiliations
+        - Recognize the importance of distinguishing between adaptation credits (such as director or writer involvement) and original creation
+        - Consider the context of historical and cinematic references, including the time period, geographical location, and any notable events or figures mentioned
+        - Be cautious of claims that may be related to sensitive or controversial topics, such as the ideology of the Nazi party
+        - Output the final label only after thorough analysis and careful consideration of the evidence provided
+        
+        Note: To make accurate judgments, the assistant should be aware of the following:
+        - The film industry and the process of film adaptation
+        - Colonial history and the governance structures of different colonies in North America
+        - Historical figures and events, including their impact on society and culture
+        - Geographical locations and their significance in historical and cinematic contexts
+        - Key terms and phrases related to colonial history and their implications
+        
+        The assistant should use a generalizable strategy to solve the task, including:
+        - Breaking down the claim into smaller, more manageable pieces
+        - Identifying relevant keywords and phrases in the evidence passages
+        - Analyzing the context of the evidence and the claim
+        - Making informed judgments based on the evidence and the claim
+        - Outputting a final label after thorough analysis and careful consideration of the evidence provided
+Iteration 7: Valset score for new program: 0.3333333333333333 (coverage 15 / 15)
+Iteration 7: Val aggregate for new program: 0.3333333333333333
+Iteration 7: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 0.0, 9: 0.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 1.0, 14: 0.0}
+Iteration 7: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 7: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 7: Updated valset pareto front programs: {0: {0, 4}, 1: {0, 4}, 2: {1, 2}, 3: {0, 1, 2, 3, 4}, 4: {2, 3}, 5: {0, 2, 3, 4, 5}, 6: {0, 1, 2, 3, 4, 5}, 7: {1, 5}, 8: {4}, 9: {4}, 10: {0, 1, 2, 5}, 11: {0, 3, 4}, 12: {3, 4}, 13: {4, 5}, 14: {0, 1, 2, 3, 4, 5}}
+Iteration 7: Best valset aggregate score so far: 0.6666666666666666
+Iteration 7: Best program as per aggregate score on valset: 4
+Iteration 7: Best score on valset: 0.6666666666666666
+Iteration 7: Linear pareto front program index: 4
+Iteration 7: New program candidate index: 5
+Iteration 7: BERT reward model retrained (buffer=56, loss=0.069912)
+
+  ✅ CANDIDATE ACCEPTED (new idx=5, score=3.0000)
+
+  ── Iteration 7 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 7
+  =======================================================
+  Round:                         7
+  Total LLM Calls:               491
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  61%|██████████████████████████████████████████████████████████▏                                    | 306/500 [25:46<15:52,  4.91s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 8
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 8
+==================================================
+Parent candidate 4 | score: 0.6666666666666666
+
+  ▶ PARENT SELECTED (idx=4, score=0.6667)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      **General Knowledge:**
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+      * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+      
+      **Entertainment and Literary Facts:**
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      * The accuracy of baseball player information, including their names, teams, and achievements.
+      
+      **Domain-Specific Facts:**
+      * For literary facts, consider the accuracy of book titles, authors, and publication dates.
+      * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4957, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.4952, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.4952, actual_avg=0.6667
+  Surrogate updated (loss=0.075914)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4960, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4951, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.4951, actual_avg=0.3333
+  Surrogate updated (loss=0.067828)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.3333
+  Top-3: score=0.3333
+Iteration 8: New subsample score 2.0 is better than old score 0.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.5333  (candidate idx=6)
+    Examples evaluated: 15/15
+    Correct: 8/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        
+        * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+        * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+        * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+        * Baseball player information, including their names, teams, and achievements.
+        * Potential confusion between cities and towns with similar names, especially in countries with limited geographical features.
+        * The importance of considering cultural and historical context when evaluating claims about specific regions or communities.
+        
+        **Entertainment and Literary Facts:**
+        
+        * The accuracy of domain-specific information, including:
+        	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+        	+ The involvement of authors, directors, and producers in specific projects.
+        	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+        * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * The accuracy of information about specific books, including their titles, authors, and publication dates.
+        * The importance of considering the tone and intent of evidence passages when evaluating claims about literary or entertainment topics.
+        
+        **Domain-Specific Facts:**
+        
+        * For literary facts, consider the accuracy of book titles, authors, and publication dates, as well as the genres and characteristics of literature.
+        * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards, as well as the genres and characteristics of films and TV shows.
+        * The importance of considering the context in which a claim is made, including the time period and cultural background of the claimant.
+        
+        **Ambiguity and Confusion:**
+        
+        * Be aware of potential ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * Consider the potential for intentional or unintentional misdirection in the evidence passages.
+        
+        **Generalizability:**
+        
+        * Utilize a generalizable strategy to solve the task, taking into account the possibility of unseen or novel inputs.
+        * Consider the potential for the task to expand to new domains or topics, and be prepared to adapt to these changes.
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+        
+        Output the final label only.
+        
+        Note: The assistant should not rely on external knowledge or search engines to verify information. Instead, it should use the provided evidence passages to make an informed decision.
+Iteration 8: Valset score for new program: 0.5333333333333333 (coverage 15 / 15)
+Iteration 8: Val aggregate for new program: 0.5333333333333333
+Iteration 8: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 0.0, 3: 1.0, 4: 0.0, 5: 0.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 0.0, 12: 0.0, 13: 1.0, 14: 0.0}
+Iteration 8: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 8: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 8: Updated valset pareto front programs: {0: {0, 4, 6}, 1: {0, 4}, 2: {1, 2}, 3: {0, 1, 2, 3, 4, 6}, 4: {2, 3}, 5: {0, 2, 3, 4, 5}, 6: {0, 1, 2, 3, 4, 5, 6}, 7: {1, 5, 6}, 8: {4, 6}, 9: {4, 6}, 10: {0, 1, 2, 5, 6}, 11: {0, 3, 4}, 12: {3, 4}, 13: {4, 5, 6}, 14: {0, 1, 2, 3, 4, 5, 6}}
+Iteration 8: Best valset aggregate score so far: 0.6666666666666666
+Iteration 8: Best program as per aggregate score on valset: 4
+Iteration 8: Best score on valset: 0.6666666666666666
+Iteration 8: Linear pareto front program index: 4
+Iteration 8: New program candidate index: 6
+Iteration 8: BERT reward model retrained (buffer=63, loss=0.063870)
+
+  ✅ CANDIDATE ACCEPTED (new idx=6, score=2.0000)
+
+  ── Iteration 8 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 8
+  =======================================================
+  Round:                         8
+  Total LLM Calls:               553
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  70%|██████████████████████████████████████████████████████████████████                             | 348/500 [29:25<12:40,  5.00s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 9
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 9
+==================================================
+Parent candidate 4 | score: 0.6666666666666666
+
+  ▶ PARENT SELECTED (idx=4, score=0.6667)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      **General Knowledge:**
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+      * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+      
+      **Entertainment and Literary Facts:**
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      * The accuracy of baseball player information, including their names, teams, and achievements.
+      
+      **Domain-Specific Facts:**
+      * For literary facts, consider the accuracy of book titles, authors, and publication dates.
+      * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4933, actual_avg=1.0000
+    Eval Top-2 on mb 1: surrogate=0.4920, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.4917, actual_avg=0.6667
+  Surrogate updated (loss=0.065760)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4956, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4938, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.4935, actual_avg=0.6667
+  Surrogate updated (loss=0.066200)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.4949, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.4943, actual_avg=0.3333
+    Eval Top-3 on mb 3: surrogate=0.4941, actual_avg=0.3333
+  Surrogate updated (loss=0.066299)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=1.0000
+  Top-3: score=0.6667
+Iteration 9: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.4667  (candidate idx=7)
+    Examples evaluated: 15/15
+    Correct: 7/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        1. **Concreteness of Evidence**: Check for the presence of concrete evidence such as:
+        	* Publication dates
+        	* Author names
+        	* Film/TV titles
+        	* Award information (e.g., Oscars, awards ceremonies)
+        	* Geographical information (e.g., city, country, population, size)
+        2. **Accuracy of Geographical Information**: Verify the accuracy of geographical information, including:
+        	* City/region names
+        	* Country names
+        	* Population figures
+        	* Geographic boundaries
+        
+        **Entertainment and Literary Facts:**
+        1. **Domain-Specific Information**: Verify the accuracy of domain-specific information, including:
+        	* Production company existence and founders (e.g., Seven Arts Productions)
+        	* Author/director/producer involvement in specific projects
+        	* Genres and characteristics of films and TV shows (e.g., black comedy-drama)
+        	* Accuracy of baseball player information, including names, teams, and achievements
+        2. **Ambiguity and Confusion**: Be cautious of potential ambiguity or confusion in the claim or evidence, such as:
+        	* Unclear author identities
+        	* Multiple projects with similar titles
+        	* Subtle differences in title variations
+        3. **Domain-Specific Ambiguity Resolution**: Prioritize domain-specific factors when resolving ambiguity, such as:
+        	* Using specific titles, genres, and directors for film/TV analysis
+        	* Accounting for dialects and pseudonyms in literary analysis
+        	* Employing techniques for sorting through close name matches for baseball players
+        
+        **Domain-Specific Facts:**
+        1. **Literary Facts**: Verify the accuracy of literary facts, including:
+        	* Book titles
+        	* Authors
+        	* Publication dates
+        2. **Entertainment Facts**: Verify the accuracy of entertainment facts, including:
+        	* Film/TV titles
+        	* Actors/directors
+        	* Release dates
+        	* Awards received
+        
+        **General Recommendation for Fact-Checking Strategy:**
+        
+        1. **Generalization-based Reasoning**: Consider utilizing a generalizable fact-checking strategy that considers all information provided by the evidence available in a claim, and make a decisio based on the points that are most associated with that information.
+        2. **Error-bound Analysis**: Be aware of biases towards positive evidence and attempt to derived a solution by not making assumptions based solely on word proximity without additional information.
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO. Avoid making assumptions or relying on incomplete information, as reasoning should be strict and based solely on given evidence.
+        
+        Output the final label only.
+Iteration 9: Valset score for new program: 0.4666666666666667 (coverage 15 / 15)
+Iteration 9: Val aggregate for new program: 0.4666666666666667
+Iteration 9: Individual valset scores for new program: {0: 1.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 0.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 9: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 9: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 9: Updated valset pareto front programs: {0: {0, 4, 6, 7}, 1: {0, 4}, 2: {1, 2, 7}, 3: {0, 1, 2, 3, 4, 6, 7}, 4: {2, 3}, 5: {0, 2, 3, 4, 5, 7}, 6: {0, 1, 2, 3, 4, 5, 6, 7}, 7: {1, 5, 6}, 8: {4, 6}, 9: {4, 6}, 10: {0, 1, 2, 5, 6}, 11: {0, 3, 4}, 12: {3, 4, 7}, 13: {4, 5, 6, 7}, 14: {0, 1, 2, 3, 4, 5, 6, 7}}
+Iteration 9: Best valset aggregate score so far: 0.6666666666666666
+Iteration 9: Best program as per aggregate score on valset: 4
+Iteration 9: Best score on valset: 0.6666666666666666
+Iteration 9: Linear pareto front program index: 4
+Iteration 9: New program candidate index: 7
+Iteration 9: BERT reward model retrained (buffer=73, loss=0.062314)
+
+  ✅ CANDIDATE ACCEPTED (new idx=7, score=3.0000)
+
+  ── Iteration 9 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 9
+  =======================================================
+  Round:                         9
+  Total LLM Calls:               643
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  80%|███████████████████████████████████████████████████████████████████████████▊                   | 399/500 [38:15<11:32,  6.86s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 10
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 10
+==================================================
+Parent candidate 4 | score: 0.6666666666666666
+
+  ▶ PARENT SELECTED (idx=4, score=0.6667)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      **General Knowledge:**
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+      * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+      
+      **Entertainment and Literary Facts:**
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      * The accuracy of baseball player information, including their names, teams, and achievements.
+      
+      **Domain-Specific Facts:**
+      * For literary facts, consider the accuracy of book titles, authors, and publication dates.
+      * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4944, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.4939, actual_avg=0.3333
+    Eval Top-3 on mb 1: surrogate=0.4937, actual_avg=0.3333
+  Surrogate updated (loss=0.064774)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4945, actual_avg=0.6667
+    Eval Top-2 on mb 2: surrogate=0.4937, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.4934, actual_avg=0.3333
+  Surrogate updated (loss=0.062064)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.4956, actual_avg=0.3333
+    Eval Top-2 on mb 3: surrogate=0.4956, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.4926, actual_avg=1.0000
+  Surrogate updated (loss=0.069286)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 10: New subsample score 3.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.4667  (candidate idx=8)
+    Examples evaluated: 15/15
+    Correct: 7/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment, literary, general knowledge, and sports facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        
+        * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+        * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+        * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+        * The accuracy of historical events and their timeline.
+        * The understanding of cultural and social concepts.
+        
+        **Entertainment and Literary Facts:**
+        
+        * The accuracy of domain-specific information, including:
+        	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+        	+ The involvement of authors, directors, and producers in specific projects.
+        	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+        * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * The accuracy of baseball player information, including their names, teams, and achievements.
+        * The accuracy of literary works, including book titles, authors, and publication dates.
+        * The understanding of different literary genres and styles.
+        
+        **Sports Facts:**
+        
+        * The accuracy of sports-related information, including player names, teams, and achievements.
+        * The understanding of different sports and their rules.
+        * The accuracy of sports awards and their recipients.
+        * The understanding of coaches, teams, and championships in various sports.
+        
+        **Literary Genre-Specific Facts:**
+        
+        * For poetry, consider the accuracy of poem titles, authors, and publication dates.
+        * For fiction, consider the accuracy of novel titles, authors, and publication dates.
+        * For non-fiction, consider the accuracy of book titles, authors, and publication dates.
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+        
+        Consider the following:
+        
+        * Use a systematic approach to evaluate the evidence, including evaluating the credibility of the sources, identifying any biases or conflicts of interest, and considering the context in which the evidence was generated.
+        * Be aware of the potential for ambiguity or confusion in the claim or evidence, and consider whether the language or context may lead to multiple interpretations.
+        * Be cautious when relying on secondary sources, and consider verifying the information through primary sources whenever possible.
+        
+        Output the final label only.
+Iteration 10: Valset score for new program: 0.4666666666666667 (coverage 15 / 15)
+Iteration 10: Val aggregate for new program: 0.4666666666666667
+Iteration 10: Individual valset scores for new program: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0, 13: 1.0, 14: 0.0}
+Iteration 10: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 0.0}
+Iteration 10: Valset pareto front aggregate score: 0.9333333333333333
+Iteration 10: Updated valset pareto front programs: {0: {0, 4, 6, 7, 8}, 1: {0, 8, 4}, 2: {8, 1, 2, 7}, 3: {0, 1, 2, 3, 4, 6, 7, 8}, 4: {8, 2, 3}, 5: {0, 2, 3, 4, 5, 7}, 6: {0, 1, 2, 3, 4, 5, 6, 7, 8}, 7: {1, 5, 6}, 8: {4, 6}, 9: {4, 6}, 10: {0, 1, 2, 5, 6}, 11: {0, 3, 4}, 12: {3, 4, 7}, 13: {4, 5, 6, 7, 8}, 14: {0, 1, 2, 3, 4, 5, 6, 7, 8}}
+Iteration 10: Best valset aggregate score so far: 0.6666666666666666
+Iteration 10: Best program as per aggregate score on valset: 4
+Iteration 10: Best score on valset: 0.6666666666666666
+Iteration 10: Linear pareto front program index: 4
+Iteration 10: New program candidate index: 8
+Iteration 10: BERT reward model retrained (buffer=83, loss=0.060798)
+
+  ✅ CANDIDATE ACCEPTED (new idx=8, score=3.0000)
+
+  ── Iteration 10 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 10
+  =======================================================
+  Round:                         10
+  Total LLM Calls:               724
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  90%|█████████████████████████████████████████████████████████████████████████████████████▌         | 450/500 [49:21<07:25,  8.91s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 11
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 11
+==================================================
+Parent candidate 8 | score: 0.4666666666666667
+
+  ▶ PARENT SELECTED (idx=8, score=0.4667)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment, literary, general knowledge, and sports facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      **General Knowledge:**
+      
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+      * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+      * The accuracy of historical events and their timeline.
+      * The understanding of cultural and social concepts.
+      
+      **Entertainment and Literary Facts:**
+      
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      * The accuracy of baseball player information, including their names, teams, and achievements.
+      * The accuracy of literary works, including book titles, authors, and publication dates.
+      * The understanding of different literary genres and styles.
+      
+      **Sports Facts:**
+      
+      * The accuracy of sports-related information, including player names, teams, and achievements.
+      * The understanding of different sports and their rules.
+      * The accuracy of sports awards and their recipients.
+      * The understanding of coaches, teams, and championships in various sports.
+      
+      **Literary Genre-Specific Facts:**
+      
+      * For poetry, consider the accuracy of poem titles, authors, and publication dates.
+      * For fiction, consider the accuracy of novel titles, authors, and publication dates.
+      * For non-fiction, consider the accuracy of book titles, authors, and publication dates.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Consider the following:
+      
+      * Use a systematic approach to evaluate the evidence, including evaluating the credibility of the sources, identifying any biases or conflicts of interest, and considering the context in which the evidence was generated.
+      * Be aware of the potential for ambiguity or confusion in the claim or evidence, and consider whether the language or context may lead to multiple interpretations.
+      * Be cautious when relying on secondary sources, and consider verifying the information through primary sources whenever possible.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4982, actual_avg=0.3333
+    Eval Top-2 on mb 1: surrogate=0.4956, actual_avg=1.0000
+    Eval Top-3 on mb 1: surrogate=0.4950, actual_avg=0.3333
+  Surrogate updated (loss=0.064314)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4969, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4951, actual_avg=0.3333
+    Eval Top-3 on mb 2: surrogate=0.4941, actual_avg=0.3333
+  Surrogate updated (loss=0.060255)
+
+--- Minibatch 3/3 ---
+  All perfect scores on minibatch 3. Skipping.
+
+Total candidates generated: 6. Selecting top-3.
+  Top-1: score=1.0000
+  Top-2: score=0.3333
+  Top-3: score=0.3333
+Iteration 11: New subsample score 3.0 is better than old score 2.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.6000  (candidate idx=9)
+    Examples evaluated: 15/15
+    Correct: 9/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        # Task Instruction
+        
+        You are a fact-checking assistant for entertainment, literary, general knowledge, and sports facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        
+        * Evaluate the accuracy of geographical information, including:
+        	+ The size, population, and locations of cities, countries, and regions.
+        	+ The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+        * Consider the accuracy of historical events and their timeline.
+        * Understand cultural and social concepts, including:
+        	+ Different ethnic groups and their traditions.
+        	+ Various economic systems and their characteristics.
+        	+ Notable historical events and their impact on society.
+        
+        **Entertainment and Literary Facts:**
+        
+        * Evaluate the accuracy of domain-specific information, including:
+        	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+        	+ The involvement of authors, directors, and producers in specific projects.
+        	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+        * Consider the potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * Evaluate the accuracy of baseball player information, including their names, teams, and achievements.
+        * Consider the accuracy of literary works, including book titles, authors, and publication dates.
+        * Understand different literary genres and styles, including:
+        	+ Poetry: accuracy of poem titles, authors, and publication dates.
+        	+ Fiction: accuracy of novel titles, authors, and publication dates.
+        	+ Non-fiction: accuracy of book titles, authors, and publication dates.
+        
+        **Sports Facts:**
+        
+        * Evaluate the accuracy of sports-related information, including:
+        	+ Player names, teams, and achievements.
+        	+ The understanding of different sports and their rules.
+        	+ The accuracy of sports awards and their recipients.
+        * Consider the understanding of coaches, teams, and championships in various sports.
+        
+        **In-Depth Evaluation:**
+        
+        * Use a systematic approach to evaluate the evidence, including:
+        	+ Evaluating the credibility of the sources.
+        	+ Identifying any biases or conflicts of interest.
+        	+ Considering the context in which the evidence was generated.
+        * Be aware of the potential for ambiguity or confusion in the claim or evidence, and consider whether the language or context may lead to multiple interpretations.
+        * Be cautious when relying on secondary sources, and consider verifying the information through primary sources whenever possible.
+        
+        **Niche and Domain-Specific Information:**
+        
+        * Familiarize yourself with notable awards and their recipients in various domains, such as:
+        	+ The Oscars.
+        	+ The Grammys.
+        	+ The Goya Awards.
+        * Understand different literary movements and their characteristics, including:
+        	+ Modernism.
+        	+ Postmodernism.
+        	+ Realism.
+        * Familiarize yourself with notable historical events and their impact on society, including:
+        	+ World War I.
+        	+ World War II.
+        	+ The American Civil Rights Movement.
+        
+        **Output:**
+        
+        Output the final label only, which can be one of the following:
+        SUPPORTED
+        REFUTED
+        NOT ENOUGH INFO
+        
+        Note: When in doubt, prioritize accuracy and reliability over speed and convenience. Take the time to carefully evaluate the evidence and consider the potential for ambiguity or confusion. Verify information through primary sources whenever possible to ensure the accuracy of your response.
+Iteration 11: Valset score for new program: 0.6 (coverage 15 / 15)
+Iteration 11: Val aggregate for new program: 0.6
+Iteration 11: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 0.0, 8: 1.0, 9: 0.0, 10: 1.0, 11: 1.0, 12: 0.0, 13: 0.0, 14: 1.0}
+Iteration 11: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0}
+Iteration 11: Valset pareto front aggregate score: 1.0
+Iteration 11: Updated valset pareto front programs: {0: {0, 4, 6, 7, 8}, 1: {0, 8, 4}, 2: {1, 2, 7, 8, 9}, 3: {0, 1, 2, 3, 4, 6, 7, 8, 9}, 4: {8, 9, 2, 3}, 5: {0, 2, 3, 4, 5, 7, 9}, 6: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, 7: {1, 5, 6}, 8: {9, 4, 6}, 9: {4, 6}, 10: {0, 1, 2, 5, 6, 9}, 11: {0, 9, 3, 4}, 12: {3, 4, 7}, 13: {4, 5, 6, 7, 8}, 14: {9}}
+Iteration 11: Best valset aggregate score so far: 0.6666666666666666
+Iteration 11: Best program as per aggregate score on valset: 4
+Iteration 11: Best score on valset: 0.6666666666666666
+Iteration 11: Linear pareto front program index: 4
+Iteration 11: New program candidate index: 9
+Iteration 11: BERT reward model retrained (buffer=90, loss=0.060302)
+
+  ✅ CANDIDATE ACCEPTED (new idx=9, score=3.0000)
+
+  ── Iteration 11 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 11
+  =======================================================
+  Round:                         11
+  Total LLM Calls:               786
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  98%|███████████████████████████████████████████████████████████████████████████████████████████▌ | 492/500 [1:00:41<01:27, 10.94s/rollouts]
+──────────────────────────────────────────────────────────────────────
+  ITERATION 12
+──────────────────────────────────────────────────────────────────────
+
+==================================================
+MULTI-MINIBATCH MUTATION: ITERATION 12
+==================================================
+Parent candidate 4 | score: 0.6666666666666666
+
+  ▶ PARENT SELECTED (idx=4, score=0.6667)
+    [verification_prompt]:
+      # Task Instruction
+      
+      You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+      Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+      
+      Carefully reason over the evidence before answering. Consider the following:
+      
+      **General Knowledge:**
+      * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+      * The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+      * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+      
+      **Entertainment and Literary Facts:**
+      * The accuracy of domain-specific information, including:
+      	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+      	+ The involvement of authors, directors, and producers in specific projects.
+      	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+      * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+      * The accuracy of baseball player information, including their names, teams, and achievements.
+      
+      **Domain-Specific Facts:**
+      * For literary facts, consider the accuracy of book titles, authors, and publication dates.
+      * For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+      
+      When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+      
+      Output the final label only.
+Sampled 3 minibatches, generating 10 candidates each
+
+--- Minibatch 1/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 1: surrogate=0.4947, actual_avg=0.0000
+    Eval Top-2 on mb 1: surrogate=0.4945, actual_avg=0.6667
+    Eval Top-3 on mb 1: surrogate=0.4945, actual_avg=0.3333
+  Surrogate updated (loss=0.063875)
+
+--- Minibatch 2/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 2: surrogate=0.4957, actual_avg=0.3333
+    Eval Top-2 on mb 2: surrogate=0.4953, actual_avg=0.6667
+    Eval Top-3 on mb 2: surrogate=0.4948, actual_avg=0.3333
+  Surrogate updated (loss=0.062218)
+
+--- Minibatch 3/3 ---
+  Generated 10 variants. Selected Top-3 using surrogate (trained=True).
+    Eval Top-1 on mb 3: surrogate=0.4975, actual_avg=0.6667
+    Eval Top-2 on mb 3: surrogate=0.4960, actual_avg=0.6667
+    Eval Top-3 on mb 3: surrogate=0.4953, actual_avg=0.6667
+  Surrogate updated (loss=0.059791)
+
+Total candidates generated: 9. Selecting top-3.
+  Top-1: score=0.6667
+  Top-2: score=0.6667
+  Top-3: score=0.6667
+Iteration 12: New subsample score 2.0 is better than old score 1.0. Continue to full eval and add to candidate pool.
+
+  ▶ VALIDATION SCORE: 0.3333  (candidate idx=10)
+    Examples evaluated: 15/15
+    Correct: 5/15
+    PROMPT EVALUATED:
+      [verification_prompt]:
+        Task Instruction
+        
+        You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+        Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+        
+        Carefully reason over the evidence before answering. Consider the following:
+        
+        **General Knowledge:**
+        * The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+        * The accuracy of geographical information, including the population and locations of cities, countries, and regions.
+        * The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+        * The existence and locations of countries, states, cities, and notable landmarks.
+        
+        **Entertainment and Literary Facts:**
+        * The accuracy of domain-specific information, including:
+          * The existence and co-founders of production companies (e.g., Seven Arts Productions).
+          * The involvement of authors, directors, and producers in specific projects.
+          * The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+          * The accuracy of the existence, titles, release dates, and awards of films and TV shows.
+        * The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+        * The accuracy of baseball player information, including their names, teams, achievements, and years of play.
+        
+        **Domain-Specific Facts:**
+        * For literary facts, consider the accuracy of:
+          * Book titles, authors, and publication dates.
+          * Novel series, genres, and publication dates.
+        * For entertainment facts, consider the accuracy of:
+          * Film and TV show titles, actors, directors, release dates, and awards.
+          * Music album titles, artists, release dates, and awards.
+        * Identify authors who wrote multiple books, ensuring consistency in their authorship across the claim.
+        * Verify co-authorship or collaboration between authors, directors, or producers.
+        * Identify possible equivalent domains for the claim (e.g., books can be matched against films, authors against actors, etc.).
+        
+        When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+        
+        When analyzing geographical claims, consider the presence or absence of concrete evidence, such as:
+        * Locations of countries, states, cities, or other geographical areas.
+        * Historical or contemporary population figures for cities or countries.
+        * Reliability of news or research sources mentioning geographical information.
+        
+        For claims involving awards, verify the existence and accuracy of awards and their recipients, including:
+        * Literary awards (e.g., Booker Prize, Pulitzer Prize).
+        * Entertainment awards (e.g., Oscars, Emmys, Grammys).
+        * Sports awards (e.g., MVP, Olympic medals).
+        
+        For claims of names, verify their accuracy by analyzing:
+        * Uniqueness and distinctness of names in the evidence passages.
+        * Consistency in spelling and pronunciation of names.
+        * Title or distinguising initials of notable individuals mentioned.
+        
+        Input format:
+        Each input consists of a claim and one or multiple evidence passages to support or refute the claim. Consider each passage as a separate piece of evidence that may or may not support the claim.
+        
+        Output format:
+        Label the claim as one of the following:
+        * SUPPORTED: If the evidence supports the claim.
+        * REFUTED: If the evidence refutes the claim.
+        * NOT ENOUGH INFO: If the evidence is inconclusive or insufficient to support or refute the claim.
+Iteration 12: Valset score for new program: 0.3333333333333333 (coverage 15 / 15)
+Iteration 12: Val aggregate for new program: 0.3333333333333333
+Iteration 12: Individual valset scores for new program: {0: 0.0, 1: 0.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 0.0, 6: 1.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0, 13: 0.0, 14: 1.0}
+Iteration 12: New valset pareto front scores: {0: 1.0, 1: 1.0, 2: 1.0, 3: 1.0, 4: 1.0, 5: 1.0, 6: 1.0, 7: 1.0, 8: 1.0, 9: 1.0, 10: 1.0, 11: 1.0, 12: 1.0, 13: 1.0, 14: 1.0}
+Iteration 12: Valset pareto front aggregate score: 1.0
+Iteration 12: Updated valset pareto front programs: {0: {0, 4, 6, 7, 8}, 1: {0, 8, 4}, 2: {1, 2, 7, 8, 9, 10}, 3: {0, 1, 2, 3, 4, 6, 7, 8, 9, 10}, 4: {2, 3, 8, 9, 10}, 5: {0, 2, 3, 4, 5, 7, 9}, 6: {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, 7: {1, 5, 6}, 8: {9, 4, 6}, 9: {4, 6}, 10: {0, 1, 2, 5, 6, 9}, 11: {0, 9, 3, 4}, 12: {3, 4, 7}, 13: {4, 5, 6, 7, 8}, 14: {9, 10}}
+Iteration 12: Best valset aggregate score so far: 0.6666666666666666
+Iteration 12: Best program as per aggregate score on valset: 4
+Iteration 12: Best score on valset: 0.6666666666666666
+Iteration 12: Linear pareto front program index: 4
+Iteration 12: New program candidate index: 10
+Iteration 12: BERT reward model retrained (buffer=100, loss=0.059622)
+
+  ✅ CANDIDATE ACCEPTED (new idx=10, score=2.0000)
+
+  ── Iteration 12 finished: ACCEPTED
+
+  =======================================================
+  METRICS SUMMARY  -  Round 12
+  =======================================================
+  Round:                         12
+  Total LLM Calls:               867
+  Total Metric Calls:            N/A
+  =======================================================
+──────────────────────────────────────────────────────────────────────
+
+GEPA Optimization:  98%|███████████████████████████████████████████████████████████████████████████████████████████▌ | 492/500 [1:08:42<01:07,  8.38s/rollouts]
+
+======================================================================
+VERBOSE LOG: Optimization Complete
+======================================================================
+  Total iterations:   11
+  Total metric calls: 543
+  Total LLM calls:    867
+  Best candidate idx: 4
+======================================================================
+
+
+============================================================
+Optimization Complete!
+============================================================
+Best Validation Score: 0.6667
+Best Candidate (Index 4):
+
+Component 'verification_prompt':
+# Task Instruction
+
+You are a fact-checking assistant for entertainment and literary facts, as well as general knowledge facts.
+Given a claim and a set of evidence passages, determine whether the claim is SUPPORTED, REFUTED, or NOT ENOUGH INFO based only on the evidence.
+
+Carefully reason over the evidence before answering. Consider the following:
+
+**General Knowledge:**
+* The presence or absence of concrete evidence, such as publication dates, author names, and film/tv titles.
+* The accuracy of geographical information, including the size, population, and locations of cities, countries, and regions.
+* The presence or absence of awards and their recipients in various domains, such as sports, literature, and entertainment.
+
+**Entertainment and Literary Facts:**
+* The accuracy of domain-specific information, including:
+	+ The existence and co-founders of production companies (e.g., Seven Arts Productions).
+	+ The involvement of authors, directors, and producers in specific projects.
+	+ The genres and characteristics of films and TV shows (e.g., black comedy-drama).
+* The potential for ambiguity or confusion in the claim or evidence, such as unclear author identities or multiple projects with similar titles.
+* The accuracy of baseball player information, including their names, teams, and achievements.
+
+**Domain-Specific Facts:**
+* For literary facts, consider the accuracy of book titles, authors, and publication dates.
+* For entertainment facts, consider the accuracy of film and TV show titles, actors, directors, release dates, and awards.
+
+When evidence is inconclusive or insufficient, label the claim as NOT ENOUGH INFO.
+
+Output the final label only.
+
+============================================================
+Evaluating OPTIMIZED candidate on Test Set
+============================================================
+Optimized Average Score: 0.4000
+Improvement over seed:   +0.0000
+============================================================
+
+============================================================
+FINAL STATISTICS
+============================================================
+Total Rounds (iterations):    11
+Total LLM Calls:              882
+Seed test score:              0.4000
+Optimized test score:         0.4000
+Best validation score:        0.6667
+Embedding model:              BAAI/bge-m3 (Matryoshka)
+Evaluation mode:              Batch (5 workers)
+============================================================
+
+Run completed: 2026-03-05T10:59:51.290655
+Full output saved to: hover_gepa_main.txt

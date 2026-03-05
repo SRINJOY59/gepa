@@ -72,6 +72,7 @@ def optimize(
     reward_model: BERTRewardModel | None = None,
     # Budget and Stop Condition
     max_metric_calls: int | None = None,
+    max_iterations: int | None = None,
     stop_callbacks: StopperProtocol | Sequence[StopperProtocol] | None = None,
     # Logging and Callbacks
     logger: LoggerProtocol | None = None,
@@ -232,10 +233,17 @@ def optimize(
         max_calls_stopper = MaxMetricCallsStopper(max_metric_calls)
         stop_callbacks_list.append(max_calls_stopper)
 
+    # Add max_iterations stopper if provided
+    if max_iterations is not None:
+        from gepa.utils import MaxIterationsStopper
+
+        max_iters_stopper = MaxIterationsStopper(max_iterations)
+        stop_callbacks_list.append(max_iters_stopper)
+
     # Assert that at least one stopping condition is provided
     if not stop_callbacks_list:
         raise ValueError(
-            "The user must provide at least one of stop_callbacks or max_metric_calls to specify a stopping condition."
+            "The user must provide at least one of stop_callbacks, max_metric_calls, or max_iterations to specify a stopping condition."
         )
 
     # Create composite stopper if multiple stoppers, or use single stopper

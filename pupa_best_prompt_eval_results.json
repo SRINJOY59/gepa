@@ -1,0 +1,169 @@
+{
+  "avg_privacy": 0.6294642857142858,
+  "avg_quality": 0.4,
+  "avg_overall": 0.5147321428571429,
+  "successful_samples": 20,
+  "total_samples": 20,
+  "results": [
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.875,
+      "quality_score": 0.0,
+      "overall_score": 0.4375,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.7142857142857143,
+      "quality_score": 0.0,
+      "overall_score": 0.35714285714285715,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 1.0,
+      "overall_score": 0.5,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 0.0,
+      "overall_score": 0.5,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 0.0,
+      "overall_score": 0.5,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 0.0,
+      "overall_score": 0.5,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 0.0,
+      "overall_score": 0.5,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 0.0,
+      "quality_score": 0.0,
+      "overall_score": 0.0,
+      "error": null
+    },
+    {
+      "uid": "N/A",
+      "success": true,
+      "privacy_score": 1.0,
+      "quality_score": 1.0,
+      "overall_score": 1.0,
+      "error": null
+    }
+  ]
+}

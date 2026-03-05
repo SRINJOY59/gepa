@@ -356,13 +356,13 @@ def main():
         type=str,
         default=os.environ.get("GOOGLE_API_KEY", ""),
     )
-    parser.add_argument("--task_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
-    parser.add_argument("--reflection_lm", type=str, default="openrouter/meta-llama/llama-3.1-8b-instruct")
+    parser.add_argument("--task_lm", type=str, default="openrouter/qwen/qwen3-8b")
+    parser.add_argument("--reflection_lm", type=str, default="openrouter/qwen/qwen3-8b")
 
     # Dataset
-    parser.add_argument("--train_size", type=int, default=20)
-    parser.add_argument("--val_size", type=int, default=10)
-    parser.add_argument("--test_size", type=int, default=10)
+    parser.add_argument("--train_size", type=int, default=30)
+    parser.add_argument("--val_size", type=int, default=15)
+    parser.add_argument("--test_size", type=int, default=15)
     parser.add_argument("--seed", type=int, default=42)
 
     # Budget
@@ -624,8 +624,8 @@ def main():
         reflection_lm=reflection_lm,
         # Multi-minibatch settings
         use_multi_minibatch=True,
-        num_minibatches=3,
-        candidates_per_minibatch=10, # Generate N=10 mutations per minibatch
+        num_minibatches=2,
+        candidates_per_minibatch=5, # Generate N=5 mutations per minibatch
         use_bandit_mutation=True, # Critical to generate multi prompts
         top_k=3, # Run full inference only on top 3
         reward_model=reward_model,

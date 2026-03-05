@@ -324,14 +324,12 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
 
         # ---- 3. Generate candidates from each minibatch ----
         @dataclass
-        class _Candidate:
+        class GeneratedVariant:
             candidate: dict[str, str]
-            minibatch_score_sum: float
-            subsample_ids: list
-            subsample_scores_before: list[float]
-            subsample_scores_after: list[float]
+            sub_ids: list
+            minibatch_scores_before: list[float]
 
-        all_candidates: list[_Candidate] = []
+        all_generated_variants: list[GeneratedVariant] = []
 
         for mb_idx, (sub_ids, minibatch) in enumerate(minibatches):
             self.logger.log(f"\n--- Minibatch {mb_idx + 1}/{len(minibatches)} ---")
@@ -373,8 +371,6 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 continue
 
             # Generate N candidates via GEPA reflective mutation (without evaluation)
-            generated_variants: list[dict[str, str]] = []
-            
             for c_idx in range(self.candidates_per_minibatch):
                 try:
                     new_texts = self.propose_new_texts(
@@ -382,7 +378,7 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                     )
                 except Exception as e:
                     self.logger.log(
-                        f"  Candidate {c_idx + 1}/{self.candidates_per_minibatch} "
+                        f"  Candidate {c_idx + 1}/{dynamic_k} "
                         f"generation error on mb {mb_idx + 1}: {e}"
                     )
                     continue
@@ -393,105 +389,97 @@ class ReflectiveMutationProposer(ProposeNewCandidate[DataId]):
                 new_cand = curr_prog.copy()
                 for comp_name, text in new_texts.items():
                     new_cand[comp_name] = text
-                generated_variants.append(new_cand)
-
-            if not generated_variants:
-                self.logger.log(f"  No variants generated for minibatch {mb_idx + 1}.")
-                continue
-
-            # Surrogate Model Scoring (Cheap) via UCB
-            variant_scores = []
-            if self.reward_model is not None and self.reward_model.is_trained:
-                # We concatenate the candidate prompt with an example validation question to feed into BERT
-                # For simplicity, we just use the prompt text for now, but BERT is powerful enough to learn the mapping
-                prompts = [" [SEP] ".join(v.values()) for v in generated_variants]
-                means, stds = self.reward_model.predict_ucb(prompts, n_samples=5)
+                    
+                all_generated_variants.append(GeneratedVariant(new_cand, sub_ids, eval_curr.scores))
                 
-                # UCB score = mean + lambda * std (exploration bonus)
-                # lambda = 1.0 is a reasonable default
-                variant_scores = [m + 1.0 * s for m, s in zip(means, stds)]
-            else:
-                # If untrained, assign random scores to explore
-                import random
-                variant_scores = [random.random() for _ in generated_variants]
+        if not all_generated_variants:
+            self.logger.log("  Warning: No variants generated across any minibatch. Returning None.")
+            return None
+
+        # ---- 4. Surrogate Ranking (Global) ----
+        variant_scores = []
+        if self.reward_model is not None and self.reward_model.is_trained:
+            prompts = [" [SEP] ".join(v.candidate.values()) for v in all_generated_variants]
+            means, stds = self.reward_model.predict_ucb(prompts, n_samples=5)
+            variant_scores = [m + 1.0 * s for m, s in zip(means, stds)]
+        else:
+            import random
+            variant_scores = [random.random() for _ in all_generated_variants]
             
-            # Select Top-K candidates based on UCB surrogate score
-            # Pair (variant, score) and sort
-            scored_variants = list(zip(generated_variants, variant_scores))
-            scored_variants.sort(key=lambda x: x[1], reverse=True)
-            top_k_variants = scored_variants[:self.top_k]
+        scored_variants = list(zip(all_generated_variants, variant_scores))
+        scored_variants.sort(key=lambda x: x[1], reverse=True)
+        global_top_k_variants = scored_variants[:self.top_k]
+        
+        self.logger.log(
+            f"\n  Generated {len(all_generated_variants)} variants total across {len(minibatches)} minibatches.\n"
+            f"  Evaluating Global Top-{len(global_top_k_variants)} using surrogate "
+            f"(trained={self.reward_model.is_trained if self.reward_model else False})."
+        )
+        
+        # ---- 5. Evaluate Global Top-K (Expensive) ----
+        @dataclass
+        class _Candidate:
+            candidate: dict[str, str]
+            minibatch_score_sum: float
+            subsample_ids: list
+            subsample_scores_before: list[float]
+            subsample_scores_after: list[float]
+            
+        all_evaluated_candidates: list[_Candidate] = []
+        training_prompts = []
+        training_scores = []
+        
+        for v_idx, (variant_info, surrogate_score) in enumerate(global_top_k_variants):
+            test_cand = variant_info.candidate
+            sub_ids = variant_info.sub_ids
+            scores_before = variant_info.minibatch_scores_before
+            
+            def evaluator(b, c):
+                r = self.adapter.evaluate(b, c, capture_traces=False)
+                return r.outputs, r.scores, list(r.objective_scores) if r.objective_scores else None
+
+            _, scores_by_id, _, actual_evals = state.cached_evaluate_full(
+                test_cand, sub_ids, self.trainset.fetch, evaluator
+            )
+            state.increment_evals(actual_evals)
+
+            scores_list = [scores_by_id[eid] for eid in sub_ids]
+            score_sum = sum(scores_list)
+            
+            # Normalise for reward model training (0.0 to 1.0)
+            norm_score = score_sum / max(len(scores_list), 1)
+            
+            training_prompts.append(" [SEP] ".join(test_cand.values()))
+            training_scores.append(norm_score)
+
+            all_evaluated_candidates.append(
+                _Candidate(
+                    candidate=test_cand,
+                    minibatch_score_sum=norm_score, # storing AVG now for fair ranking
+                    subsample_ids=sub_ids,
+                    subsample_scores_before=scores_before,
+                    subsample_scores_after=scores_list,
+                )
+            )
             
             self.logger.log(
-                f"  Generated {len(generated_variants)} variants. "
-                f"Selected Top-{len(top_k_variants)} using surrogate "
-                f"(trained={self.reward_model.is_trained if self.reward_model else False})."
+                f"    Eval Global Top-{v_idx+1}: "
+                f"surrogate={surrogate_score:.4f}, actual_avg={norm_score:.4f}"
             )
+            
+        # Train User's Surrogate Model with the new Top-K data
+        if self.reward_model is not None:
+            self.reward_model.add_training_data(training_prompts, training_scores)
+            train_loss = self.reward_model.train_on_buffer()
+            if train_loss is not None:
+                self.logger.log(f"  Surrogate updated (loss={train_loss:.6f})")
 
-            # Evaluate ONLY the Top-K candidates (Expensive)
-            training_prompts = []
-            training_scores = []
-
-            for v_idx, (test_cand, surrogate_score) in enumerate(top_k_variants):
-                def evaluator(b, c):
-                    r = self.adapter.evaluate(b, c, capture_traces=False)
-                    return r.outputs, r.scores, list(r.objective_scores) if r.objective_scores else None
-
-                _, scores_by_id, _, actual_evals = state.cached_evaluate_full(
-                    test_cand, sub_ids, self.trainset.fetch, evaluator
-                )
-                state.increment_evals(actual_evals)
-
-                scores_list = [scores_by_id[eid] for eid in sub_ids]
-                score_sum = sum(scores_list)
-                
-                # Normalise for reward model training (0.0 to 1.0)
-                norm_score = score_sum / max(len(scores_list), 1)
-                
-                training_prompts.append(" [SEP] ".join(test_cand.values()))
-                training_scores.append(norm_score)
-
-                all_candidates.append(
-                    _Candidate(
-                        candidate=test_cand,
-                        minibatch_score_sum=norm_score, # storing AVG now for fair ranking
-                        subsample_ids=sub_ids,
-                        subsample_scores_before=eval_curr.scores,
-                        subsample_scores_after=scores_list,
-                    )
-                )
-                
-                self.logger.log(
-                    f"    Eval Top-{v_idx+1} on mb {mb_idx + 1}: "
-                    f"surrogate={surrogate_score:.4f}, actual_avg={norm_score:.4f}"
-                )
-
-            # Train User's Surrogate Model with the new Top-K data
-            if self.reward_model is not None:
-                self.reward_model.add_training_data(training_prompts, training_scores)
-                train_loss = self.reward_model.train_on_buffer()
-                if train_loss is not None:
-                    self.logger.log(f"  Surrogate updated (loss={train_loss:.6f})")
-
-        self.logger.log(
-            f"\nTotal candidates generated: {len(all_candidates)}. "
-            f"Selecting top-{self.top_k}."
-        )
-
-        # ---- 4. Select Best from Top-K ----
-        # all_candidates now contains only the Top-K candidates that were actually evaluated.
-        # Rank them by their ACTUAL evaluation scores (minibatch_score_sum).
-        all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
-        top_k_candidates = all_candidates  # They are already the Top-K (across all minibatches if M>1)
-
-        # If M > 1, we might have M * K candidates. We only want to return the absolute best.
-        # But for now, let's just log top performers.
-
-        # ---- 5. Select top-K ----
-        all_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
-        top_k_candidates = all_candidates[: self.top_k]
+        # ---- 6. Select Best from Global Top-K ----
+        all_evaluated_candidates.sort(key=lambda c: c.minibatch_score_sum, reverse=True)
+        top_k_candidates = all_evaluated_candidates[: self.top_k]
 
         if not top_k_candidates:
-            self.logger.log("  Warning: No valid candidates were generated or evaluated across minibatches. Returning None.")
+            self.logger.log("  Warning: No valid candidates were evaluated. Returning None.")
             return None
 
         for rank, c in enumerate(top_k_candidates, 1):
