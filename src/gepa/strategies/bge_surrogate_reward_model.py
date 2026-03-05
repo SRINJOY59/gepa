@@ -1,9 +1,9 @@
 """
-BGE-M3 Reward Model for GEPA prompt optimisation.
+Surrogate Reward Model for GEPA prompt optimisation.
 
 Drop-in replacement for BERTRewardModel — same interface
 (add_training_data(prompts, scores), predict(prompts), predict_ucb(prompts))
-but uses BAAI/bge-m3 with Matryoshka embedding truncation under the hood.
+but uses all-MiniLM-L6-v2 sentence embeddings under the hood.
 
 The GEPA engine's reward_model interface works on prompt-level aggregate
 scores (one score per prompt), NOT (prompt, question) pairs.
@@ -30,7 +30,7 @@ DEFAULT_MATRYOSHKA_DIM = 256  # Truncate bge-m3 embeddings to this dim
 # BGE-M3 Embedding Cache
 # ---------------------------------------------------------------------------
 class _BGEEmbedder:
-    """Lazily loads BAAI/bge-m3 and caches embeddings."""
+    """Lazily loads all-MiniLM-L6-v2 and caches embeddings."""
 
     def __init__(self, matryoshka_dim: int = DEFAULT_MATRYOSHKA_DIM):
         self.matryoshka_dim = matryoshka_dim
@@ -42,9 +42,9 @@ class _BGEEmbedder:
             return
         from sentence_transformers import SentenceTransformer
 
-        print("  [BGE-M3] Loading BAAI/bge-m3 model ...")
-        self._model = SentenceTransformer("BAAI/bge-m3")
-        print(f"  [BGE-M3] Loaded. Matryoshka dim = {self.matryoshka_dim}")
+        print("  [Embedder] Loading all-MiniLM-L6-v2 model ...")
+        self._model = SentenceTransformer("all-MiniLM-L6-v2")
+        print(f"  [Embedder] Loaded. Matryoshka dim = {self.matryoshka_dim}")
 
     def encode(self, texts: list[str]) -> torch.Tensor:
         """Encode texts into Matryoshka-truncated embeddings.
@@ -86,12 +86,12 @@ class _BGEEmbedder:
 # ---------------------------------------------------------------------------
 class BGESurrogateRewardModel(nn.Module):
     """
-    BGE-M3 encoder + regression head  →  scalar score ∈ [0, 1].
+    Sentence-embedding encoder + regression head  →  scalar score ∈ [0, 1].
 
     Drop-in replacement for BERTRewardModel.
     Same interface: add_training_data(prompts, scores), predict(prompts),
     predict_ucb(prompts), train_on_buffer().
-    Uses BAAI/bge-m3 with Matryoshka truncation instead of BERT.
+    Uses all-MiniLM-L6-v2 with Matryoshka truncation instead of BERT.
     """
 
     def __init__(

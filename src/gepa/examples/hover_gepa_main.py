@@ -116,7 +116,7 @@ def load_hover_dataset(
     """
     from datasets import load_dataset
 
-    ds = load_dataset("hover-nlp/hover", trust_remote_code=True)
+    ds = load_dataset("vincentkoc/hover-parquet")
 
     # Combine train + validation (test has label = -1)
     examples = []
