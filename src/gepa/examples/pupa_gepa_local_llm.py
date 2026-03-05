@@ -64,6 +64,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# ──────────────────────────────────────────────────────────────────────
+# HuggingFace Hub Login
+# ──────────────────────────────────────────────────────────────────────
+from huggingface_hub import login
+
+HF_TOKEN = os.getenv("HF_TOKEN")
+print("[HF-LOGIN] Logging into HuggingFace Hub...")
+login(token=HF_TOKEN)
+print("[HF-LOGIN] ✅ Successfully logged in to HuggingFace Hub!\n")
+
 
 # ──────────────────────────────────────────────────────────────────────
 # LLM call counter (thread-safe)
