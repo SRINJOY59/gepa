@@ -64,6 +64,7 @@ class GEPAResult(Generic[RolloutOutput, DataId]):
     # Run metadata (optional)
     total_metric_calls: int | None = None
     num_full_val_evals: int | None = None
+    num_iterations: int | None = None
     run_dir: str | None = None
     seed: int | None = None
 
@@ -228,6 +229,7 @@ class GEPAResult(Generic[RolloutOutput, DataId]):
             discovery_eval_counts=list(state.num_metric_calls_by_discovery),
             total_metric_calls=getattr(state, "total_num_evals", None),
             num_full_val_evals=getattr(state, "num_full_ds_evals", None),
+            num_iterations=getattr(state, "i", -1) + 1,
             run_dir=run_dir,
             seed=seed,
         )

@@ -183,8 +183,9 @@ class MaxIterationsStopper(StopperProtocol):
 
     def __call__(self, gepa_state: GEPAState) -> bool:
         # return true if max iterations reached
-        # gepa_state.i is 0-indexed and incremented at the start of each iteration
-        return gepa_state.i >= self.max_iterations
+        # gepa_state.i starts at -1 and is incremented at the start of each iteration
+        # (gepa_state.i + 1) represents the number of iterations started/completed.
+        return (gepa_state.i + 1) >= self.max_iterations
 
 
 class CompositeStopper(StopperProtocol):
