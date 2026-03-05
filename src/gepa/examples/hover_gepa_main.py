@@ -632,6 +632,7 @@ def main():
         # Callbacks
         callbacks=callbacks,
         # General settings
+        reflection_minibatch_size=10,
         candidate_selection_strategy="pareto",
         max_metric_calls=args.max_metric_calls,
         seed=args.seed,
